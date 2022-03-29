@@ -1,0 +1,351 @@
+\documentclass[officiallayout]{tktla}
+%\documentclass[officiallayout,a4frame]{tktla}
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage[
+  backend=biber,
+  bibstyle=ieee,
+  citestyle=numeric-comp,
+    sortlocale=en_US,
+    natbib=true,
+    url=false, 
+    doi=true,
+    eprint=false
+]{biblatex}
+\usepackage{pdfpages}
+
+% For thesis papers section
+\usepackage{geometry}
+\def \dvWHITE{white}
+\def \dvBLACK{black}
+\def \dvBLUE{blue}
+\def \dvGREEN{green}
+\def \dvheight{231pt}
+% Creates black box with the text given as first parameter in white
+\newcommand\note[3] {\marginpar{\vspace{#2}\colorbox{#3}{\parbox[c][\dvheight][t]{34.8pt}{\vspace{0.3cm}\color{white}\centering\Huge{\textbf{#1}}}}}}
+
+
+\addbibresource{maklin2022.bib}
+
+\title{Probabilistic methods for \\ plate sweep metagenomics}
+\author{Tommi Mäklin}
+\authorcontact{tommi@maklin.fi\par
+  https://maklin.fi/}
+\pubtime{June}{2022}
+\reportno{0}
+\isbnpaperback{000-00-0000-0}
+\isbnpdf{000-00-0000-0}
+\issn{1238-8645}
+\issnonline{2814-4031}
+\printhouse{Unigrafia}
+\pubpages{7} % --- remember to update this! 
+% For monographs, the number of the last page of the list of references
+% For article-based theses, the number of the last page of the list of
+% references of the preamble part + the total number of the pages of
+% the original articles and interleaf pages.
+\supervisorlist{Antti Honkela, University of Helsinki, Finland \\ \hspace{8pt} Jukka Corander, University of Oslo, Norway}
+\preexaminera{Exam Iner, University of Examinations, Exaministan}
+\preexaminerb{Read Er, University of Examinations, Exaministan}
+\opponent{Oppo Nent, University of Endless Argumentation, The Argumentlands}
+\custos{Sea Land, University of Sealand, Sealand}
+\generalterms{Algorithms, Experimentation}
+\additionalkeywords{genomic epidemiology, plate sweeps, probabilistic modeling, pathogen surveillance, taxonomic profiling, taxonomic binning, metagenomics}
+% Computing Reviews 1998 style
+%\crcshort{A.0, C.0.0}
+%\crclong{
+%\item[A.0] Example Category
+%\item[C.0.0] Another Example
+%}
+% Computing Reviews 2012 style
+\crclong{
+\item Mathematics of computing $\rightarrow$ Probability and statistics $\rightarrow$ Statistical computing
+\item Computing applications $\rightarrow$ Biosciences
+}
+
+\permissionnotice{
+  Doctoral dissertation, to be presented for public examination with 
+  the permission of the Faculty of Science of the University of
+  Helsinki in \ldots{} on \ldots{} at XX o'clock. Fill in the examination
+  venue, date and time into the previous sentence.
+}
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newenvironment{proof}{\noindent\textbf{Proof.} }{$\Box$}
+
+\begin{document}
+
+\frontmatter
+
+\maketitle
+
+\begin{abstract}
+  rewrite \citet{maklin_high-resolution_2021} a \citep{maklin_bacterial_2021}
+
+\end{abstract}
+
+\begin{acknowledgements}
+  Olvi (III) \\ \& Koff IVA
+   \begin{flushright}
+  Rv  rip, June 2022\\
+  Tommi Mäklin
+  \end{flushright}
+\end{acknowledgements}
+
+\tableofcontents
+
+\mainmatter
+
+
+\chapter{Introduction}
+
+In the past decades research focusing on bacterial pathogens has
+largely been driven by analysis of the contents of bacterial genomes
+obtained by whole-genome sequencing. Although the price of sequencing
+itself has decreased tremendously during this timeframe, most analyses
+still rely on using sequence data from pure bacterial cultures created
+by isolating a bacterium from an initial mixed culture. Since these
+cultures are created by cultivating environmental samples, they
+typically contain several distinct bacteria \textemdash and other
+microorganisms \textemdash that a thorough analysis would aim to
+isolate in a pure culture. In practice, the number of isolations that
+can be performed is limited and preparing large numbers of samples for
+DNA sequencing rapidly becomes a significant economical barrier even
+in well-resourced public health laboratories.
+
+The typical use for sequencing data in public health settings is
+genomic epidemiology, where researchers are interested analysing the
+genomes of the pathogens to trace their transmission and spread. For
+example, comparing mutations in the genomes of a pathogen isolated
+from several patients during an epidemic may aid in inferring the
+transmission chain by elucidating the short-term evolutionary
+history. Similarly the long-term history can be inferred by looking
+for larger structural changes, horizontal gene transfer, and
+accumulated mutations in genomes assembled from the sequence data. If
+the sequencing is performed routinely and the data is made publicly
+available, the reporting from several laboratories may be combined to
+create an extremely valuable resource for both researchers and
+policymakers. However, the vast majority of genomic epidemiological
+analyses require high coverage and high quality sequence data to
+achieve meaningful resolution, which has translated to dominance of
+the expensive pure-colony isolation approach in data generation.
+
+Recently, shotgun metagenomics, where DNA is extracted and sequenced
+directly from the original environmental sample, has emerged as a
+potential cost-effective alternative to pure whole-genome
+sequencing. Although this approach conveniently gets around both the
+economic barrier and potential biases introduced by the initial
+cultivation step, direct sequencing often requires significantly
+higher sequencing depths. Sequencing at depths typical to isolate
+analyses often results in excess amounts of host DNA and fails to
+provide sufficient resolution for the more elusive members of the
+microbiome that are present only at low abundances. Due to these
+factors, shotgun metagenomics may be difficult to apply in situations
+where researchers are only interested in some subset of bacteria but
+wish to perform analyses that require high sequencing depth.
+
+When choosing between shotgun metagenomics and isolate sequencing, a
+middle-ground can be found in creating the initial mixed culture but
+skipping the isolation steps and instead sweeping and sequencing the
+mixed culture. Since culture media are available for most clinically
+relevant bacteria, this approach allows enrichment of the species of
+interest while simultaneously filtering out host DNA, effectively
+avoiding the pitfalls in both isolate and shotgun metagenomics by
+limiting the diversity of the sample. Accordingly, this approach is
+sometimes called limited-diversity metagenomics
+\citep{cocker_drivers_2022} but will be referred to as plate sweep
+metagenomics in this thesis.
+
+Although both plate sweep metagenomics and shotgun metagenomics
+have technically been possible for many years, the development of
+computational methods has largely focused on analysing data from pure
+cultures. Although some advances have been made in developing
+computational tools capable of identifying the taxonomic composition
+of a set of reads (taxonomic profiling) or assigning the individual
+sequencing reads to their taxonomic origins (taxonomic binning), the
+accuracy of these tools is significantly hindered in the presence of
+within-species variation. In practice such variation is ubiquitous in
+both clinical and envinronmental samples, rendering many of the tools
+difficult to use when within-species level information is required.
+
+In this thesis I present research that enables both taxonomic
+profiling and binning from either metagenomic or plate sweep
+sequencing data using computational methods. While the methods were
+initially developed for plate sweeps metagenomics work, I also
+demonstrate that they can reliably be applied to whole metagenome
+sequencing data as well. Using either of the two approaches to
+generate metagenomic sequencing data enables performing completely new
+types of analyses which are also briefly covered.
+
+The first two articles included in this thesis contain descriptions of
+the aforementioned two methods. The first of these methods, called
+mSWEEP, provides a probabilistic model for taxonomic profiling of
+bacteria at within-species lineage level based on pseudoalignments
+against a set of reference sequences. The second method, mGEMS,
+leverages the information from mSWEEP to construct an assignment rule
+for taxonomic binning of sequencing reads to bins that correspond to
+the lineages. Both methods rely on the fundamentally important insight
+that each sequencing read can - and should - pseudoalign and be
+assigned to several lineages within the species at once. By combining
+the two methods, sequencing data from samples containing several
+lineages of the same species can be computationally demixed and used
+to obtain results that are nearly indistinguishable from the results
+of using isolate data.
+
+While the methods from the first two articles are designed with direct
+analysis of sequencing data from mixed cultures in mind, the third
+article shows that both methods are applicable even when the initial
+plating step is skipped and the sequencing data is derived directly
+from an environmental sample. Thus, in the third article I have
+analysed such samples from babies born in the UK collected during
+their neonatal period and discovered several results showing strong
+competition between bacterial species and strains during the initial
+colonization of the gut microbiome. More importantly, from a methods
+perspective, this analysis shows that mSWEEP and mGEMS provide
+(so-far) completely unprecedented levels of resolution in analysis of
+metagenomic sequencing data.
+
+Together the three articles in this thesis represent foundational
+methodological steps in both opening up high-resolution exploration of
+bacterial diversity as well as making such analyses more accessible to
+resource-constrained laboratories.
+
+\section{Contributions}
+
+The thesis comprises three publications covering both mSWEEP and mGEMS
+as well as a third article demonstrating their application to
+whole-genome shotgun metagenomic sequencing data. The introductory
+part you are reading now contains the overall ideas presented in the
+publications and introduces some of the terminology used further on.
+
+\subsection*{Paper I \textemdash High-resolution sweep metagenomics using fast probabilistic inference}
+By \underline{Tommi Mäklin}, Teemu Kallonen, Sophia David, Christine J
+Boinett, Ben Pascoe, Guillaume Méric, David M Aanensen, Edward J Feil,
+Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
+Antti Honkela. Published in \textit{Wellcome Open Research} (2021), 5:14
+(https://doi.org/10.12688/wellcomeopenres.15639.2).
+
+Description...
+
+The author...
+
+\subsection*{Paper II \textemdash Bacterial genomic epidemiology with mixed samples}
+By \underline{Tommi Mäklin}, Teemu Kallonen, Jarno Alanko, Ørjan
+Samuelsen, Kristin Hegstad, Veli Mäkinen, Jukka Corander, Eva Heinz,
+and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
+7.11 (https://doi.org/10.1099/mgen.0.000691).
+
+Description...
+
+The author...
+
+\subsection*{Paper III \textemdash Strong pathogen competition in neonatal gut colonization}
+By \underline{Tommi Mäklin}, Harry Thorpe, Anna Pöntinen, Rebecca
+Gladstone, Alan McNally, Ørjan Samuelsen, Pål Johnsen, Trevor Lawley,
+Antti Honkela, and Jukka Corander. Awaiting peer-review; available
+from \textit{bioRxiv} (2022) (https://doi.org/10.1099/mgen.0.000691).
+
+Description...
+
+The author...
+
+\section{Thesis structure}
+
+This is a sample sentence that should look like normal text, and this
+is another. This is a sample sentence that should look like normal
+text, and this is another. This is a sample sentence that should look
+like normal text, and this is another. This is a sample sentence that
+should look like normal text, and this is another. This is a sample
+sentence that should look like normal text, and this is another. 
+
+\chapter{Plate sweep and shotgun metagenomics}
+
+Something about bacterial pathogens are hard to classify taxonomically
+and have weird genomes with weird plasmids and stuff.  Lineages are
+much much nicer to work with
+
+Define plate sweeps
+
+Pretty picture of how to use them
+
+Something about metagenomics is nice in that we dont just sequence one
+nice things but many nice things
+
+Introducing mSWEEP/mGEMS \& how these tools enable new directions in research.
+
+Figure~\ref{fig:examplefigure} shows an example on how figures in the 
+eps format can be included into the text. It gives an example on how 
+figures in the eps format can be included into the text. It gives 
+an example on how figures in the eps format can be included into the text.
+
+\begin{figure}
+    \centering
+%    \includegraphics{examplefigure.eps}
+    \caption{Example caption for eps figures.}
+\label{fig:examplefigure}
+\end{figure}
+
+\chapter{Mixture modeling of sequence data}
+
+This is a sample sentence that should look like normal text, and this
+is another. This is a sample sentence that should look like normal
+text, and this is another:
+\[ S = \sum_{i=0}^{\infty} a^2 \]
+This is a sample sentence that should look like normal text, and this
+is another.\footnote{A sample footnote.}
+
+\begin{theorem}
+This is a sample sentence ($x=x+2$) that should look like normal text,
+and this is another. This is a sample sentence that should look like
+normal text, and this is another. This $x$ is a sample sentence $y$
+that should look like normal text 32, and this is another.
+\end{theorem}
+
+\begin{proof}
+This is a sample sentence that should look like normal text, and this
+is another. This is a sample sentence that should look like normal
+text, and this is another.
+\end{proof}
+
+\begin{theorem}
+This is a sample sentence that should look like normal text,
+and this is another:
+\[ y = x+3 \]
+\end{theorem}
+
+\begin{proof}
+This is a sample sentence.
+\end{proof}
+
+\chapter{Genomic epidemiology from metagenomic data}
+
+Something about wgs and genomic epidemiology can do lots of cool stuff
+to identify contaminated cucumbers or track covid
+
+\printbibliography[heading=bibintoc]
+
+\chapter{Included papers}
+%\addcontentsline{toc}{chapter}{Included papers}
+
+\subsection*{Paper I \textemdash High-resolution sweep metagenomics using fast probabilistic inference}
+By \underline{Tommi Mäklin}, Teemu Kallonen, Sophia David, Christine J
+Boinett, Ben Pascoe, Guillaume Méric, David M Aanensen, Edward J Feil,
+Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
+Antti Honkela. Published in \textit{Wellcome Open Research} (2021), 5:14
+(https://doi.org/10.12688/wellcomeopenres.15639.2).
+
+\subsection*{Paper II \textemdash Bacterial genomic epidemiology with mixed samples}
+By \underline{Tommi Mäklin}, Teemu Kallonen, Jarno Alanko, Ørjan
+Samuelsen, Kristin Hegstad, Veli Mäkinen, Jukka Corander, Eva Heinz,
+and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
+7.11 (https://doi.org/10.1099/mgen.0.000691).
+
+\subsection*{Paper III \textemdash Strong pathogen competition in neonatal gut colonization}
+By \underline{Tommi Mäklin}, Harry Thorpe, Anna Pöntinen, Rebecca
+Gladstone, Alan McNally, Ørjan Samuelsen, Pål Johnsen, Trevor Lawley,
+Antti Honkela, and Jukka Corander. Awaiting peer-review; available
+from \textit{bioRxiv} (2022) (https://doi.org/10.1099/mgen.0.000691).
+
+\include{papers/maklin2022_thesis-papers}
+
+\end{document}

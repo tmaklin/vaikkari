@@ -1,0 +1,16 @@
+# Emacs autosaves
+*~
+
+# Compiled latex files
+maklin2022.pdf
+maklin2022.aux
+maklin2022.bbl
+maklin2022.bcf
+maklin2022.bib.bbl
+maklin2022.bib.blg
+maklin2022.blg
+maklin2022.dvi
+maklin2022.log
+maklin2022.run.xml
+maklin2022.toc
+papers/maklin2022_thesis-papers.aux
