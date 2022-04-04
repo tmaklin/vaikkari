@@ -1,3 +1,6 @@
+# file locks
+.~lock.*#
+
 # Emacs autosaves
 *~
 
@@ -13,4 +16,5 @@ maklin2022.dvi
 maklin2022.log
 maklin2022.run.xml
 maklin2022.toc
+maklin2022.out
 papers/maklin2022_thesis-papers.aux

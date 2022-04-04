@@ -13,7 +13,9 @@
     doi=true,
     eprint=false
 ]{biblatex}
+\usepackage{software-biblatex}
 \usepackage{pdfpages}
+\usepackage{hyperref}
 
 % For thesis papers section
 \usepackage{geometry}
@@ -25,6 +27,8 @@
 % Creates black box with the text given as first parameter in white
 \newcommand\note[3] {\marginpar{\vspace{#2}\colorbox{#3}{\parbox[c][\dvheight][t]{34.8pt}{\vspace{0.3cm}\color{white}\centering\Huge{\textbf{#1}}}}}}
 
+% Footnotes without numbering
+\let\svthefootnote\thefootnote
 
 \addbibresource{maklin2022.bib}
 
@@ -210,13 +214,19 @@ methodological steps in both opening up high-resolution exploration of
 bacterial diversity as well as making such analyses more accessible to
 resource-constrained laboratories.
 
+\begin{figure}[!ht]
+  \label{fig:microbiome-sampling-methods}
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{img/sampling/microbiome_sampling_methods.pdf}
+    \caption{Different approaches to sequencing bacterial DNA. Panel \textbf{a)} depicts the metagenomic approach, where sequence data is collected directly from the environmental sample and the full microbial diversity is captured. Panel \textbf{b)} depicts the plate sweep metagenomic approach, where the environmental sample is plated on a selective medium and the DNA is sequenced from the whole plate, capturing the full diversity of microbes that grow on the selecteed medium. Panel \textbf{c} depicts the whole-genome sequencing approach, where a subset of visible colonies on the selective medium are picked and cultured again on their own plates, capturing only the microbes that were isolated from the initial culture. The orange arrows depict steps that require laboratory work, which is equal to the number of isolated cultures created in the whole-genome sequencing approach, whereas in the metagenomics approaches only a single library preparation and sequencing step is required.}
+\end{figure} \let\thefootnote\relax\footnote{Figure source: Adapted from \cite{praveera_fenugreek-sprouts} and \cite{niaid_escherichia-coli}. Released under the \href{https://creativecommons.org/licenses/by-sa/4.0}{CC BY-SA 4.0 license}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \section{Contributions}
 
 The thesis comprises three publications covering both mSWEEP and mGEMS
 as well as a third article demonstrating their application to
-whole-genome shotgun metagenomic sequencing data. The introductory
-part you are reading now contains the overall ideas presented in the
-publications and introduces some of the terminology used further on.
+whole-genome shotgun metagenomic sequencing data. The first two
+publications are accompanied by software implementations.
 
 \subsection*{Paper I \textemdash High-resolution sweep metagenomics using fast probabilistic inference}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Sophia David, Christine J
@@ -248,6 +258,21 @@ from \textit{bioRxiv} (2022) (https://doi.org/10.1099/mgen.0.000691).
 Description...
 
 The author...
+
+\subsection*{mSWEEP}
+Software implementation of the ideas presented in \textbf{Paper
+  I}. Latest version available from
+\href{https://github.com/PROBIC/mSWEEP}{PROBIC/mSWEEP (GitHub)},
+latest version at time of writing (v1.5.2) available and archived in
+Zenodo \citep{maklin_mSWEEP}.
+
+\subsection*{mGEMS}
+Software implementation of the ideas presented in \textbf{Paper
+  II}. Latest version available from
+\href{https://github.com/PROBIC/mGEMS}{PROBIC/mGEMS (GitHub)},
+latest version at time of writing (v1.2.0) available and archived in
+Zenodo \citep{maklin_mGEMS}.
+
 
 \section{Thesis structure}
 
@@ -281,13 +306,6 @@ Figure~\ref{fig:examplefigure} shows an example on how figures in the
 eps format can be included into the text. It gives an example on how 
 figures in the eps format can be included into the text. It gives 
 an example on how figures in the eps format can be included into the text.
-
-\begin{figure}
-    \centering
-%    \includegraphics{examplefigure.eps}
-    \caption{Example caption for eps figures.}
-\label{fig:examplefigure}
-\end{figure}
 
 \chapter{Mixture modeling of sequence data}
 
