@@ -15,7 +15,7 @@
 ]{biblatex}
 \usepackage{software-biblatex}
 \usepackage{pdfpages}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 
 % For thesis papers section
 \usepackage{geometry}
@@ -99,7 +99,6 @@
 \tableofcontents
 
 \mainmatter
-
 
 \chapter{Introduction}
 
@@ -214,11 +213,13 @@ methodological steps in both opening up high-resolution exploration of
 bacterial diversity as well as making such analyses more accessible to
 resource-constrained laboratories.
 
+\section{Three approaches to sequencing bacterial DNA}
+
 \begin{figure}[!ht]
   \label{fig:microbiome-sampling-methods}
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{img/sampling/microbiome_sampling_methods.pdf}
-    \caption{Different approaches to sequencing bacterial DNA. Panel \textbf{a)} depicts the metagenomic approach, where sequence data is collected directly from the environmental sample and the full microbial diversity is captured. Panel \textbf{b)} depicts the plate sweep metagenomic approach, where the environmental sample is plated on a selective medium and the DNA is sequenced from the whole plate, capturing the full diversity of microbes that grow on the selecteed medium. Panel \textbf{c} depicts the whole-genome sequencing approach, where a subset of visible colonies on the selective medium are picked and cultured again on their own plates, capturing only the microbes that were isolated from the initial culture. The orange arrows depict steps that require laboratory work, which is equal to the number of isolated cultures created in the whole-genome sequencing approach, whereas in the metagenomics approaches only a single library preparation and sequencing step is required.}
+    \caption{Different approaches to sequencing bacterial DNA. Panel \textbf{a)} depicts the metagenomic approach, where sequence data is collected directly from the environmental sample. Panel \textbf{b)} depicts the plate sweep metagenomic approach, where the environmental sample is plated on a selective medium and DNA is sequenced from the whole plate. Panel \textbf{c)} depicts the whole-genome sequencing approach, where a subset of visible colonies on the selective medium are picked, cultured again on their own plates, and then sequenced. The orange arrows depict steps that require laboratory work.}
 \end{figure} \let\thefootnote\relax\footnote{Figure source: Adapted from \cite{praveera_fenugreek-sprouts} and \cite{niaid_escherichia-coli}. Released under the \href{https://creativecommons.org/licenses/by-sa/4.0}{CC BY-SA 4.0 license}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \section{Contributions}
@@ -283,31 +284,11 @@ like normal text, and this is another. This is a sample sentence that
 should look like normal text, and this is another. This is a sample
 sentence that should look like normal text, and this is another. 
 
-\chapter{Plate sweep and shotgun metagenomics}
+\chapter{Mixture modeling of sequence data}
 
 Something about bacterial pathogens are hard to classify taxonomically
 and have weird genomes with weird plasmids and stuff.  Lineages are
 much much nicer to work with
-
-cite \citet{tonkin-hill_pneumococcal_2022} for rigorous proof that
-mSWEEP/mGEMS can recover cocolonization by several strains that is
-overlooked by isolate sequeuncing.
-
-Define plate sweeps
-
-Pretty picture of how to use them
-
-Something about metagenomics is nice in that we dont just sequence one
-nice things but many nice things
-
-Introducing mSWEEP/mGEMS \& how these tools enable new directions in research.
-
-Figure~\ref{fig:examplefigure} shows an example on how figures in the 
-eps format can be included into the text. It gives an example on how 
-figures in the eps format can be included into the text. It gives 
-an example on how figures in the eps format can be included into the text.
-
-\chapter{Mixture modeling of sequence data}
 
 - Add results from Gibbs sampler vs variational inference experiments.
 
@@ -341,7 +322,27 @@ and this is another:
 This is a sample sentence.
 \end{proof}
 
-\chapter{Genomic epidemiology from metagenomic data}
+\chapter{High-resolution metagenomics}
+
+cite \citet{tonkin-hill_pneumococcal_2022} for rigorous proof that
+mSWEEP/mGEMS can recover cocolonization by several strains that is
+overlooked by isolate sequeuncing.
+
+Define plate sweeps
+
+Pretty picture of how to use them
+
+Something about metagenomics is nice in that we dont just sequence one
+nice things but many nice things
+
+Introducing mSWEEP/mGEMS \& how these tools enable new directions in research.
+
+Figure~\ref{fig:examplefigure} shows an example on how figures in the 
+eps format can be included into the text. It gives an example on how 
+figures in the eps format can be included into the text. It gives 
+an example on how figures in the eps format can be included into the text.
+
+\chapter{Metagenomic epidemiology}
 
 Something about wgs and genomic epidemiology can do lots of cool stuff
 to identify contaminated cucumbers or track covid
