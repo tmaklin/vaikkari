@@ -222,60 +222,83 @@ resource-constrained laboratories.
     \caption{Different approaches to sequencing bacterial DNA. Panel \textbf{a)} depicts the metagenomic approach, where sequence data is collected directly from the environmental sample. Panel \textbf{b)} depicts the plate sweep metagenomic approach, where the environmental sample is plated on a selective medium and DNA is sequenced from the whole plate. Panel \textbf{c)} depicts the whole-genome sequencing approach, where a subset of visible colonies on the selective medium are picked, cultured again on their own plates, and then sequenced. The orange arrows depict steps that require laboratory work.}
 \end{figure} \let\thefootnote\relax\footnote{Figure source: Adapted from \cite{praveera_fenugreek-sprouts} and \cite{niaid_escherichia-coli}. Released under the \href{https://creativecommons.org/licenses/by-sa/4.0}{CC BY-SA 4.0 license}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+
+- Cover the three approaches to data collection presented in \ref{fig:microbiome-sampling-methods}.
+
+- What are the strengths and weaknessess of each approach? Why do we want to favour approaches b) and a)?
+
+- Some coverage of previous literature regarding the approaches.
+
+\section{Analysing metagenomic sequence data}
+
+- Cover previous work in metagenome data analysis: metagenome
+assemblers, metagenome binners, metaphlan, strainphlan, strainGE,
+etc. Also briefly touch 16S sequencing.
+
+- Introduce our approach and cover why it is different from the previous approaches (Gerry's paper is especially useful here).
+
+- Cover some applications and results from literature.
+
 \section{Contributions}
 
-The thesis comprises three publications covering both mSWEEP and mGEMS
-as well as a third article demonstrating their application to
+This thesis comprises three publications covering both mSWEEP and
+mGEMS as well as a third article demonstrating their application to
 whole-genome shotgun metagenomic sequencing data. The first two
-publications are accompanied by software implementations.
+publications are accompanied by software implementations. The third
+article is more applied in nature, exploring in more detail the types
+of analyses enabled by the first two papers.
 
 \subsection*{Paper I \textemdash High-resolution sweep metagenomics using fast probabilistic inference}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Sophia David, Christine J
 Boinett, Ben Pascoe, Guillaume Méric, David M Aanensen, Edward J Feil,
 Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
-Antti Honkela. Published in \textit{Wellcome Open Research} (2021), 5:14
-(https://doi.org/10.12688/wellcomeopenres.15639.2).
+Antti Honkela. Published in \textit{Wellcome Open Research} (2021),
+5:14, doi: 10.12688/wellcomeopenres.15639.2.
 
-Description...
+In the first paper, we presented and benchmarked the mSWEEP method for
+taxonomic profiling of sequencing data containing multiple strains
+from the same bacterial species. My contributions included development
+and implementation of the method, designing the benchmarks and
+comparisons with similar methods, running all analyses with mSWEEP,
+writing the manuscript, and to reviewing and editing the article.
 
-The author...
+Software implementation of the ideas presented in Paper I is
+available from GitHub at
+\href{https://github.com/PROBIC/mSWEEP}{PROBIC/mSWEEP} (latest
+version). The latest version at the time of writing is archived and
+available in Zenodo \citep{maklin_mSWEEP}.
 
 \subsection*{Paper II \textemdash Bacterial genomic epidemiology with mixed samples}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Jarno Alanko, Ørjan
 Samuelsen, Kristin Hegstad, Veli Mäkinen, Jukka Corander, Eva Heinz,
 and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
-7.11 (https://doi.org/10.1099/mgen.0.000691).
+7.11, doi: 10.1099/mgen.0.000691.
 
-Description...
+The second paper continued to build upon mSWEEP by developing an
+algorithm for taxonomic binning at within-species variation level,
+called mGEMS. I contributed to the development of both the mGEMS
+binning algorithm and the full mGEMS pipeline, designing the synthetic
+and the \textit{in vitro} benchmark experiments, running the analyses
+and creating the visualisations, interpreting the results and writing
+the article, and to reviewing and editing the article.
 
-The author...
+Software implementation of the ideas presented in Paper II is
+available from GitHub at
+\href{https://github.com/PROBIC/mGEMS}{PROBIC/mGEMS} (latest version).
+The latest version at the time of writing is archived and available in
+Zenodo \citep{maklin_mSWEEP}.
 
 \subsection*{Paper III \textemdash Strong pathogen competition in neonatal gut colonization}
 By \underline{Tommi Mäklin}, Harry Thorpe, Anna Pöntinen, Rebecca
 Gladstone, Alan McNally, Ørjan Samuelsen, Pål Johnsen, Trevor Lawley,
 Antti Honkela, and Jukka Corander. Awaiting peer-review; available
-from \textit{bioRxiv} (2022) (https://doi.org/10.1099/mgen.0.000691).
+from \textit{bioRxiv} (2022), doi: XXX.XX/XXX.XXX.XXX.
 
 Description...
 
 The author...
 
-\subsection*{mSWEEP}
-Software implementation of the ideas presented in \textbf{Paper
-  I}. Latest version available from
-\href{https://github.com/PROBIC/mSWEEP}{PROBIC/mSWEEP (GitHub)},
-latest version at time of writing (v1.5.2) available and archived in
-Zenodo \citep{maklin_mSWEEP}.
-
-\subsection*{mGEMS}
-Software implementation of the ideas presented in \textbf{Paper
-  II}. Latest version available from
-\href{https://github.com/PROBIC/mGEMS}{PROBIC/mGEMS (GitHub)},
-latest version at time of writing (v1.2.0) available and archived in
-Zenodo \citep{maklin_mGEMS}.
-
-
-\section{Thesis structure}
+\section{Structure}
 
 This is a sample sentence that should look like normal text, and this
 is another. This is a sample sentence that should look like normal
@@ -349,8 +372,8 @@ to identify contaminated cucumbers or track covid
 
 \printbibliography[heading=bibintoc]
 
-\chapter{Included papers}
-%\addcontentsline{toc}{chapter}{Included papers}
+\chapter*{Included papers\markboth{Included papers}{}}
+\addcontentsline{toc}{chapter}{Included papers}
 
 \subsection*{Paper I \textemdash High-resolution sweep metagenomics using fast probabilistic inference}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Sophia David, Christine J
