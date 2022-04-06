@@ -215,29 +215,117 @@ resource-constrained laboratories.
 
 \section{Three approaches to sequencing bacterial DNA}
 
+%- Something about sequeuncing reads and sequence assembly? 16S sequencing?
+
+Preparing bacterial DNA for sequeuncing is typically done after a
+culture step, where a sample is streaked across a culture plate or
+immersed in liquid and then inoculated for some amount of time to
+allow the bacteria to multiply and grow on the culture
+plate. Alternatively, in metagenomics sequencing the culture step is
+skipped and DNA is extracted directly from the sample along with the
+DNA from any other organisms that may be present. When it comes to the
+end-result, the sequencing reads, both approaches have their
+advantages and disadvantages, which are covered in more detail in this
+section.
+
+Metagenomics sequencing, where all DNA in a sample is extracted
+(Figure \ref{fig:microbiome-sampling-methods}a), has emerged as a tool
+to analyse the full breadth of the microbiome. Metagenomics
+conveniently avoids the biases introduced by approaches that include a
+culture step and has consequently revealed an enormous diversity of
+bacterial species that are not able to grow or compete on commonly
+used culture media. However, exploring this diversity comes at a price
+since the produced sequencing reads are split across the numerous
+bacteria present, resulting in a prohibitively high sequencing depth
+requirement for analysis of the less abundant taxa. This has rendered
+the metagenomic approach difficult to apply in for example clinical
+research, where the interesting bacteria (pathogens) are often only a
+small part of the microbiome but the typical analyses require large
+numbers of reads to produce accurate results.
+
+Incorporating a culture step on a medium that selects for the bacteria
+interest provides means to avoid wasting sequencing efforts on
+uninteresting taxa. This approach allows for generating large numbers
+of sequencing reads from the bacteria that grow to dominate the
+culture, which in turn enables detailed analyses such as SNP calling
+or identifying antimicrobial resistance genes. When the sequencing is
+performed on the plate created from the sample, including all
+bacterial species and strains that grow there, the approach is called
+plate sweep metagenomics (Figure
+\ref{fig:microbiome-sampling-methods}b). Although this approach has
+not been previously widely used in the literature due to difficulties
+in separating very closely related bacteria, it is a major application
+area for the methods presented in this thesis due to the inherent
+advantage of focusing sequencing resources on only the relevant
+bacteria.
+
+\noindent\let\thefootnote\relax\footnote{Figure source: Adapted from \cite{praveera_fenugreek-sprouts} and \cite{niaid_escherichia-coli}. Released under the \href{https://creativecommons.org/licenses/by-sa/4.0}{CC BY-SA 4.0 license}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \begin{figure}[!ht]
   \label{fig:microbiome-sampling-methods}
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{img/sampling/microbiome_sampling_methods.pdf}
     \caption{Different approaches to sequencing bacterial DNA. Panel \textbf{a)} depicts the metagenomic approach, where sequence data is collected directly from the environmental sample. Panel \textbf{b)} depicts the plate sweep metagenomic approach, where the environmental sample is plated on a selective medium and DNA is sequenced from the whole plate. Panel \textbf{c)} depicts the whole-genome sequencing approach, where a subset of visible colonies on the selective medium are picked, cultured again on their own plates, and then sequenced. The orange arrows depict steps that require laboratory work.}
-\end{figure} \let\thefootnote\relax\footnote{Figure source: Adapted from \cite{praveera_fenugreek-sprouts} and \cite{niaid_escherichia-coli}. Released under the \href{https://creativecommons.org/licenses/by-sa/4.0}{CC BY-SA 4.0 license}.}
-\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\end{figure}
 
-- Cover the three approaches to data collection presented in \ref{fig:microbiome-sampling-methods}.
+The third approach leverages a second culture step, where visible
+colonies are picked from the initial culture and transferred to their
+own culture plates. After letting the new plates inoculate, the
+resulting culture will (presumably) contain only clones of the
+bacteria that formed the colony that was picked. Since this approach
+gets rid of all of the variation in both the sample and the initial
+culture, resulting in massive numbers of sequencing reads from the
+same genome, it is accordingly called whole-genome sequencing (Figure
+\ref{fig:microbiome-sampling-methods}c). While this approach allows
+accurate recovery of the genome of a single bacterial strain, the
+number of colony picks that can be performed is often limited and some
+sort of heuristic is required to select which colonies to pick.
 
-- What are the strengths and weaknessess of each approach? Why do we want to favour approaches b) and a)?
-
-- Some coverage of previous literature regarding the approaches.
+In epidemiological analyses, the whole-genome sequencing approach has
+so-far dominated the field due to its ability to produce highly
+accurate data. However, transitioning sequencing efforts to either
+metagenomics or plate sweep metagenomics has obvious benefits in both
+upscaling the amount of samples that can be processed and in providing
+better representation for both species and strain-level diversity in
+the samples. Unfortunately the accuracy from existing tools has not
+been as good as required but with recent developments in sequence
+assembly and/or taxonomic binning \& profiling from metagenome-derived
+sequencing data, the new frontier may finally be opening for
+exploration.
 
 \section{Analysing metagenomic sequence data}
 
-- Cover previous work in metagenome data analysis: metagenome
-assemblers, metagenome binners, metaphlan, strainphlan, strainGE,
-etc. Also briefly touch 16S sequencing.
+Sequencing data from a metagenomic source presents several challenges
+to bioinformaticians. Firstly, the increased diversity of species
+requires much larger computational resources to analyse. Secondly, the
+possible pressence of strain-level variation vastly complicates
+analyses that rely on separating the reads to distinct taxonomic units
+since the differences between strains of a bacteria can be minimal to
+the level of being confused with sequencing error. Subsequently, most
+of the methods development has focused on operating at the
+species-level with the assumption that only one strain from each
+species is present at the same time. In this section I will briefly
+cover the previous approaches and introduce the principal differences
+between them and mSWEEP and mGEMS.
+
+- Metagenome assemblers
+
+- Taxonomic profilers
+
+- Taxonomic binners
+
+- Strainphlan and StrainGE
 
 - Introduce our approach and cover why it is different from the previous approaches (Gerry's paper is especially useful here).
 
 - Cover some applications and results from literature.
+
+\section{Genomic epidemiology as a tool for pathogen surveillance}
+- Briefly cover genomic epidemiology and why it is useful (covid, other examples)
+
+- Cover its usage in bacterial genomics
+
+- Cover why incorporating metagenomics can provide useful data for e.g. pathogen surveillance and vaccine development.
 
 \section{Contributions}
 
