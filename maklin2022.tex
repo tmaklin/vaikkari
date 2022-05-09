@@ -32,7 +32,7 @@
 
 \addbibresource{maklin2022.bib}
 
-\title{Probabilistic methods for \\ plate sweep metagenomics}
+\title{Probabilistic methods for \\ high-resolution metagenomics}
 \author{Tommi Mäklin}
 \authorcontact{tommi@maklin.fi\par
   https://maklin.fi/}
@@ -308,20 +308,84 @@ species is present at the same time. In this section I will briefly
 cover the previous approaches and introduce the principal differences
 between them and mSWEEP and mGEMS.
 
-- Metagenome assemblers
+Metagenome assemblers are one of the more used tools for analysing
+metagenomic sequencing data. These assemblers aim to produce
+assemblies directly from the sequencing reads, similarly to sequence
+assembly in isolate sequencing but taking into account the different
+taxons possibly present. Often, the assemblers work under the
+assumption that the taxons in the reads are distinct enough that their
+assembly graphs do not overlap. While this approach works fine when
+the data contains taxons that are separated by long evolutionary
+distances, it can fail in the presence of closely related strains of
+the same species or even species of the same genus. Nevertheless,
+metagenome assemblers have found a great deal of use in settings where
+the data is assumed to contain many organisms that are, presumably,
+unculturable or have not been encountered before.
 
-- Taxonomic profilers
+Taxonomic profilers and taxonomic binners approach the metagenomics
+problem from a slightly more detailed point of view. Taxonomic
+profilers attempt to assign (relative) abundances to some sets of
+reference data, or reference taxons, found in the reads, and taxonomic
+binners attempt to create read bins that correspond to some reference
+taxon. These two approaches often go hand-in-hand in that the
+taxonomic profiles can be extracted by counting the reads in each bin
+but some approaches still exist that attempt only the profiling
+task. Both profiling and binning methods can further be divided into
+those that leverage reference data and those that attempt
+reference-free estimation. While reference-free estimation can yield
+data from previously unknow species or strains, reference-based
+approaches typically obtain higher resolution. Leveraging reference
+data is one of the central aspects of the work in this thesis to
+perform both taxonomic profiling (mSWEEP) and taxonomic binning
+(mGEMS), and the benefits of a reference-based approach will be
+explored in more detail later on.
 
-- Taxonomic binners
+Yet another category of metagenomics data analysis can be found in
+approaches that do not attempt the previously mentioned tasks but
+rather compare different samples to each other. These approaches
+typically aim to infer similarity and, through that, transmission
+events or shared strains between some samples. While these can be
+extremely accurate especially in transmission analysis, these
+approaches often cannot distinguish between different strains in the
+sample and do not have the capability to perform analyses that require
+access to the genomes of the individual strains. However, they can
+provide information that would otherwise require analysing a large
+number of genomes (in the case of perfect information i. e. a perfect
+taxonomic binner) and have found much use in that regard.
 
-- Strainphlan and StrainGE
+\textbf{- Cover some applications and results from literature.}
 
-- Introduce our approach and cover why it is different from the previous approaches (Gerry's paper is especially useful here).
+\textbf{- Need a picture of the different approaches.}
 
-- Cover some applications and results from literature.
+In the class of metagenomics analyses, the approach presented in this
+thesis falls broadly in reference-baesd taxonomic profiler and
+taxonomic binner category. However, our approach differs from previous
+research in that rather than trying to assign relative abundances to a
+set of reference sequences, we attempt to assign abundances to a
+reference \textit{lineage} - i. e. some group of reference sequences
+that is somehow related to each other. This approach has the benefit
+of covering the possible variation in a reference lineage, which
+typically present problems for reference-based metagenomics
+tools. Additionally, our tool works with bespoke sets of reference
+sequences, which means that it can be applied to explore the diversity
+of a specific species in great detail while excluding the
+uninteresting species. While this discards some data that might be
+useful, the approach greatly simplifies the modelling task, allowing
+for a much higher accuracy in the exploration of within-species
+variation.
 
 \section{Genomic epidemiology as a tool for pathogen surveillance}
-- Briefly cover genomic epidemiology and why it is useful (covid, other examples)
+The other significant aspect of this thesis has to do with tracing the
+spread of pathogens using sequence data, called genomic
+epidemiology. In recent years, the use of genome-informed analyses has
+greatly expanded the capability of researchers to track and trace
+pathogens and identify genetic elements relevant for e. g. antibiotics
+resistance and pathogenesis. This analysis has typically been
+performed using isolate sequencing data, which provides great detail
+into a single bacterial genome but has some downsides covered in the
+previous sections. One important goal of the thesis work has been to
+provide tools that extend the analysis capabilities to metagenomic
+data from either plate sweeps or whole-genome shotgun sequencing.
 
 - Cover its usage in bacterial genomics
 
@@ -382,26 +446,52 @@ Gladstone, Alan McNally, Ørjan Samuelsen, Pål Johnsen, Trevor Lawley,
 Antti Honkela, and Jukka Corander. Awaiting peer-review; available
 from \textit{bioRxiv} (2022), doi: XXX.XX/XXX.XXX.XXX.
 
-Description...
-
-The author...
+The third paper provides an example of applying mSWEEP and mGEMS to
+whole-genome shotgun metagenomics sequencing data and explores the
+dynamics of pathogen competition and colonization in the gut
+microbiome of babies in their first three weeks of life. My
+contributions to this paper include running the mSWEEP/mGEMS pipeline
+on all data used in the paper, updating the reference databases for
+the investigated species, performing the analysis of the mSWEEP/mGEMS
+results for the samples containing \textit{E. coli}, and aiding the
+coauthors in analysing the other species. I additionally contributed
+to creating the visualisations, interpreting the results, and
+naturally to writing the article.
 
 \section{Structure}
 
-This is a sample sentence that should look like normal text, and this
-is another. This is a sample sentence that should look like normal
-text, and this is another. This is a sample sentence that should look
-like normal text, and this is another. This is a sample sentence that
-should look like normal text, and this is another. This is a sample
-sentence that should look like normal text, and this is another. 
+The rest of the thesis is structured into three chapters that describe
+how the included papers contribute to the topics presented in the
+introduction chapter. The first of the three chapters describes the
+basic ideas behind the mSWEEP and mGEMS methods and provides
+historical context for the parts of the methods that have their
+origins within analysis of RNA sequencing data. The second chapter
+describes the experimental results from the three papers in more
+detail, focusing more on the applied part rather than the theoretical
+foundations. The third chapter is more speculative in nature, covering
+both the demonstrated epidemiological applications from the papers as
+well as exploring potential future avenues for use of the developed
+methods. The thesis concludes with a reprinting of the three included
+articles.
 
 \chapter{Mixture modeling of sequence data}
+
+- write about Reference data vs Reference-free approach
+
+- Write about individual sequence vs cluster based approach.
+-- what is a strain? ie how to distinguish between them if we have no reference data
 
 Something about bacterial pathogens are hard to classify taxonomically
 and have weird genomes with weird plasmids and stuff.  Lineages are
 much much nicer to work with
 
 - Add results from Gibbs sampler vs variational inference experiments.
+
+- Diagram and equations of/from the model.
+
+- Historical context from RNA sequencing.
+
+- Flowchart describing the analysis pipeline.
 
 This is a sample sentence that should look like normal text, and this
 is another. This is a sample sentence that should look like normal
@@ -456,7 +546,16 @@ an example on how figures in the eps format can be included into the text.
 \chapter{Metagenomic epidemiology}
 
 Something about wgs and genomic epidemiology can do lots of cool stuff
-to identify contaminated cucumbers or track covid
+to identify contaminated cucumbers or track covid.
+
+Describe the experimental results from the first two papers.
+
+Describe the experimental results from the third paper.
+
+How do these show that what our methods are capable of and what they
+could potentially be applied to in the future.
+
+More speculative chapter.
 
 \printbibliography[heading=bibintoc]
 
