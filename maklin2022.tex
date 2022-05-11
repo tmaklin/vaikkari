@@ -295,6 +295,8 @@ exploration.
 
 \section{Analysing metagenomic sequence data}
 
+\textbf{- Need a picture of the different approaches.}
+
 Sequencing data from a metagenomic source presents several challenges
 to bioinformaticians. Firstly, the increased diversity of species
 requires much larger computational resources to analyse. Secondly, the
@@ -330,15 +332,7 @@ binners attempt to create read bins that correspond to some reference
 taxon. These two approaches often go hand-in-hand in that the
 taxonomic profiles can be extracted by counting the reads in each bin
 but some approaches still exist that attempt only the profiling
-task. Both profiling and binning methods can further be divided into
-those that leverage reference data and those that attempt
-reference-free estimation. While reference-free estimation can yield
-data from previously unknow species or strains, reference-based
-approaches typically obtain higher resolution. Leveraging reference
-data is one of the central aspects of the work in this thesis to
-perform both taxonomic profiling (mSWEEP) and taxonomic binning
-(mGEMS), and the benefits of a reference-based approach will be
-explored in more detail later on.
+task.
 
 Yet another category of metagenomics data analysis can be found in
 approaches that do not attempt the previously mentioned tasks but
@@ -353,9 +347,29 @@ provide information that would otherwise require analysing a large
 number of genomes (in the case of perfect information i. e. a perfect
 taxonomic binner) and have found much use in that regard.
 
-\textbf{- Cover some applications and results from literature.}
+Both profiling and binning methods can further be divided into
+those that leverage reference data and those that attempt
+reference-free estimation. While reference-free estimation can yield
+data from previously unknow species or strains, reference-based
+approaches typically obtain higher resolution. Leveraging reference
+data is one of the central aspects of the work in this thesis to
+perform both taxonomic profiling (mSWEEP) and taxonomic binning
+(mGEMS), and the benefits of a reference-based approach will be
+explored in more detail later on.
 
-\textbf{- Need a picture of the different approaches.}
+These metagenomics approaches have found widespread aplications in
+analysing sequencing data from highly complex environments - such as
+soil samples. Especially the reference-free approaches have proved
+highly useful in cases where the contents of a sample bear little
+similarity to previously sequenced samples. However, these scenarios
+are becoming increasingly scarce with more widespread availability of
+sequence data and new culture methods developed for species previously
+thought unculturable. Especialy in clinical settings, where the
+bacterial diversity is rather well known and has been studied for many
+years, it is uncommon to come across an entirely new (pathogenic)
+species. In these cases, adding information in the form of reference
+sequences typically results in much higher ceiling for the possible
+resolution.
 
 In the class of metagenomics analyses, the approach presented in this
 thesis falls broadly in reference-baesd taxonomic profiler and
@@ -375,6 +389,9 @@ for a much higher accuracy in the exploration of within-species
 variation.
 
 \section{Genomic epidemiology as a tool for pathogen surveillance}
+
+\textbf{Figure about genomic epidemiology analyses}
+
 The other significant aspect of this thesis has to do with tracing the
 spread of pathogens using sequence data, called genomic
 epidemiology. In recent years, the use of genome-informed analyses has
@@ -387,9 +404,55 @@ previous sections. One important goal of the thesis work has been to
 provide tools that extend the analysis capabilities to metagenomic
 data from either plate sweeps or whole-genome shotgun sequencing.
 
-- Cover its usage in bacterial genomics
+Combining the genomic sequences of pathogens with data about the time,
+location, and other clinically relevant features provides clinical
+practitioners, policy makers, and researchers with a much wider
+perspective into transmission and evolutionary analysis than using
+either of the information alone. This has enabled several significant
+advantages in e.g. analysis of the transmission of plasmids and
+targeting vaccine design, as well as in providing novel insights into
+several causative agents of disease that could not be identified
+without including genome information. With the price of sequencing
+constantly decreasing, genomics-driven analysis has high potential to
+further revolutionize the way we think about disease.
 
-- Cover why incorporating metagenomics can provide useful data for e.g. pathogen surveillance and vaccine development.
+Incorporating metagenomics data into genomic epidemiological analyses
+presents the next obvious frontier. Since the microbiome is in
+practice nearly universally composed of several interacting
+micro-organisms, there is a high possibility that excluding some parts
+may miss otherwise relevant information. For example, in a recent
+study (Gerry's), the pathogen \textit{S. pneumonimae} was found to
+often co-colonize patients with a dominant strain and a nondominant
+strain. In the developed world, vaccine development has targeted the
+dominant strain but entirely ignored the nondominant strain, which has
+not been identified with previous methods. The nondominant strain
+does, however, have the capability to cause the same disease and is,
+in fact, the leading cause in the developing world. The results from
+this study highlight that by focusing only on the non-metagenomic
+contents of the microbiome, potentially significant information is
+missed.
+
+Another aspect in favour of using a more metagenomics-oriented
+approach arises from simple practicality: sequencing several taxons at
+once is simply more cost-effective than performing many isolations, as
+covered in the previous sections. Using a metagenomics-oriented
+approach makes the analyses much more widely available in the form of
+significant cost reductions. This means that analyses which would not
+be possible to perform in locations lacking funding and resources
+might find a way through the use of metagenomic sequencing. Currently
+especially data from lower-middle income countries is scarce due to
+the limited sequencing capability which metagenomics has the potential
+address. Furthermore, performing metagenomics sequencing alongside the
+traditional sequencing types has the potential to preserve data from
+the samples for future analyses, should methods capable for more
+detailed exploration become available.
+
+In conclusion, the already relatively recent field of genomic
+epidemiology can be seen as underogoing a transform into becoming
+widespread public practice. With the development of methods - such as
+the ones presented in this thesis - capable of lowering the costs and
+increasing the resolution, the field will likely produce significant
+discoveries through the inclusion of metagenomics data.
 
 \section{Contributions}
 
@@ -476,6 +539,8 @@ articles.
 
 \chapter{Mixture modeling of sequence data}
 
+\section{Characteristics of sequence data from bacteria}
+
 - write about Reference data vs Reference-free approach
 
 - Write about individual sequence vs cluster based approach.
@@ -485,13 +550,21 @@ Something about bacterial pathogens are hard to classify taxonomically
 and have weird genomes with weird plasmids and stuff.  Lineages are
 much much nicer to work with
 
-- Add results from Gibbs sampler vs variational inference experiments.
+\section{Sequence alignment}
 
-- Diagram and equations of/from the model.
+- Significance of alignment in the analyses (themisto vs traditional alignmnt? Could make a small example here)
+
+- Significance of reference databases.
+
+- Building bespoke databases vs. using refseq or something else.
+
+\section{A probabilistic model for sequences from mixed sources}
+
+- Diagram and equations of/from the mSWEEP model.
 
 - Historical context from RNA sequencing.
 
-- Flowchart describing the analysis pipeline.
+- Add results from Gibbs sampler vs variational inference experiments.
 
 This is a sample sentence that should look like normal text, and this
 is another. This is a sample sentence that should look like normal
@@ -523,25 +596,38 @@ and this is another:
 This is a sample sentence.
 \end{proof}
 
+\section{From profiling to binning}
+
+- How binning differs from profiling
+
+- mGEMS algorithm and its interpretations
+
+- Benefits of producing bins vs straight analysis of the sequence data
+
+- Lineages vs taxons.
+
+\section{The mSWEEP/mGEMS pipeline}
+
+- Flowchart describing the analysis pipeline.
+
+- Overview of the whole stuff and conclusion.
+
 \chapter{High-resolution metagenomics}
 
-cite \citet{tonkin-hill_pneumococcal_2022} for rigorous proof that
-mSWEEP/mGEMS can recover cocolonization by several strains that is
-overlooked by isolate sequeuncing.
+More on mSWEEP/mGEMS \& how these tools enable new directions in research.
 
-Define plate sweeps
-
-Pretty picture of how to use them
+Refresher on plate sweeps and wgs metagenomics.
 
 Something about metagenomics is nice in that we dont just sequence one
 nice things but many nice things
 
-Introducing mSWEEP/mGEMS \& how these tools enable new directions in research.
+Describe the benchmarking from the first two papers i e convince readers that the methods work nicely.
 
-Figure~\ref{fig:examplefigure} shows an example on how figures in the 
-eps format can be included into the text. It gives an example on how 
-figures in the eps format can be included into the text. It gives 
-an example on how figures in the eps format can be included into the text.
+Could do some new kinds of benchmarks with the mGEMS paper synthetic data set.
+
+cite \citet{tonkin-hill_pneumococcal_2022} for rigorous proof that
+mSWEEP/mGEMS can recover cocolonization by several strains that is
+overlooked by isolate sequeuncing.
 
 \chapter{Metagenomic epidemiology}
 
