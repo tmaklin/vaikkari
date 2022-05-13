@@ -21,6 +21,14 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 
+% Lemma environment
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+
+% Independence symbol
+\newcommand\indept{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
 % For thesis papers section
 \usepackage{geometry}
 \def \dvWHITE{white}
@@ -570,45 +578,50 @@ much much nicer to work with
   R &: \text{Reads } r_{1}, \dots, r_{N}, N > 1, \\
   I &: \text{Latent indicator variables } I_{1}, \dots, I_{K}, K > 1, \\
   \boldsymbol\theta &: \text{Mixing proportions } \boldsymbol\theta = \left( \theta_{1}, \dots, \theta_{K} \right).
-\end{align}
+\end{align*}
 
+Assuming that the reads $r_{n}$ are independent of each other, $r_{j} \indept r_{i}$ for all $i \neq j, 0 < i < N, 0 < j < N$, the model factorizes into
 \begin{equation}
   p\left(R, I, \theta\right) = p\left(\theta\right) \prod_{n = 1}^{N} \prod_{k = 1}^{K} p\left(r_{n} \middle| I_{n} = k\right) p\left(I_{n} = k \middle| \theta\right)
 \end{equation}
 
 \subsection{Likelihood}
 
+Although the likelihood in ref (likelihood) closely resembles the
+probability mass function of a Beta-Binomial distribution, the
+likelihood itself does not sum up to 1. However, we can derive a
+normalizing constant $Z\left(r_{n}\right)$ that turns the likelihood
+into a proper probability mass function. To derive
+$Z\left(r_{n}\right)$, we need the following identity for the beta
+function
+\begin{lemma}
+  \label{lemma:beta-function-identity}
+  \[
+  B\left(a + 1, b\right) = \frac{a}{a + b}B\left(a, b\right).
+  \]
+\end{lemma}
 
-\subsection{Inference}
+\begin{proof}
+  Follows from $\Gamma\left(z + 1\right) = z\Gamma\left(z\right), \text{ for all } z > 0$ \citep{davis_leonhard} and $B\left(a, b\right) = \frac{\Gamma\left(a\right)\Gamma\left(b\right)}{\Gamma\left(a + b\right)}$ \citep{artin_einfuhrung} through
+  \begin{align*}
+    B\left(a + 1, b\right) &= \frac{\Gamma\left(a + 1\right)\Gamma\left(b\right)}{\Gamma\left(a + b + 1\right)} \\
+    &= \frac{a\Gamma\left(a\right)\Gamma\left(b\right)}{\left(a + b\right)\Gamma\left(a + b\right)} \\
+    &= \frac{a}{a + b}B\left(a, b\right).
+  \end{align*}
+\end{proof}
 
-
-other stuff plan:
-
-- Diagram and equations of/from the mSWEEP model.
-
-- Historical context from RNA sequencing.
-
-- Add results from Gibbs sampler vs variational inference experiments.
-
-This is a sample sentence that should look like normal text, and this
-is another. This is a sample sentence that should look like normal
-text, and this is another:
-\[ S = \sum_{i=0}^{\infty} a^2 \]
-This is a sample sentence that should look like normal text, and this
-is another.\footnote{A sample footnote.}
-
+Using Lemma \ref{lemma:beta-function-identity}, we can find a closed form for the normalizing constant $Z\left(k\right)$
 \begin{theorem}
   \label{theorem:likelihood-can-be-normalized}
-  Let
+  \text{Let}
   \[
   f\left(r_{n, k}, M_{k}\right) = \binom{M_{k}}{r_{n, k}}\frac{B\left(\alpha_{k} + r_{n, k}, M_{k} - r_{n, k} + \beta_{k}\right)}{B\left(\alpha_{k} + M_{k}, \beta_{k}\right)},
   \]
-  and
+  \text{and}
   \[
   Z\left(r_{n}\right) = \prod_{k = 1}^{K} \prod_{j = 1}^{n_{k}}\frac{\alpha_{k} + n_{k} + k - j}{\alpha_{k} + \beta_{k} + 2n_{k} - j}
-  %%  Z\left(r_{n}\right) = \prod_{k = 1}^{K} \frac{\Gamma\left(\alpha_{k} + r_{n, k} + M_{k}\right) \Gamma\left(\alpha_{k} + \beta_{k} + 2M_{k}\right)}{\Gamma\left(\alpha_{k} + r_{n, k}\right) \Gamma\left(\alpha_{k} + \beta_{k} + 3M_{k}\right)}.
   \]
-  Then
+  \text{Then}
   \[
   \sum_{k = 1}^{K} \frac{f\left(r_{n, k}, k\right)}{Z\left(r_{n}\right)} = 1.
   \]
@@ -619,23 +632,23 @@ is another.\footnote{A sample footnote.}
   \[
   g\left(k \: \middle| \: n, \alpha + n, \beta\right) = \binom{n}{k} \frac{B\left(\alpha + n + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)},\: 0 \leq k \leq n.
   \]
-  Using the identity $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ we can derive an alternative form for $g$:
+  Using the identity $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ (Lemma \ref{lemma:beta-function-identity}) we can derive an alternative form for $g$:
 \begin{align*}
   g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + n + k - 1 + n - k + \beta} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \frac{\alpha + n + k - 2}{\alpha + \beta + 2n - 2} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{2} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
-\intertext{Repeating this process $n$ times yields}
+\intertext{Repeadetly applying Lemma \ref{lemma:beta-function-identity} $n$ times yields}
   g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k - n , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
   &= \binom{n}{k} \frac{B\left(\alpha + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
   &= f\left(k, n\right) \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
-\end{align}
+\end{align*}
 Since $g\left(k\right)$ is a probability mass function, this implies that
 \[
 f\left(k, n\right)\left(\prod_{j = 1}^{n}\frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}\right)^{-1}
 \]
-is also a probability mass function. Furthermore, since the products of (independent) probability mass functions are probability mass functions,
+is also a probability mass function. Furthermore, since the products of (independent) probability mass functions are probability mass functions, then
 \[
 \prod_{k = 1}^{K}f\left(k, n_{k}\right)\left(\prod_{j = 1}^{n}\frac{\alpha + n_{k} + k - j}{\alpha + \beta + 2n_{k} - j}\right)^{-1}
 \]
@@ -646,14 +659,15 @@ Z\left(r_{n}\right) = \prod_{k = 1}^{K} \prod_{j = 1}^{n_{k}}\frac{\alpha_{k} + 
 is sufficient to normalize $f\left(r_{n, k}, n_{k}\right)$ and prove Theorem \ref{theorem:likelihood-can-be-normalized}.
 \end{proof}
 
-\begin{theorem}
-  \[
-  Z\left(r_{n}\right) = \prod_{k = 1}^{K} \frac{\Gamma\left(\alpha_{k} + r_{n, k} + M_{k}\right)\Gamma\left(\alpha_{k} + \beta_{k} + 2M_{k}\right)}{\Gamma\left(\alpha_{k} + r_{n, k}\right)\Gamma\left(\alpha_{k} + \beta_{k} + 3M_{k}\right)}.
-  \]
-\end{theorem}
-\begin{proof}
-  TODO Follows from $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ and $B\left(a, b\right) = \frac{\Gamma\left(a\right)\Gamma\left(b\right)}{\Gamma\left(a + b\right)}$.
-\end{proof}
+\subsection{Inference}
+
+other stuff plan:
+
+- Diagram and equations of/from the mSWEEP model.
+
+- Historical context from RNA sequencing.
+
+- Add results from Gibbs sampler vs variational inference experiments.
 
 \section{From profiling to binning}
 
