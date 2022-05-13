@@ -17,6 +17,10 @@
 \usepackage{pdfpages}
 \usepackage[hidelinks]{hyperref}
 
+% Math environments and symbols
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
 % For thesis papers section
 \usepackage{geometry}
 \def \dvWHITE{white}
@@ -539,9 +543,9 @@ articles.
 
 \chapter{Mixture modeling of sequence data}
 
-\section{Characteristics of sequence data from bacteria}
+- write about Reference data vs Reference-free approach <- might go to intro?
 
-- write about Reference data vs Reference-free approach
+\section{Characteristics of sequence data from bacteria}
 
 - Write about individual sequence vs cluster based approach.
 -- what is a strain? ie how to distinguish between them if we have no reference data
@@ -552,13 +556,33 @@ much much nicer to work with
 
 \section{Sequence alignment}
 
-- Significance of alignment in the analyses (themisto vs traditional alignmnt? Could make a small example here)
+- Significance of alignment in the analyses (themisto vs traditional alignmnt? Could make a small example here in the high-resolution metagenomics section
 
 - Significance of reference databases.
 
 - Building bespoke databases vs. using refseq or something else.
 
 \section{A probabilistic model for sequences from mixed sources}
+
+\subsection{Model formulation}
+
+\begin{align*}
+  R &: \text{Reads } r_{1}, \dots, r_{N}, N > 1, \\
+  I &: \text{Latent indicator variables } I_{1}, \dots, I_{K}, K > 1, \\
+  \boldsymbol\theta &: \text{Mixing proportions } \boldsymbol\theta = \left( \theta_{1}, \dots, \theta_{K} \right).
+\end{align}
+
+\begin{equation}
+  p\left(R, I, \theta\right) = p\left(\theta\right) \prod_{n = 1}^{N} \prod_{k = 1}^{K} p\left(r_{n} \middle| I_{n} = k\right) p\left(I_{n} = k \middle| \theta\right)
+\end{equation}
+
+\subsection{Likelihood}
+
+
+\subsection{Inference}
+
+
+other stuff plan:
 
 - Diagram and equations of/from the mSWEEP model.
 
@@ -574,26 +598,61 @@ This is a sample sentence that should look like normal text, and this
 is another.\footnote{A sample footnote.}
 
 \begin{theorem}
-This is a sample sentence ($x=x+2$) that should look like normal text,
-and this is another. This is a sample sentence that should look like
-normal text, and this is another. This $x$ is a sample sentence $y$
-that should look like normal text 32, and this is another.
+  \label{theorem:likelihood-can-be-normalized}
+  Let
+  \[
+  f\left(r_{n, k}, M_{k}\right) = \binom{M_{k}}{r_{n, k}}\frac{B\left(\alpha_{k} + r_{n, k}, M_{k} - r_{n, k} + \beta_{k}\right)}{B\left(\alpha_{k} + M_{k}, \beta_{k}\right)},
+  \]
+  and
+  \[
+  Z\left(r_{n}\right) = \prod_{k = 1}^{K} \prod_{j = 1}^{n_{k}}\frac{\alpha_{k} + n_{k} + k - j}{\alpha_{k} + \beta_{k} + 2n_{k} - j}
+  %%  Z\left(r_{n}\right) = \prod_{k = 1}^{K} \frac{\Gamma\left(\alpha_{k} + r_{n, k} + M_{k}\right) \Gamma\left(\alpha_{k} + \beta_{k} + 2M_{k}\right)}{\Gamma\left(\alpha_{k} + r_{n, k}\right) \Gamma\left(\alpha_{k} + \beta_{k} + 3M_{k}\right)}.
+  \]
+  Then
+  \[
+  \sum_{k = 1}^{K} \frac{f\left(r_{n, k}, k\right)}{Z\left(r_{n}\right)} = 1.
+  \]
 \end{theorem}
 
 \begin{proof}
-This is a sample sentence that should look like normal text, and this
-is another. This is a sample sentence that should look like normal
-text, and this is another.
+  Consider a Beta-Binomial distribution with the parameters $\left(n, \alpha + n, \beta\right), n \in \mathbb{N}_{0}, \alpha > 0, \beta > 0$. This distribution has the probability mass function $g : 0, \dots, n \rightarrow \left[0, 1\right]$, where
+  \[
+  g\left(k \: \middle| \: n, \alpha + n, \beta\right) = \binom{n}{k} \frac{B\left(\alpha + n + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)},\: 0 \leq k \leq n.
+  \]
+  Using the identity $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ we can derive an alternative form for $g$:
+\begin{align*}
+  g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \\
+  &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + n + k - 1 + n - k + \beta} \\
+  &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \\
+  &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \frac{\alpha + n + k - 2}{\alpha + \beta + 2n - 2} \\
+  &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{2} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
+\intertext{Repeating this process $n$ times yields}
+  g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k - n , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
+  &= \binom{n}{k} \frac{B\left(\alpha + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
+  &= f\left(k, n\right) \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
+\end{align}
+Since $g\left(k\right)$ is a probability mass function, this implies that
+\[
+f\left(k, n\right)\left(\prod_{j = 1}^{n}\frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}\right)^{-1}
+\]
+is also a probability mass function. Furthermore, since the products of (independent) probability mass functions are probability mass functions,
+\[
+\prod_{k = 1}^{K}f\left(k, n_{k}\right)\left(\prod_{j = 1}^{n}\frac{\alpha + n_{k} + k - j}{\alpha + \beta + 2n_{k} - j}\right)^{-1}
+\]
+is also a probability mass function. Thus, since we assumed that the reads $r_{n}$ are independent of each other, setting
+\[
+Z\left(r_{n}\right) = \prod_{k = 1}^{K} \prod_{j = 1}^{n_{k}}\frac{\alpha_{k} + n_{k} + k - j}{\alpha_{k} + \beta_{k} + 2n_{k} - j}
+\]
+is sufficient to normalize $f\left(r_{n, k}, n_{k}\right)$ and prove Theorem \ref{theorem:likelihood-can-be-normalized}.
 \end{proof}
 
 \begin{theorem}
-This is a sample sentence that should look like normal text,
-and this is another:
-\[ y = x+3 \]
+  \[
+  Z\left(r_{n}\right) = \prod_{k = 1}^{K} \frac{\Gamma\left(\alpha_{k} + r_{n, k} + M_{k}\right)\Gamma\left(\alpha_{k} + \beta_{k} + 2M_{k}\right)}{\Gamma\left(\alpha_{k} + r_{n, k}\right)\Gamma\left(\alpha_{k} + \beta_{k} + 3M_{k}\right)}.
+  \]
 \end{theorem}
-
 \begin{proof}
-This is a sample sentence.
+  TODO Follows from $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ and $B\left(a, b\right) = \frac{\Gamma\left(a\right)\Gamma\left(b\right)}{\Gamma\left(a + b\right)}$.
 \end{proof}
 
 \section{From profiling to binning}
@@ -628,6 +687,16 @@ Could do some new kinds of benchmarks with the mGEMS paper synthetic data set.
 cite \citet{tonkin-hill_pneumococcal_2022} for rigorous proof that
 mSWEEP/mGEMS can recover cocolonization by several strains that is
 overlooked by isolate sequeuncing.
+
+\section{Assessing reliability of results}
+
+- Cover detection thresholds
+- Cover Harry's pipeline
+- Cover other means used in the manuscript (fitering by ``pseudocoverage (abundance * number of reads)''), setting minimum thresholds, etc.
+
+\section{Assessing model assumptions}
+- Zero inflation vs no inflation; degree of inflation
+
 
 \chapter{Metagenomic epidemiology}
 
