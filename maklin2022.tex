@@ -574,15 +574,30 @@ much much nicer to work with
 
 \subsection{Model formulation}
 
-\begin{align*}
-  R &: \text{Reads } r_{1}, \dots, r_{N}, N > 1, \\
-  I &: \text{Latent indicator variables } I_{1}, \dots, I_{K}, K > 1, \\
-  \boldsymbol\theta &: \text{Mixing proportions } \boldsymbol\theta = \left( \theta_{1}, \dots, \theta_{K} \right).
-\end{align*}
-
-Assuming that the reads $r_{n}$ are independent of each other, $r_{j} \indept r_{i}$ for all $i \neq j, 0 < i < N, 0 < j < N$, the model factorizes into
+Assume that we have some set of sequencing reads $R = \left\{r_{1},
+\dots, r_{N}\right\}, N \in \mathbb{N}_{+}$ that are independent of
+each other and identically distributed. We can write down a generative
+mixture model for these reads by defining latent indicator variables
+$I = \left\{I_{1}, \dots, I_{N}\right\}$ that follow some mixing
+proportions $\boldsymbol{\theta} = \left(\theta_{1}, \dots,
+\theta_{K}\right), K \in \mathbb{N}_{+}, \sum_{k = 1}^{K} \theta_{k} =
+1$. Since we assumed independence between the reads $R$, $r_{j}
+\indept r_{i}$ for all $i \neq j, 1 \leq i \leq N, 1 \leq j \leq N$, the joint
+distribution for this generative model is
 \begin{equation}
-  p\left(R, I, \theta\right) = p\left(\theta\right) \prod_{n = 1}^{N} \prod_{k = 1}^{K} p\left(r_{n} \middle| I_{n} = k\right) p\left(I_{n} = k \middle| \theta\right)
+  \label{model:joint-distribution}
+  p\left(R, I, \boldsymbol\theta\right) = \prod_{n = 1}^{N}p\left(r_{n} \middle| I_{n}\right) p\left(I_{n} \middle| \boldsymbol\theta\right)p\left(\boldsymbol\theta\right).
+\end{equation}
+
+Now, assume that from each read $r_{n}, 1 \leq n \leq N$ we observe a
+vector of pseudoalignment counts $r_{n, k} = \left(r_{n, 1}, \dots,
+r_{n, K}\right), 0 \leq r_{n, k} \leq M_{k} $ against at most $M_{k}$
+sequences in cluster $k$. If we assume independence between the
+pseudoalignment counts $r_{n, k}$, the joint distribution from
+Equation \ref{model:joint-distribution} factorizes into
+\begin{equation}
+  \label{model:joint-distribution}
+  p\left(R, I, \boldsymbol\theta\right) = p\left(\boldsymbol\theta\right)\prod_{n = 1}^{N} \prod_{k = 1}^{K} p\left(r_{n, k} \middle| I_{n} = k\right) p\left(I_{n} = k \middle| \boldsymbol\theta\right).
 \end{equation}
 
 \subsection{Likelihood}
@@ -602,7 +617,7 @@ function
 \end{lemma}
 
 \begin{proof}
-  Follows from $\Gamma\left(z + 1\right) = z\Gamma\left(z\right), \text{ for all } z > 0$ \citep{davis_leonhard} and $B\left(a, b\right) = \frac{\Gamma\left(a\right)\Gamma\left(b\right)}{\Gamma\left(a + b\right)}$ \citep{artin_einfuhrung} through
+  Follows from $\Gamma\left(z + 1\right) = z\Gamma\left(z\right), \text{ for all } z > 0$ \citep{davis_leonhard} and $B\left(a, b\right) = \frac{\Gamma\left(a\right)\Gamma\left(b\right)}{\Gamma\left(a + b\right)}$ \citep{artin_einfuhrung} since
   \begin{align*}
     B\left(a + 1, b\right) &= \frac{\Gamma\left(a + 1\right)\Gamma\left(b\right)}{\Gamma\left(a + b + 1\right)} \\
     &= \frac{a\Gamma\left(a\right)\Gamma\left(b\right)}{\left(a + b\right)\Gamma\left(a + b\right)} \\
@@ -613,17 +628,17 @@ function
 Using Lemma \ref{lemma:beta-function-identity}, we can find a closed form for the normalizing constant $Z\left(k\right)$
 \begin{theorem}
   \label{theorem:likelihood-can-be-normalized}
-  \text{Let}
+  Let
   \[
-  f\left(r_{n, k}, M_{k}\right) = \binom{M_{k}}{r_{n, k}}\frac{B\left(\alpha_{k} + r_{n, k}, M_{k} - r_{n, k} + \beta_{k}\right)}{B\left(\alpha_{k} + M_{k}, \beta_{k}\right)},
+  f\left(k, n_{k}\right) = \binom{n_{k}}{k}\frac{B\left(\alpha + k, n_{k} - k + \beta\right)}{B\left(\alpha + n_{k}, \: \beta\right)}, 0 < k < n_{k}, \: \alpha > 0, \: \beta > 0,
   \]
-  \text{and}
+  and
   \[
-  Z\left(r_{n}\right) = \prod_{k = 1}^{K} \prod_{j = 1}^{n_{k}}\frac{\alpha_{k} + n_{k} + k - j}{\alpha_{k} + \beta_{k} + 2n_{k} - j}
+  Z\left(r_{n}\right) = \prod_{k = 1}^{K}Z\left(n_{k}\right) = \prod_{k = 1}^{K}\prod_{j = 1}^{n_{k}}\frac{\alpha_{k} + n_{k} + k - j}{\alpha_{k} + \beta_{k} + 2n_{k} - j},
   \]
-  \text{Then}
+  then TODO check after formulating the likelihood somewhere properly
   \[
-  \sum_{k = 1}^{K} \frac{f\left(r_{n, k}, k\right)}{Z\left(r_{n}\right)} = 1.
+  \sum_{k = 1}^{K} \frac{f\left(k, n_{k}\right)}{\prod_{k = 1}^{K}Z\left(n_{k}\right)} = 1.
   \]
 \end{theorem}
 
