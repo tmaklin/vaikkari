@@ -572,6 +572,7 @@ much much nicer to work with
 - Building bespoke databases vs. using refseq or something else.
 
 \section{A probabilistic model for sequences from mixed sources}
+\label{section:model}
 
 - Historical context from RNA sequencing.
 
@@ -989,29 +990,183 @@ MCMC does however have the advantage that, provided sufficient
 runtime, the samples will be from the true posterior. When comparing
 MCMC to VI in practice, the former has been reported to better capture
 correlations between the sampled parameters (TODO cite Antti's bitseq
-paper). Becaues of this, we compared the VI from mSWEEP to a version
+paper). Because of this, we compared the VI from mSWEEP to a version
 of mWEEP compatible with the MCMC sampling from BitSeq (TODO cite
 BitSeq) but found no significant differences between the two (TODO figure).
 
 - Add results from Gibbs sampler vs variational inference experiments.
 
 \section{From profiling to binning}
+\label{section:binning}
 
-- How binning differs from profiling
+This sections covers using the model from mSWEEP to provide an
+algorithm for binning sequencing reads. Binning differs from the
+abundance estimation, or taxonomic profiling, in that the goal is to
+produce some assignment of the reads to reference units. In typical
+cases, bins correspond to some individual species or genuses, but in
+this thesis binning will be performed on the level of the clusters
+that mSWEEP uses for reporting the relative abundances. Compared to
+merely doing taxonomic profiling, binning provides a much higher level
+of detail about the contents of a sample, since many read-based
+downstream analyses may be performed once the bins have been
+constructed. Contrary to the section presenting the probabilistic
+model, the binning algorithm is quite straightforward.
 
-- mGEMS algorithm and its interpretations
+The work in this section is based on the results from the second paper
+included in the dissertation \citep{maklin_bacterial_2021}.
 
-- Benefits of producing bins vs straight analysis of the sequence data
+\subsection{The mGEMS binning algorithm}
 
-- Lineages vs taxons.
+A crucial feature for the binning algorithm to handle lineage-level
+differences between bacteria is the possibility for a single read to
+belong to multiple bins at the same time. This differs from most of
+the work on binning, where the reads are typically only assigned to a
+single bin and the variation between the bins is assumed large enough
+that this approach is correct. For strain-level-binning to work, this
+assumption is obviously not correct, since the differences between the
+genomes can be minimal. Thus, the binning algorithm must be derived
+with this feature in mind.
+
+The mGEMS binning algorithm is derived by leveraging the read-level
+assignment probabilities $\gamma_{n, k} \in \left(0, 1\right), n = 1,
+\dots, N, k = 1, \dots, K, \sum_{k = 1}^{K}\gamma_{n, k} = 1$ produced
+by the variational approximation (Equation
+\ref{likelihood:vi-factorization}). We assume that the sequencing
+reads do not contain several members of the same cluster and that,
+should the true reference sequence that generated the reads be missing
+from the reference, the set of reference sequences adequately captures
+the variation present in the cluster. To fulfill our requirement that
+the read can belong to several bins at the same time, we define a bin
+$G_{k}$ for each cluster $k$ as a subset of sequencing reads $r_{n}$
+such that
+\begin{equation}
+  \label{binning:bins-definition}
+  G_{k} = \left\{r_{n} : \gamma_{n, k} \geq q_{k}\right\}
+\end{equation}
+holds for a threshold $q_{k} \in \left[0, 1\right]$. The threshold may
+be different for each cluster $k$. Because of the way the bins $G_{k}$
+are defined in Equation \ref{binning:bins-definition}, this definition
+obviously allows for the reads to belong to several bins (for a
+trivial example, consider the case where $q_{k} = 0$ for all $k$).
+
+Next, we need to find a sensible value for the thresholds $q_{k}$ that
+ideally maximizes the probability $A_{n, k}$ of assigning the read
+$r_{n}$ to the bin $G_{k}$ if the cluster $k$ (could have) generated
+the read $r_{n}$. Ideally, we would define the probability $A$ through
+another probability $B_{n, k}$: the cluster $k$ contains a sequence
+that contains the true (error-free) nucleotide sequence of the read
+$r_{n}$. However, the probability $B$ is difficult to estimate
+directly since 1) the reads cannot be error-corrected with full
+accuracy, and 2) the reference collection is non-complete. However, by
+assuming that the sample is composed mostly of closely related
+organisms, we can derive the following relationships between $A_{n,
+  k}$ and $B_{n, k}$
+\begin{equation}
+  \label{binning:a-is-approximately-b}
+  P\left[A_{n, k} = 1\right] \approx \theta_{k}P\left[J_{n, k} = 1\right],
+\end{equation}
+where $\theta_k$ is the relative abundance of the cluster $k$ in the
+sample that generated the reads $r_{n}$. Equation
+\ref{binning:a-is-approximately-b} implies that when $P\left[A_{n, k}
+  = 1\right] \geq \theta_{k}$, then $P\left[B_{n, k} = 1\right]$ must
+be ``large'' for the approximation to hold. A more detailed derivation
+for this statement about the magnitude of $B_{n, k}$ and Equation
+\ref{binning:a-is-approximately-b} is provided in the methods section
+of the mGEMS article \cite{maklin_bacterial_2021}, supplied in the
+appendix for this thesis, and thus omitted from here.
+
+The implied statement about the magnitude of $B_{n, k}$ when
+$P\left[A_{n, k} = 1\right] \geq \theta_{k}$ means that there is a
+high chance that $B_{n, k} = 1$ when the former holds. Through this,
+we can derive an assignment rule by using the estimates $\gamma_{n,
+  k}$ (Equation \ref{likelihood:vi-factorization}) for the probability
+$P\left[A_{n, k} = 1\right]$
+\begin{equation}
+  \label{binning:theoretical-assignment-rule}
+  \text{if } \gamma_{n, k} \geq \theta_{k}, \text{ assign the read } r_{n} \text{ to } G_{k}.
+\end{equation}
+Equation \ref{binning:theoretical-assignment-rule} provides us with an
+inequality whose validity can be checked to assess the probability of
+the event $B_{n, k} = 1$ which we could not estimate directly.
+
+While the assignment rule in Equation
+\ref{binning:theoretical-assignment-rule} provides a theoretically
+sound tool to assign reads $r_{n}$ to the bins $G_{k}$, applying it in
+practice requires a slight adjustment due to computational
+accuracy. Namely, when estimating the relative abundances $\theta_{k}$
+of $N$ reads, any estimate that falls below $\frac{1}{N}$ means that
+zero reads originated from the cluster $k$. Because of this, values
+$\theta_{k} < \frac{1}{N}$ are meaningless and all represent the same
+case of 0 reads from the cluster. Due to the constraint that
+$\theta_{k}$ must sum up to $1$ over $k$, these essentially-zero
+values do, however, contribute a small amount of noies to the
+estimates. Since there are $K$ clusters, the fraction of noise $d$ is
+(in the worst-case scenario) at most
+\begin{equation}
+  \label{binning:assignment-rule-noise}
+  d = K\frac{1}{N}.
+\end{equation}
+
+Equation \ref{binning:assignment-rule-noise} means that when
+evaluating the validity of the inequality presented in Equation
+\ref{binning:theoretical-assignment-rule}, we should adjust the
+threshold $\theta_k$ with $1 - d$, meaning that we consider only the
+fraction of relative abundance that is assigned to nonzero
+estimates. This produces the final assignment rule that is used in
+mGEMS
+\begin{equation}
+  \label{binning:assignment-rule}
+  \text{if } \gamma_{n, k} \geq (1 - d)\theta_{k}, \text{ assign the read } r_{n} \text{ to } G_{k}.
+\end{equation}
+
+Since the variational approximation used to fit the mSWEEP model
+already provides both the estimates $\gamma_{n, k}$ and the relative
+abundances $\theta_{k}$, the assignment rule in Equation
+\ref{binning:assignment-rule} is in practice extremely inexpensive to
+evaluate after the model has been fitted.
+
+Since the relative abundances $\theta_k$ are derived from the values
+$\gamma_{n, k}$ by averaging over $n = 1, \dots, N$, the assignment
+rule in Equation \ref{binning:assignment-rule} can be seen as a way to
+cluster the rows (or columns) of a generic probability matrix while
+allowing assigning each row (or column) to several clusters at the
+same time. We do not, however, explore the applicability of this rule
+to other scenarios where a probability matrix should be clustered in
+this manner. Nevertheless, the rule is general enough to acknowledge
+its potential applications elsewhere.
 
 \section{The mSWEEP/mGEMS pipeline}
 
 - Flowchart describing the analysis pipeline.
 
-- Overview of the whole stuff and conclusion.
+Combining the results from Sections \ref{section:model} and
+\ref{section:binning} produces the complete workflow for analysing
+sequencing data from mixed sources. This workflow is originally
+presented in the second paper \citep{maklin_bacterial_2021}, where it
+is referred to as the mGEMS pipeline.
+
+The mGEMS pipeline is the method that has been applied in the third
+paper with the additional inclusion of a postprocessing step aimed at
+identifying whether the reference sequences suitably cover the reads
+or not. This postprocessing step, demix\_check
+(\url{https://github.com/harry-thorpe/demix_check/}) was not developed
+by the authors of mSWEEP and mGEMS but addresses an important problem
+in determining whether the results from mSWEEP and mGEMS are correct
+or not. It is our recommendation that a similar step is used if mSWEEP
+and mGEMS are applied, hence the acknowledgement here.
+
+The next chapter will cover the application of mSWEEP and mGEMS to
+both different kinds of sequencing data and explore how the methods
+can be applied to enable new directions in analysis of sequencing
+data. The chapter also includes a brief coverage of the benchmarks and
+experiments presented in the first and second papers (TODO cite).
 
 \chapter{High-resolution metagenomics}
+
+High-resolution metagenomics in the context of this thesis refers to
+the application of some method (in our case mSWEEP and mGEMS) that is
+capable of recovering variation at the within-species level to some
+sort of metagenomics data.
 
 More on mSWEEP/mGEMS \& how these tools enable new directions in research.
 
@@ -1076,6 +1231,6 @@ Gladstone, Alan McNally, Ørjan Samuelsen, Pål Johnsen, Trevor Lawley,
 Antti Honkela, and Jukka Corander. Awaiting peer-review; available
 from \textit{bioRxiv} (2022) (https://doi.org/10.1099/mgen.0.000691).
 
-\include{papers/maklin2022_thesis-papers}
+%\include{papers/maklin2022_thesis-papers}
 
 \end{document}
