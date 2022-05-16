@@ -554,6 +554,7 @@ articles.
 - write about Reference data vs Reference-free approach <- might go to intro?
 
 \section{Characteristics of sequence data from bacteria}
+\label{section:bacterial-data}
 
 - Write about individual sequence vs cluster based approach.
 -- what is a strain? ie how to distinguish between them if we have no reference data
@@ -563,7 +564,7 @@ and have weird genomes with weird plasmids and stuff.  Lineages are
 much much nicer to work with
 
 \section{Sequence alignment}
-
+\label{section:sequence-alignment}
 - Significance of alignment in the analyses (themisto vs traditional alignmnt? Could make a small example here in the high-resolution metagenomics section
 
 - Significance of reference databases.
@@ -572,7 +573,9 @@ much much nicer to work with
 
 \section{A probabilistic model for sequences from mixed sources}
 
-\subsection{Model formulation}
+- Historical context from RNA sequencing.
+
+\subsection{Mixture model formulation}
 
 Assume that we have some set of sequencing reads $R = \left\{r_{1},
 \dots, r_{N}\right\}, N \in \mathbb{N}_{+}$ that are independent of
@@ -580,7 +583,7 @@ each other and identically distributed. We can write down a generative
 mixture model for these reads by defining latent indicator variables
 $I = \left\{I_{1}, \dots, I_{N}\right\}$ that follow some mixing
 proportions $\boldsymbol{\theta} = \left(\theta_{1}, \dots,
-\theta_{K}\right), K \in \mathbb{N}_{+}, \sum_{k = 1}^{K} \theta_{k} =
+\theta_{S}\right), S \in \mathbb{N}_{+}, \sum_{s = 1}^{S} \theta_{s} =
 1$. Since we assumed independence between the reads $R$, $r_{j}
 \indept r_{i}$ for all $i \neq j, 1 \leq i \leq N, 1 \leq j \leq N$, the joint
 distribution for this generative model is
@@ -589,26 +592,231 @@ distribution for this generative model is
   p\left(R, I, \boldsymbol\theta\right) = \prod_{n = 1}^{N}p\left(r_{n} \middle| I_{n}\right) p\left(I_{n} \middle| \boldsymbol\theta\right)p\left(\boldsymbol\theta\right).
 \end{equation}
 
-Now, assume that from each read $r_{n}, 1 \leq n \leq N$ we observe a
-vector of pseudoalignment counts $r_{n, k} = \left(r_{n, 1}, \dots,
-r_{n, K}\right), 0 \leq r_{n, k} \leq M_{k} $ against at most $M_{k}$
-sequences in cluster $k$. If we assume independence between the
-pseudoalignment counts $r_{n, k}$, the joint distribution from
-Equation \ref{model:joint-distribution} factorizes into
+Now, assume that for each read $r_{n}, 1 \leq n \leq N$ we observe
+alignments $r_{n, s}$ against the reference sequences $s = 1, \dots,
+S$. The information contained in $r_{n, s}$ may be anything about the
+alignment. Now, further assuming independence between the alignments
+against different reference sequences $r_{n, i} \indept r_{n, j}$ for
+all $i \neq j, 1 \leq i \leq S, 1 \leq j \leq S$, the joint
+distribution from Equation \ref{model:joint-distribution} factorizes
+into
 \begin{equation}
-  \label{model:joint-distribution}
-  p\left(R, I, \boldsymbol\theta\right) = p\left(\boldsymbol\theta\right)\prod_{n = 1}^{N} \prod_{k = 1}^{K} p\left(r_{n, k} \middle| I_{n} = k\right) p\left(I_{n} = k \middle| \boldsymbol\theta\right).
+  \label{model:joint-distribution-factorized}
+  p\left(R, I, \boldsymbol\theta\right) = p\left(\boldsymbol\theta\right)\prod_{n = 1}^{N} \prod_{s = 1}^{S} p\left(r_{n, s} \middle| I_{n} = s\right) p\left(I_{n} = s \middle| \boldsymbol\theta\right).
 \end{equation}
 
-\subsection{Likelihood}
+The model in Equation \ref{model:joint-distribution-factorized}
+corresponds to the mixture model that has been historically used in
+many contexts, including the predecessor of mSWEEP. Note that in this
+model each reference sequence represents a single taxonomic unit, and
+the inferred relative abundances $\boldsymbol\theta$ are the
+proportions of the same reference sequences.
 
-Although the likelihood in ref (likelihood) closely resembles the
-probability mass function of a Beta-Binomial distribution, the
-likelihood itself does not sum up to 1. However, we can derive a
-normalizing constant $Z\left(r_{n}\right)$ that turns the likelihood
-into a proper probability mass function. To derive
-$Z\left(r_{n}\right)$, we need the following identity for the beta
-function
+\subsection{Incorporating grouped reference sequences}
+
+Although the model in Equation
+\ref{model:joint-distribution-factorized} performs admirably when the
+reference sequences are sufficiently different from each other,
+attempts to estimate the relative abundances of individual reference
+sequences fail when the degree of relatedness is increased. Especially
+when applying the model to reference data containing sequences from
+strains of the same bacterial species, the abundances
+$\boldsymbol\theta$ tend to become scattered among the most closely
+related sequences - even if the correct sequence is contained in the
+reference.
+
+To solve this, the model used in BIB incorporated a clustering for the
+reference sequences \textemdash meaning that instead of estimating the
+reltaive abundancecs $\boldsymbol\theta$ for the individual reference
+sequences, the abundance is estimated for the entire cluster. Although
+this approach introduces an obvious loss of resolution when compared
+to the sequence-based approach, introducing the use of clustering
+provides advantages in accomodating for naturally occurring variation
+as well as improving the scalability of the inference part by reducing
+the number of reference units.
+
+In modelling terms, Equation \ref{model:joint-distribution-factorized}
+can be extended by representing alignments against the reference
+sequences $r_{n, s}$ via information about alignments against a
+representative sequence $r_{n, k}, k = 1, \dots, K, K \ll S$ from the
+cluster $k$. With this change, the changes to the model are minimal:
+the $s$:s are simply replaced by $k$:s
+\begin{equation}
+  \label{model:grouped-joint-distribution}
+  p\left(R, I, \boldsymbol\theta\right) = p\left(\boldsymbol\theta\right)\prod_{n = 1}^{N} \prod_{k = 1}^{K} p\left(r_{n, k} \middle| I_{n} = k\right) p\left(I_{n} = k \middle| \boldsymbol\theta\right).
+\end{equation}
+With an appropriate definition of the likelihood term $p\left(r_{n, k}
+\middle| I_{n} = k\right)$, this model (the BIB model) corresponds
+to the model used by BIB and can solve the inference problem for
+several species of bacteria with well-defined clusterings within the
+species.
+
+The model of Equation \ref{model:grouped-joint-distribution} has,
+however, several issues that render it difficult to apply in some
+scenarios. First, the model requires selecting a representative
+sequence for each cluster $k$. This selection is by no means an easy
+task \textemdash in fact the problem is TODO cite something
+.... Secondly, using a representative sequence implies assumptions
+about the clustering: namely that there must be minimal variation
+within the clusters in terms of genomic contents and that each cluster
+is clearly separated from the others. In BIB, the assumptions about
+the clustering are solved by using a representative sequence for the
+core genome of the cluster. Unfortunately this introduces a third
+problem: some bacterial species do not have a stable core genome and
+increasing the number of sequences for any species of bacteria tends
+to shrink the core genome regardless of its characteristics due to
+randomly occurring mutations.
+
+\subsection{Modelling alignments against reference sequence groups}
+
+mSWEEP solves the issues present in the BIB model by replacing
+alignments against representative sequences for the clusters with a
+model for alignments against all available reference sequences from
+each cluster. Furthermore, since this replacement results in a large
+increase in the number of sequences that are aligned against, the
+traditional position-based alignment is replaced with
+\textit{pseudoalignment} that only returns a $0$ or $1$ indicating
+whether the read aligned somewhere within the reference sequence or
+not (see Section \ref{section:sequence-alignment} for more
+details). Although pseudoalignment reports less information about the
+relationship between the reads and the reference sequences than
+traditional alignment, the approach is observed to perform excellently
+in cases where the BIB model fails and provide similar resolution in
+cases where the BIB model performs well.
+
+With the changes in the mSWEEP model, the observations $r_{n, k}$
+become the numbers of observed pseudoalignments $r_{n, k}, 0 \leq
+r_{n, k} \leq M_{k}$ against the $M_{k}$ sequences assigned to each
+cluster $k$. If assumptions about independence between the clusters
+are kept, the formulation for the model remains the same as the one
+presented in Equation \ref{model:grouped-joint-distribution} with the
+only changes being to the likelihood term $p\left(r_{n, k} \middle|
+I_{n} = k\right)$.
+
+
+\subsection{Likelihood for a clustered reference}
+
+When dealing with pseudoalignments against clustered reference
+sequences, the likelihood term $p\left(r_{n, k} \middle| I_{n} =
+k\right)$ in Equation \ref{model:grouped-joint-distribution} needs to
+be carefully defined to account for several factors arising from the
+biological facts affecting the structure of the reference. One, the
+clusters may vary greatly in size, with some of them having just one
+sequence and some of them hundreds or even thousands. Two, due to
+sequencing erros, reference errors (assembly errors or lack of
+reference sequences from a cluster), and mutations, the read may not
+necessarily pseudoalign against any sequences in a cluster even though
+it belongs to the cluster. Three, the clusters are unlikely
+independent of each other; and four, consequently the read can
+plausibly pseudoalign against several or even all of the clusters.
+
+These four factors lead to considering a likelihood with the following
+properties: 1) within each cluster and ignoring the case where no
+pseudoalignments are observed, the likelihood function must be
+increasing in the number of pseudoalignments (more alignments always
+means a better fit to the cluster); 2) the likelihoods from different
+clusters should be on the same scale regardless of the number of
+sequences in the cluster; and 3) the different clusters should have
+some kind of dependency on the other clusters. This leads to us
+defining the likelihood $p\left(r_{n, k} \middle| I_{n} = k\right)$ in
+three parts
+\begin{equation}
+  \label{likelihood:without-normalization}
+  p\left(r_{n, k} \middle| I_{n} = k\right) =
+  \begin{cases}
+    0.01\text{ if } r_{n, k} = 0, \\
+    0.99\text{ if } r_{n, k} = 1 \text{ and } M_{k} = 1, \\
+    0.99f\left(r_{n, k}, M_{k}\right)\text{ if } r_{n, k} \geq 1\text{ and } M_{k} > 1.
+  \end{cases}
+\end{equation}
+
+In Equation \ref{likelihood:without-normalization}, the first part provides a slight
+zero-inflation for the model, corresponding (roughly) to the error
+level in Illumina sequencing data (TODO citation). The second part
+handles the special case where the cluster $k$ contains only one
+sequence ($M_{k} = 1$). For the rest of the cases, which represent the
+majority of the reference sequences in a setting where they can be
+plausibly assigned to clusters, the likelihood is chiefly defined by
+the term $f\left(r_{n, k}, M_{k}\right)$ which is a function of the
+pseudoalignment counts $r_{n, k}$ and the cluster size $M_{k}$. In
+terms of our requirements for the likelihood, $f\left(r_{n, k},
+M_{k}\right)$ is the term that should fulfill them.
+
+Had we assumed independence between the different clusters, a
+reasonable choice for $f\left(r_{n, k}, M_{k}\right)$ would be the
+beta-binomial distribution. This distribution is an extension of the
+binomial distribution, allowing for over/underdispersion through a
+2-parameter formulation. The beta-binomial distribution has the
+following probability mass function $p\left(k \middle | n, \alpha,
+\beta\right)$ with parameters $\left(n, \alpha, \beta\right), n \in
+\mathbb{N}, \alpha > 0, \beta > 0$ and support $k \in \left\{0, \dots,
+n\right\}$
+\begin{equation}
+  \label{likelihood:beta-binomial-pmf}
+  p\left(k \middle| n, \alpha, \beta\right) = \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(\alpha, \beta\right)}.
+\end{equation}
+
+In Equation \ref{likelihood:beta-binomial-pmf}, $B\left(\alpha, \beta\right)$ is the beta function
+\begin{equation}
+  \label{likelihood:beta-function}
+  B\left(\alpha, \beta\right) = \int_{0}^{1}t^{\alpha - 1}\left(1 - t\right)^{\beta - 1}dt.
+\end{equation}
+and $\binom{n}{k}$ is the binomial coefficient.
+
+Since we want the clusters to have some sort of dependency on each
+other, we cannot directly utilize the beta-binomial distribution in
+Equation \ref{likelihood:beta-binomial-pmf} but our approach is
+nevertheless inspired by it. Namely, we use a modified version of the
+distribution $p^{\star}\left(k \middle| n, \alpha, \beta\right)$,
+where the likelihoods are divided by their respective maximum value,
+changing their range to $\left[0, 1\right]$ (TODO: we need the
+increasing assumption here!) regardless of the values of $n, k,
+\alpha$, and $\beta$.
+\begin{equation}
+  \label{likelihood:beta-binomial-scaled}
+  \begin{aligned}
+    p^{\star}\left(k \middle| n, \alpha, \beta\right) &= \frac{p\left(k \middle| n, \alpha, \beta\right)}{p\left(n \middle| n, \alpha, \beta\right)} \\
+    &= \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(\alpha, \beta\right)} \binom{n}{n}^{-1}\frac{B\left(\alpha, \beta\right)}{B\left(n + \alpha, \beta\right)} \\
+    &= \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(n + \alpha, \beta\right)}
+  \end{aligned}
+\end{equation}
+Since the scaling in Equation \ref{likelihood:beta-binomial-scaled} is
+by a constant ($p\left(n \middle| n, \alpha, \beta\right))$, the
+resulting function $p^{\star}\left(k \middle| n, \alpha,
+\beta\right)$ remains an increasing function of $k$.
+
+With the probability mass function of the distribution
+$p^{\star}\left(k \middle| n, \alpha, \beta\right)$, the full
+definition for the third part of the likelihood in Equation \ref{likelihood:without-normalization} is
+\begin{equation}
+  \label{likelihood:normalized}
+  p\left(r_{n, k} \middle| I_{n} = k\right) = 0.99\frac{p^{\star}\left(r_{n, k} \middle| M_{k}, \alpha, \beta\right)}{Z\left(r_{n}\right)}\text{ if } r_{n, k} \geq 1\text{ and } M_{k} > 1,
+\end{equation}
+where $Z\left(r_{n}\right)$ is a normalizing constant that depends on
+all observed pseudoalignment counts $r_{n, k}, k = 1, \dots, K$. The
+scaling in Equation \ref{likelihood:beta-binomial-scaled} fulfills our
+requirement that the likelihood of each cluster must be on the same
+scale despite different size. The next section will derive a closed
+form for the normalizing constant $Z\left(r_{n}\right)$.
+
+\subsection{Normalizing the likelihood}
+
+Although the function $p^{\star}\left(k \middle| n, \alpha,
+\beta\right)$ in Equation \ref{likelihood:beta-binomial-scaled}
+closely resembles the probability mass function of a Beta-Binomial
+distribution (Equation \ref{likelihood:beta-binomial-pmf}), the
+function $p^{\star}$ itself does not sum to $1$ over its support $k
+\in \left\{ 1, \dots, K \right\}$. In order to turn the $p^{\star}$:s
+into proper probability mass functions, we need the normalizing
+constant $Z\left(r_{n}\right)$.
+
+Although any distribution on a finite support can be normalized (TODO
+citation), in many cases the normalizing constant does not have a
+closed form. In our case it turns out that \textemdash thanks to the
+properties of the beta function (see Equation
+\ref{likelihood:beta-function} for the definition) \textemdash 
+$Z\left(r_{n, k}\right)$ has a closed form. To derive the closed form,
+we need the following identity for the beta function
 \begin{lemma}
   \label{lemma:beta-function-identity}
   \[
@@ -617,7 +825,7 @@ function
 \end{lemma}
 
 \begin{proof}
-  Follows from $\Gamma\left(z + 1\right) = z\Gamma\left(z\right), \text{ for all } z > 0$ \citep{davis_leonhard} and $B\left(a, b\right) = \frac{\Gamma\left(a\right)\Gamma\left(b\right)}{\Gamma\left(a + b\right)}$ \citep{artin_einfuhrung} since
+  Follows from $B\left(a, b\right) = \frac{\Gamma\left(a\right)\Gamma\left(b\right)}{\Gamma\left(a + b\right)}$ \citep{artin_einfuhrung} and $\Gamma\left(z + 1\right) = z\Gamma\left(z\right), \text{ for all } z > 0$ \citep{davis_leonhard}, where $\Gamma\left(z\right)$ is the gamma function. Using these two identities, we can write $B\left(a + 1, b\right)$ as
   \begin{align*}
     B\left(a + 1, b\right) &= \frac{\Gamma\left(a + 1\right)\Gamma\left(b\right)}{\Gamma\left(a + b + 1\right)} \\
     &= \frac{a\Gamma\left(a\right)\Gamma\left(b\right)}{\left(a + b\right)\Gamma\left(a + b\right)} \\
@@ -625,7 +833,7 @@ function
   \end{align*}
 \end{proof}
 
-Using Lemma \ref{lemma:beta-function-identity}, we can find a closed form for the normalizing constant $Z\left(k\right)$
+Using Lemma \ref{lemma:beta-function-identity}, we can find a closed form for the normalizing constant $Z\left(k\right)$.
 \begin{theorem}
   \label{theorem:likelihood-can-be-normalized}
   Let
@@ -674,13 +882,116 @@ Z\left(r_{n}\right) = \prod_{k = 1}^{K} \prod_{j = 1}^{n_{k}}\frac{\alpha_{k} + 
 is sufficient to normalize $f\left(r_{n, k}, n_{k}\right)$ and prove Theorem \ref{theorem:likelihood-can-be-normalized}.
 \end{proof}
 
-\subsection{Inference}
+\subsection{Likelihood hyperparameters}
 
-other stuff plan:
+Insteda of the traditional parametrization for the beta binomial
+distribution through $\alpha >0, \beta > 0$, we use a
+reparametrization that slightly changes the interpretation of the
+parameters. The transformed parameters are
+\begin{equation}
+  \label{likelihood:reparametrization}
+  \pi = \frac{\alpha}{\alpha + \beta}, \phi = \frac{1}{\alpha + \beta},
+\end{equation}
+where the first parameter $\pi$ has the range $\pi \in \left(0,
+1\right)$ and represents the mean success rate in repeated draws from
+the beta binomial distribution (TODO cite). The second parameter $\phi
+> 0$ measures the variation in the success rate for each draw. In our
+formulation for the likelihood, each cluster $k$ has its own
+parameters $\pi_{k}, \phi_{k}$.
 
-- Diagram and equations of/from the mSWEEP model.
+Although methods such as Bayesian optimization (TODO cite) could
+be employed to find optimal values for the parameters $\pi_{k}, \phi_{k}$ in
+Equation \ref{likelihood:reparametrization}, we set their values based
+on a nonexhaustive analysis on several data sets (TODO explain). The
+values of $\pi, \phi$ are set to
+\begin{equation}
+  \begin{aligned}
+    \pi_k &= 0.65, \text{ for all } k = 1, \dots, K, \\
+    \phi_{k} &= 1 - \pi_{k} + 0.01M_{k}^{-1}.
+  \end{aligned}
+\end{equation}
+Next, we show that slightly varying the values does not significantly
+affect the results of the analyses.
 
-- Historical context from RNA sequencing.
+TODO experiment on the mGEMS paper data about varying the
+hyperparamter values.
+
+- hyperparameters - may be add a sensitivity test?
+
+\subsection{Fitting the model using variational inference}
+
+With the likelihood defined in Equations
+\ref{likelihood:without-normalization} and
+\ref{likelihood:normalized}, all that remains is to come up with a
+suitable method to infer the relative abundances
+$\boldsymbol\theta$. Since our model is principally the same as the
+one used in BIB (Equation \ref{model:grouped-joint-distribution}),
+just with a different formula for the likelihood term $p\left(r_{n, k}
+= k \middle| I_{n} = k\right)$, we can adapt the variational inference
+used in BIB to our needs. Since this requires only changing the
+likelihood term, the core of the inference algorithm remains the
+same. Since variational inference is an extremely broad topic outside
+of the scope of this dissertation, I will only cover the parts that
+are relevant to the original contributions in the thesis. For a more
+thorough coverage of the variational inference algorithm, readers are
+referred to TODO (cite VI papers), which cover the variational
+inference in detail, and TODO (cite gradu) which contains a summary of
+the applicable parts from the previous papers in the context of this
+model but with a slightly different format for the likelihood.
+
+In brief, variational inference for the mSWEEP model consists of
+finding a distribution $q\left(\boldsymbol\theta, I\right)$ that
+minimizes the Kullback-Leibler divergence to the true posterior
+$p\left(\boldsymbol\theta, I \middle| R\right) \approx
+q\left(\boldsymbol\theta, I\right)$. For simplicity, we assume that
+the approximation $q\left(\boldsymbol\theta, I\right)$ factorizes into
+$q\left(\boldsymbol\theta, I\right) =
+q\left(\boldsymbol\theta\right)q\left(I\right)$. Since we assumed that
+each $I_{n}$ has a categorical distribution
+$Cat\left(\boldsymbol\theta\right)$ and are independent of each other,
+$I_{n} \indept I_{m}, n \neq m$, the second term $q\left(I\right)$
+simplifies to
+\begin{equation}
+  \label{likelihood:vi-factorization}
+  q\left(I\right) = \prod_{n = 1}^N\prod_{k = 1}^K \gamma_{n, k}^{I_{n, k}}.
+\end{equation}
+
+In practice, the best approximation $q\left(\boldsymbol\theta,
+I\right)$ is found when optimal values for the parameters $\gamma_{n,
+  k}$ in Equation \ref{likelihood:vi-factorization} are found (TODO
+cite). We use the Riemannian conjugate gradient (RCG) method to find
+the optimal values for $\gamma_{n, k}$ (TODO cite). A generic and
+parallel \& distributable implementation for arbitrary likelihood with
+this mixture model structure is available from
+\url{https://github.com/tmaklin/rcgpar}.
+
+\subsection{Alternative fit using MCMC sampling}
+Alternatively, the model could be fitted using Markov chain Monte
+Carlo (MCMC) sampling methods (TODO citations or explain). Instead of
+finding an approximating distribution $q\left(\boldsymbol\theta,
+I\right)$, MCMC sampling attempts to produce a set of samples from the
+true posterior $p\left(\boldsymbol\theta, I\middle|
+R\right)$. Averaging over the values produced via MCMC sampling
+$\hat{\boldsymbol\theta}$ asymptotically produces the true parameters
+$\boldsymbol\theta$ as the number of samples $n_{MCMC}$
+increases. Even though producing the true values is tempting instead
+of using the values from the variational approximation, MCMC has
+several problems when applied in practice (TODO citations). First, the
+true values are only found asymptotically, meaning that it is
+difficult to measure when the sampling has been performed for long
+enough for the chain to have converged to the true
+posterior. Secondly, due to the first point, the number of samples
+that need to be drawn may be excessively high, resulting in extremely
+long run times when compared to the faster variational inference (TODO
+cite).
+
+MCMC does however have the advantage that, provided sufficient
+runtime, the samples will be from the true posterior. When comparing
+MCMC to VI in practice, the former has been reported to better capture
+correlations between the sampled parameters (TODO cite Antti's bitseq
+paper). Becaues of this, we compared the VI from mSWEEP to a version
+of mWEEP compatible with the MCMC sampling from BitSeq (TODO cite
+BitSeq) but found no significant differences between the two (TODO figure).
 
 - Add results from Gibbs sampler vs variational inference experiments.
 
