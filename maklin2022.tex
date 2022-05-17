@@ -64,7 +64,7 @@
 \preexaminera{Exam Iner, University of Examinations, Exaministan}
 \preexaminerb{Read Er, University of Examinations, Exaministan}
 \opponent{Oppo Nent, University of Endless Argumentation, The Argumentlands}
-\custos{Sea Land, University of Sealand, Sealand}
+\custos{Antti Honkela, University of Helsinki, Finland}
 \generalterms{Algorithms, Experimentation}
 \additionalkeywords{genomic epidemiology, plate sweeps, probabilistic modeling, pathogen surveillance, taxonomic profiling, taxonomic binning, metagenomics}
 % Computing Reviews 1998 style
@@ -1049,6 +1049,8 @@ are defined in Equation \ref{binning:bins-definition}, this definition
 obviously allows for the reads to belong to several bins (for a
 trivial example, consider the case where $q_{k} = 0$ for all $k$).
 
+\subsection{Assignment rule for multi-cluster membership}
+
 Next, we need to find a sensible value for the thresholds $q_{k}$ that
 ideally maximizes the probability $A_{n, k}$ of assigning the read
 $r_{n}$ to the bin $G_{k}$ if the cluster $k$ (could have) generated
@@ -1088,6 +1090,8 @@ $P\left[A_{n, k} = 1\right]$
 Equation \ref{binning:theoretical-assignment-rule} provides us with an
 inequality whose validity can be checked to assess the probability of
 the event $B_{n, k} = 1$ which we could not estimate directly.
+
+\subsection{Practical considerations}
 
 While the assignment rule in Equation
 \ref{binning:theoretical-assignment-rule} provides a theoretically
@@ -1145,15 +1149,101 @@ sequencing data from mixed sources. This workflow is originally
 presented in the second paper \citep{maklin_bacterial_2021}, where it
 is referred to as the mGEMS pipeline.
 
-The mGEMS pipeline is the method that has been applied in the third
-paper with the additional inclusion of a postprocessing step aimed at
-identifying whether the reference sequences suitably cover the reads
-or not. This postprocessing step, demix\_check
-(\url{https://github.com/harry-thorpe/demix_check/}) was not developed
-by the authors of mSWEEP and mGEMS but addresses an important problem
-in determining whether the results from mSWEEP and mGEMS are correct
-or not. It is our recommendation that a similar step is used if mSWEEP
-and mGEMS are applied, hence the acknowledgement here.
+\subsection{Constructing the reference database}
+
+The pipeline begins with constructing a set of reference sequences
+that represent the variation in the target species of interest. In an
+ideal scenario, the reference should consist of high-quality
+assemblies from each lineage that is expected to be found in the
+sequencing reads. Since this is a rather unrealistic assumption,
+typical cases make use of published datasets and possible combine
+isolate sequencing data from their own studies. Either previously
+published assemblies or even curated genomes from databases such as
+RefSeq may be used but the reference may also include newly assembled
+sequences or otherwise be tailored to the problem at hand. In both
+cases a cautious approach is recommended, as the quality of the
+reference sequence set is the most important factor in obtaining
+trustworthy results from the pipeline.
+
+After the appropriate reference sequences have been collected, they
+should be clusered in some meaningful way to obtain the grouping. For
+some species, multilocus sequence typing is sufficient but for others
+with more variable genome contents, algorithms that attempt to
+identify clonal complex analogues may be uesful. One such algorithm is
+PopPUNK, which is demonstrated to perform relatively well in the third
+paper included in this thesis. PopPUNK clusters the reference
+sequences based on accessory and core genome distances, and provides
+results that are very similar to clonal complexes (groups of STs) for
+species where the complexes are defined. Using a computational like
+PopPUNK instead of a curated database approach like sequence types and
+clonal complexes has the advantage of being able to assign sequences
+that have not yet been included in the curated databases, or work with
+species for which such databases do not exist.
+
+After clustering the reference sequences, the next step is to build an
+index for pseudoalignment, and pseudoalign the reads from the samples
+against the index. In the mGEMS pipeline, we use Themisto to perform
+both the index construction and the pseudoalignment. The
+pseudoalignment step produces the alignment vectors for each read
+against every reference sequence, which are used as the input to
+mSWEEP.
+
+\subsection{Estimating relative abundances and binning the reads}
+
+The next step in the pipeline is to use mSWEEP to estimate the
+relative abundances of the reference groups based on the
+pseudoalignments against the sequences. This is performed directly on
+the output from Themisto, with no intermediate steps required. After
+the relative abundances have been estimated, the results are fed to
+mGEMS which produces the read bins and optionally also extracts the
+reads corresponding to each bin from the original set.
+
+
+\subsection{Assembling the read bins}
+
+In the second article of this thesis, the mGEMS pipeline also includes
+an optional step to assemble the sequences. The suggested assembler is
+shovill, which is an assembly pipeline built around the spades
+assembler but incorporating some pre- and postprocessing
+steps. Naturally other assemblers may also be used, or the assembly
+step skipped entirely and the analysis instead focusing the reads. In
+the second article we mostly focused on analysing the assemblies, as
+including an assembly step introduces a postprocessing step that can
+be useful in filtering out reads that have been mistakenly assigned to
+the bin.
+
+Since mGEMS allows for including a sequencing read in several bins at
+once, the produced read bins may have a very high coverage for shared
+parts of the genome when the sample contains several closely related
+organisms. Because of this, we investigated the effect of replacing
+the isolate-data optimised shovill with metagenomic assemblers, which
+presumably implement better handling of variable coverage in the
+produced genomes. Although we observed some differences in the
+resulting assemblies, there was no statistically significant evidence
+in favour of using either approach. Regardless of the assembler
+choice, using the mGEMS pipeline produced assemblies in downstream
+analyses performed similarly to a benchmark consisting of assemblies
+derived from isolate sequencing data.
+
+\subsection{Quality control}
+
+The mGEMS pipeline as described above is the method that has been
+applied in the third paper with the additional inclusion of a
+postprocessing step aimed at identifying whether the reference
+sequences suitably cover the reads or not. This postprocessing step,
+demix\_check (\url{https://github.com/harry-thorpe/demix_check/}),
+performs several quality control checks on the results from mSWEEP and
+mGEMS, aiming to determine whether the created read bins correspond to
+a reference cluster or not. Although this step was not included in the
+two methods papers presenting mSWEEP and mGEMS, its inclusion
+addressess an important question regarding the applicability of the
+results from mSWEEP/mGEMS. Therefore, including demix\_check
+\textemdash or other similar approach \textemdash as part of the mGEMS
+pipeline (between the mGEMS and the assembly steps) is recommended for
+a rigorous approach.
+
+- write about the detection thresholds.
+- figure from presentation showing the threshold construction process.
 
 The next chapter will cover the application of mSWEEP and mGEMS to
 both different kinds of sequencing data and explore how the methods
