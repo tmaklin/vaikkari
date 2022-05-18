@@ -226,6 +226,7 @@ bacterial diversity as well as making such analyses more accessible to
 resource-constrained laboratories.
 
 \section{Three approaches to sequencing bacterial DNA}
+\label{three-approaches-to-metagenomics}
 
 %- Something about sequeuncing reads and sequence assembly? 16S sequencing?
 
@@ -668,7 +669,7 @@ increasing the number of sequences for any species of bacteria tends
 to shrink the core genome regardless of its characteristics due to
 randomly occurring mutations.
 
-\subsection{Modelling alignments against reference sequence groups}
+\subsection{Modelling alignments against sequence groups}
 
 mSWEEP solves the issues present in the BIB model by replacing
 alignments against representative sequences for the clusters with a
@@ -1253,27 +1254,40 @@ experiments presented in the first and second papers (TODO cite).
 
 \chapter{High-resolution metagenomics}
 
-High-resolution metagenomics in the context of this thesis refers to
-the application of some method (in our case mSWEEP and mGEMS) that is
-capable of recovering variation at the within-species level to some
-sort of metagenomics data.
+High-resolution metagenomics (in the context of this thesis) refers to
+applying some method capable of recovering variation at the
+within-species level to some sort of metagenomics data as defined in
+Section \ref{three-approaches-to-metagenomics}. In our case, the
+methods of interest are mSWEEP and mGEMS. This chapter will deal with
+the benchmarking and experimental results from the first two papers,
+which focus on analysing plate sweep metagenomics data. At the end of
+the chapter some technicalities arising from the model formulatin will
+also be covered \textemdash namely questions about reliability of the
+results when applied to realistic use-cases and sensitivity to
+parameter changes.
 
-More on mSWEEP/mGEMS \& how these tools enable new directions in research.
+\section{Plate sweep and WGS metagenomics}
 
 Refresher on plate sweeps and wgs metagenomics.
+
+\section{Benefits of metagenomics over culturing}
 
 Something about metagenomics is nice in that we dont just sequence one
 nice things but many nice things
 
-Describe the benchmarking from the first two papers i e convince readers that the methods work nicely.
-
-Could do some new kinds of benchmarks with the mGEMS paper synthetic data set.
+More on mSWEEP/mGEMS \& how these tools enable new directions in research.
 
 cite \citet{tonkin-hill_pneumococcal_2022} for rigorous proof that
 mSWEEP/mGEMS can recover cocolonization by several strains that is
 overlooked by isolate sequeuncing.
 
-\section{Assessing reliability of results}
+\section{Benchmarking mSWEEP and mGEMS}
+
+Describe the benchmarking from the first two papers i e convince readers that the methods work nicely.
+
+Could do some new kinds of benchmarks with the mGEMS paper synthetic data set.
+
+\section{Assessing reliability of the results}
 
 - Cover detection thresholds
 - Cover Harry's pipeline
@@ -1281,7 +1295,12 @@ overlooked by isolate sequeuncing.
 
 \section{Assessing model assumptions}
 - Zero inflation vs no inflation; degree of inflation
+- Sensitivity to hyperparameter values
 
+\section{Metagenomics-derived results in practice}
+
+- Stuff about how to interpret results from metagenomics
+- Tie in to the next chapter.
 
 \chapter{Metagenomic epidemiology}
 
