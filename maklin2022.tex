@@ -784,8 +784,29 @@ increasing assumption here!) regardless of the values of $n, k,
 \end{equation}
 Since the scaling in Equation \ref{likelihood:beta-binomial-scaled} is
 by a constant ($p\left(n \middle| n, \alpha, \beta\right))$, the
-resulting function $p^{\star}\left(k \middle| n, \alpha,
-\beta\right)$ remains an increasing function of $k$.
+resulting function $p^{\star}\left(k \middle| n, \alpha, \beta\right)$
+remains an increasing function of $k$.
+
+%% Possible footnote
+%\noindent\let\thefootnote\relax\footnote{Figure source: Adapted from \cite{praveera_fenugreek-sprouts} and \cite{niaid_escherichia-coli}. Released under the \href{https://creativecommons.org/licenses/by-sa/4.0}{CC BY-SA 4.0 license}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!h]
+  \label{fig:msweep-vs-beta-binomial}
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{img/mSWEEP_likelihood.pdf}
+    \caption{Comparison of the mSWEEP likelihood and a plain beta-binomial likelihood (without zero inflation). The figure displays the difference between the modified beta-binomial likelihood that mSWEEP uses (red dots and lines) and a plain beta-binomial likelihood (blue dots and lines) with the same parameters. Panel \textbf{a)} displays the difference for a cluster with 10 reference sequences, and panel \textbf{b)} for a cluster with 20 reference sequences.}
+\end{figure}
+
+A comparison of the likelihood presented in Equation
+\ref{likelihood:beta-binomial-scaled} with the plain beta-binomial
+likelihood in Equation \ref{likelihood:beta-binomial-pmf} is presented
+in Figure \ref{fig:msweep-vs-beta-binomial}. Figure
+\ref{fig:msweep-vs-beta-binomial} shows that the mSWEEP format gives
+more weight to values of $k$ that are close to $n$ while making the
+differences between the different $k$ steeper than the plain
+beta-binomial. In practice, the modified format implies that the
+clusters should be defined in a way that most reads will pseudoalign
+to the cluster if the read originated from the cluster.
 
 With the probability mass function of the distribution
 $p^{\star}\left(k \middle| n, \alpha, \beta\right)$, the full
