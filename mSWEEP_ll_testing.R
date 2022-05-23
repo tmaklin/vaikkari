@@ -13,7 +13,7 @@ log.ll <- function(x, n, a, b) {
 
 log.ll2 <- function(x, n, a, b) {
     lchoose(n, x) + lbeta(x + a, n - x + b) - lbeta(a, b)
-}    
+}
 
 c.sizes <- c(10, 20)
 n.max <- c.sizes

@@ -22,8 +22,8 @@
 \usepackage{amsfonts}
 
 % Lemma environment
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{lemma}[theorem]{Lemma}
 
 % Independence symbol
 \newcommand\indept{\protect\mathpalette{\protect\independenT}{\perp}}
@@ -840,12 +840,12 @@ properties of the beta function (see Equation
 \ref{likelihood:beta-function} for the definition) \textemdash 
 $Z\left(r_{n, k}\right)$ has a closed form. To derive the closed form,
 we need the following identity for the beta function
-\begin{lemma}
+\begin{theorem}
   \label{lemma:beta-function-identity}
   \[
   B\left(a + 1, b\right) = \frac{a}{a + b}B\left(a, b\right).
   \]
-\end{lemma}
+\end{theorem}
 
 \begin{proof}
   Follows from $B\left(a, b\right) = \frac{\Gamma\left(a\right)\Gamma\left(b\right)}{\Gamma\left(a + b\right)}$ \citep{artin_einfuhrung} and $\Gamma\left(z + 1\right) = z\Gamma\left(z\right), \text{ for all } z > 0$ \citep{davis_leonhard}, where $\Gamma\left(z\right)$ is the gamma function. Using these two identities, we can write $B\left(a + 1, b\right)$ as
@@ -1289,24 +1289,153 @@ parameter changes.
 
 \section{Plate sweep and WGS metagenomics}
 
-Refresher on plate sweeps and wgs metagenomics.
+The primary methods for obtaining metagenomics sequencing data
+considered in this thesis are plate sweep metagenomics and
+whole-genome shotgun (WGS) metagenomics (see Section
+\ref{three-approaches-to-metagenomics} for more details). Of these
+two, plate sweep metagenomics has the advantage of being able to focus
+sequencing efforts to species that are known to grow on specific
+plates, while WGS metagenomics provides data of \textit{all} organisms
+on some sample (including for example host DNA, fungi, commensal
+species). When the goal is to investigate strain-level variation, both
+approaches have their uses in either producing more data from the
+species of interest or providing a less biased view of the sample
+contents at the expense of sequencing depth. The first two papers
+included in the thesis were written with only plate sweep metagenomics
+in mind but the third paper demonstrated that mSWEEP and mGEMS are
+applicable in the WGS metagenomics context. Thus, this chapter will
+not discriminate between the two.
 
-\section{Benefits of metagenomics over culturing}
+\subsection{Benefits of metagenomics over culturing}
 
-Something about metagenomics is nice in that we dont just sequence one
-nice things but many nice things
+When comparing metagenomics approaches to culturing, the obvious
+difference is that the former will provide a better view of the
+microbiome in the sample. Although epidemiological analyses in the
+past have mostly focused on using isolate data, some studies showing
+the benefits of using a metagenomics approach have emerged. In
+particular, a recent study utilizing mSWEEP and mGEMS showed that
+using isolate sequencing data alone can result in an approach that
+dismisses the presence of non-dominant variants of the same species
+\citep{tonkin-hill_pneumococcal_2022}. Similar approaches using other
+tools have also hinted at the capability of several strains to become
+pathogenic should the opportunity present itself (TODO
+citations). These studies have demonstrated that it may be necessary
+to incorporate some level of metagenomics in epidemiological studies
+in order to better identify the causative agents (TODO citations) of
+disease.
 
-More on mSWEEP/mGEMS \& how these tools enable new directions in research.
+Microbiome studies in general have become increasingly popular with
+the advent of 16S sequencing. Although the results of some studies
+remain somewhat controversial, the widespread application of this
+method has revealed extensive variation in the microbiome contents
+sampled form comparable sources. It is currently an open question
+whether this variation extends to the strain-level but nevertheless
+there exist studies both old and new that suggest this to be the
+case.
 
-cite \citet{tonkin-hill_pneumococcal_2022} for rigorous proof that
-mSWEEP/mGEMS can recover cocolonization by several strains that is
-overlooked by isolate sequeuncing.
+mSWEEP and mGEMS specifically enable answering questions about
+strain-level variation by providing a method that can be targeted to
+identify the variation in some species. Since many species of clinical
+importance have been studied for several decades with significant
+sequencing efforts aimed at them to obtain high-quality genome
+assemblies, the reference-based approach employed by mSWEEP and mGEMS
+is ideal for disentangling variation in the same setting. When
+combined with tools with other kinds of approaches to sequencing, the
+methods together have the potential for unprecedented level of detail
+in epidemiologic analyses and tracking
+
+While the previous chapter covered the theoretical foundations of
+mSWEEP and mGEMS, the rest of this chapter will focus on evaluating
+some practical considerations regarding the methods. Namely, we
+briefly overview the performance of the methods when compared to other
+established approaches, and cover some questions related to the
+reliability of the approach as well as the sensitivity to the
+parameter choices. The last part of the chapter will cover some
+results from the included papers related to what kind of information
+metagenomics-derived results provide.
 
 \section{Benchmarking mSWEEP and mGEMS}
-
 Describe the benchmarking from the first two papers i e convince readers that the methods work nicely.
 
-Could do some new kinds of benchmarks with the mGEMS paper synthetic data set.
+\subsection{mSWEEP}
+The first paper in the thesis presented a comparison of mSWEEP with
+the Bayesian Identification of Bacteria (BIB) and the
+pseudoalignment-based metakalisto methods. Although a myriad of
+taxonomic profilers have been developed (these will be covered in more
+detail in Section \ref{other-metagenomics-approaches}), the vast
+majority of them do not attempt within-species profiling or have been
+developed for cases with only one strain present from each
+species. Because of these limitations, the mSWEEP paper only makes the
+comparisons with BIB and metakallisto, which claim to work in a
+setting with several strains present.
+
+TODO something about how BIB and metakallisto work
+
+The main result of the first paper is that mSWEEP vastly outperforms
+both BIB and metakallisto for most species. For species with a
+strictly defined clonal structure \textemdash such as
+\textit{S. aureus} \textemdash, BIB and metakalisto are able to derive
+comparable performance, but for other species that exhibit more varied
+clonal structures incorporating the probabilistic model from mSWEEP
+proves to be a necessary step in obtaining accurate
+information. Although these performance benchmarks were only performed
+on data containing a single strain in each sample, we demonstrate in
+the paper through stochastic dominance that the methods which do not
+succeed with single-strain estimates are unlikely to provide accurate
+results from multi-strain samples.
+
+Another benchmark presented in the first paper concerns evaluating
+performance in the presence of several strains from the same
+species. In this benchmark, sequence data from three strains were
+mixed together in single sample at known proportions, and mSWEEP was
+applied to estimate the proportions when the real reference sequences
+were absent from the reference data but close representatives from the
+same lineage were available. In this benchmark, mSWEEP demonstrates
+very accurate performance measured on both true positives and true
+negatives. Although \textit{K. pneumoniae} in particular proved
+challenging, possibly due to the wide variety exhibited in the
+reference set, the results were nevertheless within acceptable error
+
+In addition to the synthetic experiments presented in the first paper,
+the second paper presents an \textit{in vitro} benchmark concerning
+abundance estimation. In this benchmark DNA from three different
+strains of either \textit{E. coli} or \textit{E. faecalis} was mixed
+together using Qbit, producing samples where the initial composition
+of the sample is known at the DNA level. This benchmark shows similar
+results as the synthetic benchmarks for \textit{E. faecalis}, where
+the three strains originated from three different sequence types, but
+also shows promise in differentiating between strains of the same
+clade within a single sequence type of \textit{E. coli}. This task is,
+however, much, much more difficult since the split of the ST131
+subclade C2 was based on incorporating information from the accessory
+genome using PopPUNK. The accessory genome of \textit{E. coli} is not
+as stable as the core genome, on which the ST131 and the ST131 A-C
+designations are based, resulting in some difficulties in separating
+the C2-4 and C2-6 sublineages. Nevertheless mSWEEP manages to identify
+the presence of both clades quite well, and the downstream analysis
+using mGEMS (covered in Section \ref{mgems-performance-benchmark}
+still provides accurate results.
+
+\subsection{mGEMS}
+\label{mgems-performance-benchmark}
+
+Our taxonomic binner mGEMS was benchmarked in the second paper using
+both synthetic data (mixtures of reads from isolate cultures of
+different strains) as well as the previously mentioned \textit{in
+  vitro} benchmark. The chief metrics used were related to those that
+are the main objects of interest in genomic epidemiological analyses:
+SNPs and phylogenies estimated from the SNP data. We looked at the
+performance of mGEMS on the level of within-ST variation using data
+from \textit{E. coli} (TODO cite paper), at the between-ST and
+within-species level using \textit{E. faecalis}, and an extreme case
+with only dozens of SNPs separating the different reference clusters
+using data from \textit{S. aureus}.
+
+describe the different benchmarks.
+
+\subsection{Other approaches for metagenomic analyses}
+\label{other-metagenomics-approaches}
+Other metagenomics approaches.
 
 \section{Assessing reliability of the results}
 
