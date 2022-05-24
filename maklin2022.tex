@@ -1161,112 +1161,6 @@ to other scenarios where a probability matrix should be clustered in
 this manner. Nevertheless, the rule is general enough to acknowledge
 its potential applications elsewhere.
 
-\section{The mSWEEP/mGEMS pipeline}
-
-- Flowchart describing the analysis pipeline.
-
-Combining the results from Sections \ref{section:model} and
-\ref{section:binning} produces the complete workflow for analysing
-sequencing data from mixed sources. This workflow is originally
-presented in the second paper \citep{maklin_bacterial_2021}, where it
-is referred to as the mGEMS pipeline.
-
-\subsection{Constructing the reference database}
-
-The pipeline begins with constructing a set of reference sequences
-that represent the variation in the target species of interest. In an
-ideal scenario, the reference should consist of high-quality
-assemblies from each lineage that is expected to be found in the
-sequencing reads. Since this is a rather unrealistic assumption,
-typical cases make use of published datasets and possible combine
-isolate sequencing data from their own studies. Either previously
-published assemblies or even curated genomes from databases such as
-RefSeq may be used but the reference may also include newly assembled
-sequences or otherwise be tailored to the problem at hand. In both
-cases a cautious approach is recommended, as the quality of the
-reference sequence set is the most important factor in obtaining
-trustworthy results from the pipeline.
-
-After the appropriate reference sequences have been collected, they
-should be clusered in some meaningful way to obtain the grouping. For
-some species, multilocus sequence typing is sufficient but for others
-with more variable genome contents, algorithms that attempt to
-identify clonal complex analogues may be uesful. One such algorithm is
-PopPUNK, which is demonstrated to perform relatively well in the third
-paper included in this thesis. PopPUNK clusters the reference
-sequences based on accessory and core genome distances, and provides
-results that are very similar to clonal complexes (groups of STs) for
-species where the complexes are defined. Using a computational like
-PopPUNK instead of a curated database approach like sequence types and
-clonal complexes has the advantage of being able to assign sequences
-that have not yet been included in the curated databases, or work with
-species for which such databases do not exist.
-
-After clustering the reference sequences, the next step is to build an
-index for pseudoalignment, and pseudoalign the reads from the samples
-against the index. In the mGEMS pipeline, we use Themisto to perform
-both the index construction and the pseudoalignment. The
-pseudoalignment step produces the alignment vectors for each read
-against every reference sequence, which are used as the input to
-mSWEEP.
-
-\subsection{Estimating relative abundances and binning the reads}
-
-The next step in the pipeline is to use mSWEEP to estimate the
-relative abundances of the reference groups based on the
-pseudoalignments against the sequences. This is performed directly on
-the output from Themisto, with no intermediate steps required. After
-the relative abundances have been estimated, the results are fed to
-mGEMS which produces the read bins and optionally also extracts the
-reads corresponding to each bin from the original set.
-
-
-\subsection{Assembling the read bins}
-
-In the second article of this thesis, the mGEMS pipeline also includes
-an optional step to assemble the sequences. The suggested assembler is
-shovill, which is an assembly pipeline built around the spades
-assembler but incorporating some pre- and postprocessing
-steps. Naturally other assemblers may also be used, or the assembly
-step skipped entirely and the analysis instead focusing the reads. In
-the second article we mostly focused on analysing the assemblies, as
-including an assembly step introduces a postprocessing step that can
-be useful in filtering out reads that have been mistakenly assigned to
-the bin.
-
-Since mGEMS allows for including a sequencing read in several bins at
-once, the produced read bins may have a very high coverage for shared
-parts of the genome when the sample contains several closely related
-organisms. Because of this, we investigated the effect of replacing
-the isolate-data optimised shovill with metagenomic assemblers, which
-presumably implement better handling of variable coverage in the
-produced genomes. Although we observed some differences in the
-resulting assemblies, there was no statistically significant evidence
-in favour of using either approach. Regardless of the assembler
-choice, using the mGEMS pipeline produced assemblies in downstream
-analyses performed similarly to a benchmark consisting of assemblies
-derived from isolate sequencing data.
-
-\subsection{Quality control}
-
-The mGEMS pipeline as described above is the method that has been
-applied in the third paper with the additional inclusion of a
-postprocessing step aimed at identifying whether the reference
-sequences suitably cover the reads or not. This postprocessing step,
-demix\_check (\url{https://github.com/harry-thorpe/demix_check/}),
-performs several quality control checks on the results from mSWEEP and
-mGEMS, aiming to determine whether the created read bins correspond to
-a reference cluster or not. Although this step was not included in the
-two methods papers presenting mSWEEP and mGEMS, its inclusion
-addressess an important question regarding the applicability of the
-results from mSWEEP/mGEMS. Therefore, including demix\_check
-\textemdash or other similar approach \textemdash as part of the mGEMS
-pipeline (between the mGEMS and the assembly steps) is recommended for
-a rigorous approach.
-
-- write about the detection thresholds.
-- figure from presentation showing the threshold construction process.
-
 The next chapter will cover the application of mSWEEP and mGEMS to
 both different kinds of sequencing data and explore how the methods
 can be applied to enable new directions in analysis of sequencing
@@ -1354,8 +1248,141 @@ parameter choices. The last part of the chapter will cover some
 results from the included papers related to what kind of information
 metagenomics-derived results provide.
 
+
+\subsection{The mSWEEP/mGEMS pipeline}
+
+- Flowchart describing the analysis pipeline.
+
+Combining the results from Sections \ref{section:model} and
+\ref{section:binning} produces the complete workflow for analysing
+sequencing data from mixed sources. This workflow is originally
+presented in the second paper \citep{maklin_bacterial_2021}, where it
+is referred to as the mGEMS pipeline.
+
+\subsubsection{Constructing the reference database}
+
+The pipeline begins with constructing a set of reference sequences
+that represent the variation in the target species of interest. In an
+ideal scenario, the reference should consist of high-quality
+assemblies from each lineage that is expected to be found in the
+sequencing reads. Since this is a rather unrealistic assumption,
+typical cases make use of published datasets and possible combine
+isolate sequencing data from their own studies. Either previously
+published assemblies or even curated genomes from databases such as
+RefSeq may be used but the reference may also include newly assembled
+sequences or otherwise be tailored to the problem at hand. In both
+cases a cautious approach is recommended, as the quality of the
+reference sequence set is the most important factor in obtaining
+trustworthy results from the pipeline.
+
+After the appropriate reference sequences have been collected, they
+should be clusered in some meaningful way to obtain the grouping. For
+some species, multilocus sequence typing is sufficient but for others
+with more variable genome contents, algorithms that attempt to
+identify clonal complex analogues may be uesful. One such algorithm is
+PopPUNK, which is demonstrated to perform relatively well in the third
+paper included in this thesis. PopPUNK clusters the reference
+sequences based on accessory and core genome distances, and provides
+results that are very similar to clonal complexes (groups of STs) for
+species where the complexes are defined. Using a computational like
+PopPUNK instead of a curated database approach like sequence types and
+clonal complexes has the advantage of being able to assign sequences
+that have not yet been included in the curated databases, or work with
+species for which such databases do not exist.
+
+After clustering the reference sequences, the next step is to build an
+index for pseudoalignment, and pseudoalign the reads from the samples
+against the index. In the mGEMS pipeline, we use Themisto to perform
+both the index construction and the pseudoalignment. The
+pseudoalignment step produces the alignment vectors for each read
+against every reference sequence, which are used as the input to
+mSWEEP.
+
+\subsubsection{Estimating relative abundances and binning the reads}
+
+The next step in the pipeline is to use mSWEEP to estimate the
+relative abundances of the reference groups based on the
+pseudoalignments against the sequences. This is performed directly on
+the output from Themisto, with no intermediate steps required. After
+the relative abundances have been estimated, the results are fed to
+mGEMS which produces the read bins and optionally also extracts the
+reads corresponding to each bin from the original set.
+
+\subsubsection{Assembling the read bins}
+
+In the second article of this thesis, the mGEMS pipeline also includes
+an optional step to assemble the sequences. The suggested assembler is
+shovill, which is an assembly pipeline built around the spades
+assembler but incorporating some pre- and postprocessing
+steps. Naturally other assemblers may also be used, or the assembly
+step skipped entirely and the analysis instead focusing the reads. In
+the second article we mostly focused on analysing the assemblies, as
+including an assembly step introduces a postprocessing step that can
+be useful in filtering out reads that have been mistakenly assigned to
+the bin.
+
+Since mGEMS allows for including a sequencing read in several bins at
+once, the produced read bins may have a very high coverage for shared
+parts of the genome when the sample contains several closely related
+organisms. Because of this, we investigated the effect of replacing
+the isolate-data optimised shovill with metagenomic assemblers, which
+presumably implement better handling of variable coverage in the
+produced genomes. Although we observed some differences in the
+resulting assemblies, there was no statistically significant evidence
+in favour of using either approach. Regardless of the assembler
+choice, using the mGEMS pipeline produced assemblies in downstream
+analyses performed similarly to a benchmark consisting of assemblies
+derived from isolate sequencing data.
+
+\subsubsection{Quality control}
+
+The mGEMS pipeline as described above is the method that has been
+applied in the third paper with the additional inclusion of a
+postprocessing step aimed at identifying whether the reference
+sequences suitably cover the reads or not. This postprocessing step,
+demix\_check (\url{https://github.com/harry-thorpe/demix_check/}),
+performs several quality control checks on the results from mSWEEP and
+mGEMS, aiming to determine whether the created read bins correspond to
+a reference cluster or not. Although this step was not included in the
+two methods papers presenting mSWEEP and mGEMS, its inclusion
+addressess an important question regarding the applicability of the
+results from mSWEEP/mGEMS. Therefore, including demix\_check
+\textemdash or other similar approach \textemdash as part of the mGEMS
+pipeline (between the mGEMS and the assembly steps) is recommended for
+a rigorous approach. This and other questions related to quality
+control and reliability of the results are explored further down in
+this chapter.
+
+- figure from presentation showing the threshold construction process.
+
+\subsection{Other approaches for metagenomic analyses}
+\label{other-metagenomics-approaches}
+While this thesis deals with the development and usage of mSWEEP and
+mGEMS, one has to acknowledge that the use of metagenomic sequencing
+data is by no means an understudied field. In fact, dozens of methods
+exist that aim to perform similar tasks ranging from genome assembly
+from metagenomic sequencing data (metagenome assemblers) to taxonomic
+binning (metagenomic binners) and profiling, and strain tracking
+(StrainGE and Strainphlan). Compared to mSWEEP and mGEMS, these
+methods typically assume that the samples only contain a single strain
+from each species, which makes the task solvable. While it may at
+first seem suspicious that a thorough comparison between these methods
+and mSWEEP/mGEMS has not been included in the published papers, the
+assumptions about the strain complexity lie at the heart of the
+problem. Since these tools have not been developed with the kind of
+data that mSWEEP/mGEMS analyse in mind, a performance comparison
+between them is not meaningful.
+
 \section{Benchmarking mSWEEP and mGEMS}
-Describe the benchmarking from the first two papers i e convince readers that the methods work nicely.
+This section will briefly cover the results related to benchmarking
+the performance of mSWEEP and mGEMS in the first and the second
+papers. A majority of the benchmarks were performed on synthetic
+mixtures of sequencing reads from isolate cultures but the mGEMS paper
+also provides a (significantly smaller in scale) benchmark that used
+\textit{in vitro} mixtures of DNA from isolate cultures. Figures from
+the papers have not been reproduced here, and the results are
+presented in a summarizing format merely to convince the reader of the
+kinds of applications that mSWEEP and mGEMS perform well in.
 
 \subsection{mSWEEP}
 The first paper in the thesis presented a comparison of mSWEEP with
@@ -1431,28 +1458,226 @@ within-species level using \textit{E. faecalis}, and an extreme case
 with only dozens of SNPs separating the different reference clusters
 using data from \textit{S. aureus}.
 
-describe the different benchmarks.
+\subsubsection{Synthetic data benchmarks}
 
-\subsection{Other approaches for metagenomic analyses}
-\label{other-metagenomics-approaches}
-Other metagenomics approaches.
+In the \textit{E. coli} benchmark we investigated how well
+mGEMS-derived assemblies performed for maximum likelihood phylogeny
+estimation (using RAxML-NG, Gamma+GTR4M model) when compared to using
+isolate sequencing data. We used snippy to derive the core genome
+alignment against the same reference genome for both mGEMS-derived
+assemblies and the isolate assemblies. The results showed that mGEMS
+tends to slightly overestimate the number of SNPs in these assemblies
+(Figure 2 panel a in the paper (TODO cite)) but the phylogenetic
+relationships (Figure 3) are recovered quite well. This benchmark was
+performed at the level of variation within a sequence type
+(\textit{E. coli} ST131).
+
+The \textit{E. faecalis} benchmark was performed similarly to the
+\textit{E. coli} one but with the intention of investigating
+performance with between-ST variation. Additionally,
+\textit{E. faecalis} is known to have a relatively high rate of
+recombination within the species across ST lines (TODO citation),
+which adds to the difficulty of the problem. Nevertheless, the mGEMS
+derived-assemblies do recover the overall structure of the phylogeny
+and place to sequences from the same ST to the same clade. While the
+global structure is somewhat different from the isolate assembly
+phyolgeny, these kind of differences may easily be explained by
+uncertainty arsing from recombination affecting the placement of the
+STs globally. This phenomenon is also apparent in the bootstrap
+support values for both the isolate and mGEMS-derived phylogenies.
+
+The final synthetic benchmark in the second paper investigated
+phylogeny recovery in \textit{S. aureus} ST22 sublineages that are
+separated by a few dozen SNPs (TODO citation). Although the
+performance in this benchmark was not quite as good as in the two
+others, the mGEMS-derived results nevertheless do manage to replicate
+some parts of the results relating to the transmission analysis
+performed in the source study for this data. Namely, the samples that
+were observed to be the likely source of the pathogenic strain in the
+sequenced patients were placed at the root of the phylogeny when using
+both mGEMS and isolate data. Regardless, there is some lack of detail
+further down in the tree which is likely a result of the small degree
+of separation between the sublineages.
+
+\subsubsection{\textit{In vitro} benchmark}
+
+The second paper also included an \textit{in vitro} benchmark data,
+where known amounts of DNA from three different strains were mixed
+together using Qbit, and both the mixed sample and the corresonding
+isolate cultures were sequenced. This data was used to re-test the
+performance of both mSWEEP (covered in the previous subsection) and
+mGEMS. The mGEMS part of the test examined the recovery of SNPs from
+either the isolate sequencing data or the mixed sequencing data. In
+both the \textit{E. coli} and \textit{E. faecalis} test samples the
+SNPs recovered from the mGEMS data reflect the ``true'' values from
+the isolate data quite closely, although there is some difficulty in
+separating the ST131-C2 sublineages 4 and 6. However, due to the
+increasingly difficult task of defining sublineages within
+sublineages, this difficulty is likely not relevant for practical
+analyses.
+
+Together, these benchmarks hopefully show that the mGEMS method can be
+reliably used to disentangle metagenomic sequencing data and create
+lineage-specific read bins. These bins in turn can be used in standard
+epidemiological analyses in place of isolate sequencing data,
+producing similar results. While mGEMS does not completely replace the
+use of isolate sequencing data in epidemiology \textemdash the
+availability of high-quality reference sequences from isolate
+sequencing remains a critical part of the pipeline \textemdash the
+method nevertheless shows promise in reducing the number of isolate
+cultures that need to be created. Additionally, applying mGEMS to pure
+metagenomics sequencing data can yield results that previously
+available tools have not been able to produce as will be shown in more
+in Chapter \ref{section:metagenomic-epidemiology} that covers the
+experimental results from the third paper.
 
 \section{Assessing reliability of the results}
 
-- Cover detection thresholds
-- Cover Harry's pipeline
-- Cover other means used in the manuscript (fitering by ``pseudocoverage (abundance * number of reads)''), setting minimum thresholds, etc.
+A principal question when applying mSWEEP/mGEMS in practice is whether
+the results from either are trustworthy or not. Since the former
+method uses a Bayesian approach to estimating the relative abundances
+of the reference lineages, none of the abundances will ever be exactly
+zero. This naturally results in the question: ``When is a lineage
+truly present in the sample?'' when applying mSWEEP in
+practice. Furthermore, since the abundance estimates from mSWEEP are
+the basis for the mGEMS pipeline, it is of importance to know when the
+results for lineages with a high (in some sense) relative abundance
+are truly correct and not just a result of, for example, missing
+reference lineages. These two questions will be covered in the rest of
+this section.
 
-\section{Assessing model assumptions}
-- Zero inflation vs no inflation; degree of inflation
-- Sensitivity to hyperparameter values
+\subsection{Detection thresholds for lineages}
+To answer the question regarding the minimum abundance required to
+call an abundance estimate reliable or not, the mSWEEP paper provides
+an approach termed \textit{detection thresholds}. These thresholds aim
+to provide a minimum abundance that the estimates must exceed in order
+to be reliable, and give accompanying p-value-analogues to assess the
+degree of trust in the threshold itself. Although this approach is
+computationally somewhat cumbersome to apply in practice, especially
+when the size of the reference sequence set increases, the approach
+should nevertheless provide means for more careful consideration of
+the estimates without resorting to simpler measures such as filtering
+by a constant abundance.
+
+The detection threshold approach is based on bootstrapping sequencing
+reads from existing samples with known genome assemblies in the
+reference collection. The assembly is removed from the reference, and
+the bootstrapped reads (which contain data from only the single,
+removed assembly) are put through mSWEEP to obtain a bootstrapped
+abundance estimate. This approach is then repeated for some number of
+reference sequences, each removed in turn, to provide several
+bootstrapped abundance estimates for each reference lineage. The
+bootstrapped estimates are used to evaluate the magnitude of the
+relative abundance estimates that are given for the \textit{absent}
+lineages, and combined across all values generated when varying the
+removed reference sequences. When repeated for all reference lineages,
+this approach gives a set of values that represent the false estimates
+when the true contents of the sample are differen. The false estimates
+for each lineage are ordered, and one of the higher values is picked
+as a cutoff point that defines the detection threshold for this
+lineage with an accompanying p-value-analogue that depends on the
+number of estimates that are allowed to exceed the cutoff. This
+somewhat complicated approach is described in more detail in the first
+paper.
+
+While the detection thresholds approach has some merit in its
+theoretical foundations in using bootstrapping to estimate the
+magnitude of the false estimates, the approach has some problems when
+applied in practice. Namely, the need to remove a reference sequence
+to bootstrap the abundance estimates necessitaes reconstruction of the
+pseudoalignment index for each sample that is generated from the
+removed sequences. Since dynamic indexing (meaning that sequences can
+be added/removed without rebuilding the whole index) remains an open
+problem at the time of writing, the approach is quickly rendered
+computationally infeasible when applied to reference sets that are
+larger than those used in the mSWEEP paper. Unfortunately for the
+detection threshold construction, for many applications it is tempting
+to include as much reference data as possible to cover naturally
+occurring strain-level variation. This has resulted in the approach
+being not applied in practice and remaining a curiosity until dynamic
+indexes hopefully become available.
+
+\subsection{Pseudocoverage as a threshold}
+
+One alternative to the detection thresholds can be found by figuring
+out a way to define some sort of threshold on the abundance estimates
+without utilizing bootstrapping-based approaches. In practice, this
+translates to using the number of aligned reads and the abundance
+estimates together to estimate the \textit{pseudocoverage} of the
+reference lineage. Pseudocoverage $c^{\star}_{k}$ for reference
+lineage $k$ is defined as the product of the abundance estimate
+$\theta_{k}$ for lineage $k$ and the total number of bases $b$ in the
+reads that pseudoaligned against any reference sequence divided by the
+average genome length $l_{k}$ in lineage $k$
+\begin{equation}
+  \label{pseudocoverage}
+  c_{k}^{\star} = \frac{\theta_{k}b}{l_{k}}.
+\end{equation}
+Although the definition in Equation \ref{pseudocoverage} is similar to
+the basic definition of average coverage (number of bases in aligned
+reads divided by genome length), these two definitions are not
+necessarily the same.
+
+To elucidate the difference between coverage and pseudocoverage,
+consider a set of sequencing reads originating from two bacterial
+strains, both with $100$ base pair long genomes, that differ by a
+single base pair and are present in equal proportions in the sample
+providing the sequencing reads. Assuming that we have 100 one base
+pair long reads from each position in both genomes, the average
+coverage of both strains would be $199$ since $9900\cdot2$ reads
+will align to both genomes and only $100\cdot2$ reads will align to
+just one. However, when considering the relative abundance estimates
+for these two strains, their true values are $0.50$ and $0.50$ since
+we know that both strains are present in equal proportions. This gives
+both strains a pseudocoverage of $99.5$ \textemdash a conservative
+value compared to the traditional coverage definition.
+
+Pseudocoverage can be used to define a threshold on the relative
+abundance estimates by finding the value of $\theta_{k}$ that provides
+for example a pseudocoverage of \textit{at least} $1$x. Since the
+pseudocoverage is a conservative estimate of the true coverage (the
+exact, typically more complex than in the thought experiment above,
+relationship depending on the relatedness of the lineages $k$), this
+minimum value can be taken as a sort of a threshold on the relative
+abundances. If combined with means to investigate whether the lineages
+that remain after filtering by this approach are a good fit to the
+reference lineages, pseudocoverage provides an adjustable rule that is
+more easy to evaluate than the detection thresholds described above.
+
+\subsection{Compatibility of the clustering and the reads}
+The remaining question regarding the reliability of the estimates from
+mSWEEP concerns the fit of the reference lineages with the estimated
+contents of the bins produced by mGEMS. This issue was not covered in
+neither the mSWEEP nor the mGEMS paper but since the publication of
+the first, an external method has been developed to address the
+question. This method, called demix\_check (TODO citation), uses mash
+(TODO citation) distances between the bins from mGEMS and the
+reference sequences assigned to each lineage to evaluate the fit
+between the read bin and the lineage. In practice, demix\_check has
+proved invaluable in addressing the results from mGEMS and is an
+integral part of the processing pipeline that was used in the third
+paper of this thesis. Since this method was not developed by the
+author of this thesis, it won't be covered in more detail although its
+inclusion in the mGEMS pipeline is strongly recommended.
+
+%% \subsection{Brief consideration of model assumptions}
+%% %% * Not needed *
+%%
+%% For a reader more versed in probabilistic modelling, a final question
+%% regarding reliability would relate to the assumptions made by the
+%% mSWEEP model and when and whether those assumptions hold or not.
+%%
+%% - Zero inflation vs no inflation; degree of inflation
+%% - Sensitivity to hyperparameter values
+
+\chapter{Metagenomic epidemiology}
+\label{section:metagenomic-epidemiology}
+
 
 \section{Metagenomics-derived results in practice}
 
 - Stuff about how to interpret results from metagenomics
 - Tie in to the next chapter.
-
-\chapter{Metagenomic epidemiology}
 
 Something about wgs and genomic epidemiology can do lots of cool stuff
 to identify contaminated cucumbers or track covid.
