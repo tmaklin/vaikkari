@@ -60,10 +60,10 @@
 % For article-based theses, the number of the last page of the list of
 % references of the preamble part + the total number of the pages of
 % the original articles and interleaf pages.
-\supervisorlist{Antti Honkela, University of Helsinki, Finland \\ \hspace{8pt} Jukka Corander, University of Oslo, Norway}
-\preexaminera{Exam Iner, University of Examinations, Exaministan}
-\preexaminerb{Read Er, University of Examinations, Exaministan}
-\opponent{Oppo Nent, University of Endless Argumentation, The Argumentlands}
+\supervisorlist{Antti Honkela, University of Helsinki, Finland \\ \hspace{8pt} Jukka Corander, University of Helsinki, Finland}
+\preexaminera{Ashlee Earl, Broad Institute of MIT and Harvard, USA}
+\preexaminerb{Tommi Vatanen, University of Auckland, New Zealand}
+\opponent{Leo Lahti, University of Turku, Finland}
 \custos{Antti Honkela, University of Helsinki, Finland}
 \generalterms{Algorithms, Experimentation}
 \additionalkeywords{genomic epidemiology, plate sweeps, probabilistic modeling, pathogen surveillance, taxonomic profiling, taxonomic binning, metagenomics}
@@ -1673,42 +1673,259 @@ inclusion in the mGEMS pipeline is strongly recommended.
 \chapter{Metagenomic epidemiology}
 \label{section:metagenomic-epidemiology}
 
-\section{Genomic epidemiology}
+(TODO citations) Genomic epidemiology refers to the use of sequencing
+data to identify pathogen transmissions chains and analyse the spread
+and diversity of the pathogen population. These analyses are typically
+performed using cultivated colonies, where the bacterial strains of
+interest are isolated and sequenced from their own plates in order to
+produce sufficiently deep sequencing depth for SNP calling, assembly,
+and other genomic analyses. In the same spirot, metagenomic
+epidemiology refers to performing the genomic epidemiology tasks but
+forgoing the culture step and using for example WGS metagenomics to
+identify and analyse the pathogens. While in the previous literature
+metagenomic epidemiology has typically been performed using genus- or
+species-level resolution tools like 16S sequencing, in this thesis the
+term will also encompass the use of mSWEEP/mGEMS to perform the
+analyses at the within-species level.
 
-- describe what genomic epidemiology is
-- descrie 
-Something about wgs and genomic epidemiology can do lots of cool stuff
-to identify contaminated cucumbers or track covid.
+\section{From genomic epidemiology to metagenomic}
 
-\section{From genomic to metagenomic}
+In the previous chapter we saw that mSWEEP and mGEMS enable
+high-resolution analysis of metagenomic sequencing data. Especially
+when it comes to epidemiologically relevant analyses such as SNP
+calling and assembly, the mGEMS-derived read bins perform nearly
+identical to isolate sequencing data. This means that most standard
+epidemiological analyses can be performed with metagenomic sequencing
+data by applying the mGEMS pipeline \textemdash provided that a
+sufficiently accurate reference database exists for the species of
+interest. Using metagenomic sequencing data in place of isolate
+sequencing data comes with the previously covered cost-efficiency and
+vast expansion of throughput. Metagenomic epidemiology also enables
+performing various novel analyses by allowing strain-level analysis of
+either the unbiased data produced by WGS metagenomics, or detailed
+exploration of the diversity within some restricted set of taxons that
+can be enriched via the plate sweep metagenomics approach.
 
-\subsection{Using metagenomics-derived results}
+This shorter chapter will briefly cover some of the experimental metagenomic
+epidemiology results from the three papers included in this thesis as
+well as the advantages and disadvantages of incorporating metagenomic
+sequencing data. The first paper included an experiment with
+real-world plate sweep metagenomics data, and the third paper provides
+an example of applying the mGEMS pipeline to WGS metagenomics
+data. While the second paper did not include a real-world application,
+the \textit{in vitro} mixture samples analysed in that paper do
+highlight some challenges for the methods that are relevant to this
+chapter. The chapter ends with some speculation about the future
+applicability of the methods and the types of analyses that are
+possible with the introduction of mSWEEP and mGEMS.
 
-- Stuff about how to interpret results from metagenomics
+\subsection{Metagenomics-derived results}
+
+Epidemiological analyses that have been performed from metagenomic
+sequencing data have the major advantage of covering the full spectrum
+of bacteria in a sample without the bias introduced by using
+cultivation steps. Because of this, results derived from metagenomic
+data should (in theory, with sufficiently high sequencing depth) be
+capable of providing at least the same results as non-metagenomics
+approaches while vastly extending the possibilities with regards to
+interactions between non-pathogenic and pathogenic species, and to
+identifying and tracking non-dominant strains of pathogenic
+species. When it comes to applying these methods in practice and
+interpreting the results, there are some obstacles standing in the way
+of rendering isolate sequencing studies redundant.
+
+One of the most obvious questions in using metagenomics-derived
+results in practice is what to do with the diversity that can be found
+in most samples. For practical use, most of the species (especially
+the commensal ones) are firstly not of any interest from a clinical
+point of view. Secondly, when dealing with microbiomes that are less
+extensively studied, many of the strains will not correspond to any
+previously sequenced lineages or even species, rendering the
+reference-based approaches like mSWEEP and mGEMS useless. Even for
+reference-free approaches, it can be difficult to place the results in
+a meaningful context if the samples contain significant amounts of
+previously unencountered diversity. These factors mean that when
+talking about metagenomic epidemiology in practice, the interpretation
+and analyses might typically focus on species that have already been
+studied using isolate sequencing, and exhaustive exploration of the
+diversity remains somewhat unfeasible but the approach has
+nevertheless potential.
 
 \subsection{Challenges}
-- Challenges in using metagenomic data
+The major challenges in using metagenomic sequencing data relate to
+the diversity found in the samples. It is not untypical to encounter
+the (pathogenically) interesting species at very low abundances,
+resulting in a need to sequence the sample at much higher depth than
+what would be used in isolate studies. This low abundance can also
+cause problems in terms of identifying the presence of the species in
+the first place as the number of reads that uniquely map to the
+species may be even lower than its relative abundance. Therefore, many
+sequencing reads will be generated from commensal or even contaminant
+species which usually have no use in the downstream analyses. In
+addition, WGS metagenomics sometimes results in an overabundance of
+host DNA in the sample, which dominates the contents of the reads from
+a sequencing run.
+
+A second problem with metagenomics analyses relates to the lack of
+reference data from many domains of life that might be found in the
+uncultivated sample. Even if we disregard the presence of for example
+fungi, yeasts, and bacteriophages that are commonly found alongside
+the interesting bacteria, restricting ourselves to the bacterial
+domain still leaves a massive number of bacteria that have not been
+studied before. Although the estimates for the amount of ``microbial
+dark matter'' vary depending on the source (TODO citations), the
+discovery of even completely new genera is not unheard of. This
+presents significant challenges for reference-based methods if the
+goal is to analyse the full diversity of the sample. While focusing on
+the more well-known bacteria does help in resolving the issue, new
+species of these bacteria are nevertheless occasionally
+discovered. When going further down to the within-species level, it is
+almost a certainty to find new lineages of the species when the
+sequencing effort is sufficiently large.
+
+The third issue is related to the lack of maturity in methods for
+analysing metagenomic data, perhaps connected to the difficulties in
+solving the previous issues. Although this thesis attempts to peddle
+mSWEEP and mGEMS as tools for partially solving the problem, they are
+by and far not capable of performing \textit{all} kinds of analyses
+that one might be interested in and come with the acknowledged issues
+related to the reference-based approach. In practice, this implies
+that for many samples a human intervention in analysis pipelines may
+be required to identify cases that are plagued by these issues, and to
+remove them from further consideration \textemdash  a daunting and
+difficult task.
 
 \subsection{Advantages}
-- Advantages of using metagenomic data
+
+Although using WGS or plate sweep metagenomics in practice has its
+disadvantages, some major advantages in favour of the approaches do
+(obviously) exist, the foremost of these the ability to analyse the
+complete diversity with a single sequencing run. When performing a
+metagenomic sequencing run, we get vastly more data about the contents
+and composition of the sample than what would be obtained even with
+several different culture media and subsequent isolate sequencing
+runs. This information in turn enables making inferences about the
+coexistence and competition dynamics between different taxonomic units
+or even cotransmission when considering epidemiological applications.
+
+Another advantage of metagenomics-based analyses is their capability
+to increase the number of samples that can be processed since the
+plating steps may be entirely skipped. If we are not interested in
+obtaining high sequencing depths, then the samples may simply be
+processed through the WGS metagenomics pipeline and disentangled
+computationally. For a higher depth, the plate sweep approach may be
+used to generate more reads from some interesting species. Regardless,
+both approaches significantly reduce the amount of laboratory work
+that is needed and (when they work) allow processing of samples even
+in less-well resourced facilities.
 
 \section{Metagenomic epidemiology in practice}
+
+While the previous section covered theoretical factors related to
+using metagenomics-derived results in practice, this section will
+focus on briefly summarizing the practical application of mSWEEP and
+mGEMS to both plate sweep and WGS metagenomics data in the included
+papers. The first subsection will cover results from the plate sweep
+approach that was initially employed and required by both mSWEEP and
+mGEMS. The second subsection shows results from applying the two
+methods to WGS metagenomics data, showing that the methods are not
+restricted to the more specialized plate sweep approach. The results
+are naturally presented in more detail in their respective papers but
+a summary is provided here to elaborate on the potential applications
+of mSWEEP and mGEMS.
+
 \subsection{Plate sweep metagenomics}
 
-Describe the experimental results from the first two papers.
+In the mSWEEP paper, the method was applied to a set of \textit{in
+  vitro} plate sweep samples from children sequenced at Vietnamese
+hospitals. These samples were paired for information about before and
+after exposure to antibiotic treatment in diarrhea cases, and the
+whole plate was sequenced in accordance to the plate sweep protocol
+suggested in the paper. The samples were analysed with mSWEEP, and in
+the paper we compared the differences in \textit{E. coli} sequence
+type contents and their relative abundances.
+
+The results from these samples found a significant difference in the
+lineage composition between the two sets of samples, with the
+commensal ST10 and ST14 complexes being much more common in the
+pre-treatment set, and the hospital-associated ST131 and ST38 (TODO
+citations) being more common post-treatment. No significant difference
+was detected in the composition of the samples (magnitudes of the
+relative abundance estimates), meaning that there was no significant difference in
+the number of samples that contained coexisting lineages pre- or post-treatment.
+
+This analysis demonstrates simple means to analyse the
+lineage-contents of some sets of samples using only the relative
+abundance estimates. While it would be optimal to include the mGEMS
+pipeline steps (unavailable at the time the article was written), the
+results obtained using only abundace estimates are in line with the
+hypothesis/knowledge that commensal lineages may be replaced
+antibiotic-resistance harbouring lineages because of treatment. If a
+more thorough sampling had been performed, the abundance estimates
+alone would have been enough to identify when or if the lineage
+composition shifts back to the previous, presumably stable,
+composition found in the pre-treatment cohort. Focusing the analysis
+on the \textit{E. coli} diversity only using the plate sweep approach
+provided high enough detail in the sequencing reads that this sort of
+within-lineage exploration could be performed. With the development of
+mGEMS, the analysis would become even more powerful with the
+possibility to separate the different strains (in cases that exhibited
+coexistence) and provide means to run for example antibiotic
+resistance gene finders or phylogenetic analyses confidently.
 
 \subsection{WGS metagenomics}
 
-Describe the experimental results from the third paper.
+The third paper shows a set of results from applying mSWEEP and mGEMS
+to WGS metagenomics sequencing data. This data was obtained from
+another study that investigated the differences in colonization of the
+newborn human gut using WGS metagenomic data from the 21 days of
+life. In the original study the analyses were performed only on the
+species-level. We used this dataset to demonstrate that mSWEEP and
+mGEMS can be used to provide additional insights into the strain-level
+dynamics present in the samples by focusing on the species that are
+known to be pathogenic and have extensive available reference
+collections.
 
-\section{Future considerations}
+The results from this paper elucidate the colonisation dynamics in a
+virginal microbiome, showing a strong competition for the first strain
+of a species to colonize the gut. We found that in very few cases the
+samples contained several strains of the same species. Instead, the
+babies would be colonized by a single strain that typically persisted
+in the gut for the first 21 days or in some cases switched to another
+strain. Coexistence (within species) was rarely observed across the
+species analysed although we found some synergistic relationships
+between \textit{Klebsiella} species that the original study had
+missed. Additionally, we used the mGEMS-derived assemblies to perform
+analyses of the antimicrobial gene contents of the different species,
+finding no significant differences between the vaginally born and
+caesarean section delivered babies.
 
-\subsection{Applicability}
-How do these show that what our methods are capable of and what they
-could potentially be applied to in the future.
 
-\subsection{Enables}
-More speculative chapter.
+All of these analyses required the use of mSWEEP and mGEMS, as to our
+knowledge no other methods exist for analysing this kind of data at
+this kind of resolution. This study, together with the plate sweep
+studies, demonstrates the usefulness of having a method capable of
+targeted, high-resolution analysis of some parts of the
+microbiome. Additionally, since these results were derived from WGS
+metagenomics data, we demonstrated the removal of a barrier in
+requiring plate sweep metagenomics data that has prevented more
+widespread application of mSWEEP and mGEMS. This shows that our two
+methods can used alongside established tools for metagenome analyses
+when more information is desired about some particular subset of
+organisms within the samples.
+
+\section{Conclusions}
+
+In this last chapter of the thesis we have demonstrated some analyses
+enabled by the application of mSWEEP and mGEMS to either plate sweep
+or WGS metagenomics sequencing data. Although the first two included
+papers had been written with only plate sweep sequencing data in mind,
+the third paper provides hopefully convincing evidence of the quality
+of results that can be derived from WGS metagenomics. We hope that the
+methods will find their place in the set of tools available for
+analysis of bacterial sequencing data, and look forward to exploring
+the exiting possibilities in the field of both genomic and metagenomic
+epidemiology that they enable.
 
 \printbibliography[heading=bibintoc]
 
