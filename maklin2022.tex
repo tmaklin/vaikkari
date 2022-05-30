@@ -63,8 +63,8 @@
 \supervisorlist{Antti Honkela, University of Helsinki, Finland \\ \hspace{8pt} Jukka Corander, University of Helsinki, Finland}
 \preexaminera{Ashlee Earl, Broad Institute of MIT and Harvard, USA}
 \preexaminerb{Tommi Vatanen, University of Auckland, New Zealand}
-\opponent{Leo Lahti, University of Turku, Finland}
-\custos{Antti Honkela, University of Helsinki, Finland}
+\opponent{To be appointed}
+\custos{To be appointed}
 \generalterms{Algorithms, Experimentation}
 \additionalkeywords{genomic epidemiology, plate sweeps, probabilistic modeling, pathogen surveillance, taxonomic profiling, taxonomic binning, metagenomics}
 % Computing Reviews 1998 style
@@ -101,10 +101,10 @@
 \end{abstract}
 
 \begin{acknowledgements}
-  Olvi (III) \\ \& Koff IVA
+  acknowledgements
    \begin{flushright}
-  Rv  rip, June 2022\\
-  Tommi Mäklin
+  place\\
+  author
   \end{flushright}
 \end{acknowledgements}
 
@@ -552,7 +552,26 @@ articles.
 
 \chapter{Mixture modeling of sequence data}
 
+- Historical context from RNA sequencing.
+
+Mixture models have been utilized for several decades in modelling
+sequencing data originating from different sources. One of the
+earliest mentions of using such a model is found in the context of
+.... (TODO cite the paper Antti showed), where ... .
+
+With the introduction of faster methods for sequence alignment and
+more accurate sequencing reads, the model from (TODO cite above) was
+eventually extended with more advanced likelihood functions to deal
+with .... (cite the developments). This ....
+
+%%%%
 - write about Reference data vs Reference-free approach <- might go to intro?
+
+While the above models deal with an approach where sequence alignment
+against reference data is used to evaluate the compatibility between
+the reads and the reference, some alternative reference-free
+approaches have also been developed. Typically based on using
+distances between the sequencing reads, these methods (TODO citations).
 
 \section{Characteristics of sequence data from bacteria}
 \label{section:bacterial-data}
@@ -564,7 +583,7 @@ Something about bacterial pathogens are hard to classify taxonomically
 and have weird genomes with weird plasmids and stuff.  Lineages are
 much much nicer to work with
 
-\section{Sequence alignment}
+\section{Sequence alignment and reference databases}
 \label{section:sequence-alignment}
 - Significance of alignment in the analyses (themisto vs traditional alignmnt? Could make a small example here in the high-resolution metagenomics section
 
@@ -575,7 +594,19 @@ much much nicer to work with
 \section{A probabilistic model for sequences from mixed sources}
 \label{section:model}
 
-- Historical context from RNA sequencing.
+In this section I will introduce and cover the probabilistic model
+used by mSWEEP. This model is an extension of the probabilistic model
+for grouped reference sequences that is used by BIB. Compared to BIB,
+which requires a single representative sequence from each reference,
+the mSWEEP model allows for using an arbitrary number of reference
+sequences to represent each lineage. In addition, to improve
+scalability of the alignment step in BIB, the mSWEEP model is based on
+using pseudoalignments rather than the traditional location-based
+alignments. The use of many representative sequences leads to a
+significantly improved accuracy when dealing with species that exhibit
+variability within the reference lineages, while leveraging
+pseudoalignments enables the use of much larger reference sequence
+collections.
 
 \subsection{Mixture model formulation}
 
