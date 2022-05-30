@@ -967,18 +967,18 @@ sequence and some of them hundreds or even thousands. Two, due to
 sequencing errors, reference errors (assembly errors or lack of
 reference sequences from a cluster), and mutations, the read may not
 necessarily pseudoalign against any sequences in a cluster even though
-it belongs to the cluster. Three, the clusters are unlikely
-independent of each other; and four, consequently the read can
+it belongs to the cluster. Three, a cluster with a higher fraction of
+sequences that the read aligned against should always be a better
+candidate for having produced the read; and four, the read can
 plausibly pseudoalign against several or even all of the clusters.
 
 These four factors lead to considering a likelihood with the following
 properties: 1) within each cluster and ignoring the case where no
 pseudoalignments are observed, the likelihood function must be
 increasing in the number of pseudoalignments (more alignments always
-means a better fit to the cluster); 2) the likelihoods from different
+means a better fit to the cluster); and 2) the likelihoods from different
 clusters should be on the same scale regardless of the number of
-sequences in the cluster; and 3) the different clusters should have
-some kind of dependency on the other clusters. This leads to us
+sequences in the cluster. This leads to us
 defining the likelihood $p\left(r_{n, k} \middle| I_{n} = k\right)$ in
 three parts
 \begin{equation}
@@ -1004,15 +1004,15 @@ function of the pseudoalignment counts $r_{n, k}$ and the cluster size
 $M_{k}$. In terms of our requirements for the likelihood,
 $f\left(r_{n, k}, M_{k}\right)$ is the term that should fulfill them.
 
-Had we assumed independence between the different clusters, a
-reasonable choice for $f\left(r_{n, k}, M_{k}\right)$ would be the
-beta-binomial distribution. This distribution is an extension of the
-binomial distribution, allowing for over/under-dispersion through a
-2-parameter formulation. The beta-binomial distribution has the
-following probability mass function $p\left(k \middle | n, \alpha,
-\beta\right)$ with parameters $\left(n, \alpha, \beta\right), n \in
-\mathbb{N}, \alpha > 0, \beta > 0$ and support $k \in \left\{0, \dots,
-n\right\}$
+Had we not made the assumption about the comparability of fractions of
+alignments between clusters of different sizes , a reasonable choice
+for $f\left(r_{n, k}, M_{k}\right)$ would be the beta-binomial
+distribution. This distribution is an extension of the binomial
+distribution, allowing for over/under-dispersion through a 2-parameter
+formulation. The beta-binomial distribution has the following
+probability mass function $p\left(k \middle | n, \alpha, \beta\right)$
+with parameters $\left(n, \alpha, \beta\right), n \in \mathbb{N},
+\alpha > 0, \beta > 0$ and support $k \in \left\{0, \dots, n\right\}$
 \begin{equation}
   \label{likelihood:beta-binomial-pmf}
   p\left(k \middle| n, \alpha, \beta\right) = \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(\alpha, \beta\right)}.
@@ -1025,18 +1025,19 @@ In Equation \ref{likelihood:beta-binomial-pmf}, $B\left(\alpha, \beta\right)$ is
 \end{equation}
 and $\binom{n}{k}$ is the binomial coefficient.
 
-Since we want the clusters to have some sort of dependency on each
-other, we cannot directly utilize the beta-binomial distribution in
-Equation \ref{likelihood:beta-binomial-pmf} but our approach is
-nevertheless inspired by it. Namely, we use a modified version of the
-distribution $p^{\star}\left(k \middle| n, \alpha, \beta\right)$,
-where the likelihoods are divided by their respective maximum value,
-changing their range to $\left[0, 1\right]$. Note that achieving the
-maximum value at $k = n$ requires restricting the parameter values of
-the original beta-binomial distribution so that its probability mass
-function is increasing. This assumption is fulfilled when
-$\alpha\left(\alpha + \beta\right)^{-1} \in \left(0.5, 1\right)$
-\citep{berg1993condorcet}.
+Since we want to ensure that a cluster with 100\% of sequences
+compatible with the read is better than another with only 99\%
+regardless of their size, we cannot directly utilize the beta-binomial
+distribution in Equation \ref{likelihood:beta-binomial-pmf} but our
+approach is nevertheless inspired by it. Namely, we use a modified
+version of the distribution $p^{\star}\left(k \middle| n, \alpha,
+\beta\right)$, where the likelihoods are divided by their respective
+maximum value, changing their range to $\left[0, 1\right]$. Note that
+achieving the maximum value at $k = n$ requires restricting the
+parameter values of the original beta-binomial distribution so that
+its probability mass function is increasing. This assumption is
+fulfilled when $\alpha\left(\alpha + \beta\right)^{-1} \in \left(0.5,
+1\right)$ \citep{berg1993condorcet}.
 
 Performing the scaling by the maximum value of $p$ in Equation
 \ref{likelihood:beta-binomial-pmf} results in the following likelihood
@@ -1083,8 +1084,7 @@ definition for the third part of the likelihood in Equation \ref{likelihood:with
   \label{likelihood:normalized}
   p\left(r_{n, k} \middle| I_{n} = k\right) = 0.99\frac{p^{\star}\left(r_{n, k} \middle| M_{k}, \alpha, \beta\right)}{Z\left(r_{n}\right)}\text{ if } r_{n, k} \geq 1\text{ and } M_{k} > 1,
 \end{equation}
-where $Z\left(r_{n}\right)$ is a normalizing constant that depends on
-all observed pseudoalignment counts $r_{n, k}, k = 1, \dots, K$. The
+where $Z\left(r_{n}\right)$ is a normalizing constant. The
 scaling in Equation \ref{likelihood:beta-binomial-scaled} fulfills our
 requirement that the likelihood of each cluster must be on the same
 scale despite different size. The next section will derive a closed
