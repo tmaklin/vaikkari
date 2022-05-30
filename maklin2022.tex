@@ -105,7 +105,7 @@
   divided into bins that correspond to some sensible taxonomic
   units. In this thesis I introduce methods for performing these two
   tasks at a high-resolution capable of distinguishing between
-  lineages of bacterial species. The first of these methods is mWEEP,
+  lineages of bacterial species. The first of these methods is mSWEEP,
   which solves the profiling task by utilizing a collection of grouped
   bacterial reference sequences, pseudoalignment, and a probabilistic
   model. The second method, mGEMS, builds upon mSWEEP to solve the
@@ -146,12 +146,13 @@
 
 \chapter{Introduction}
 
-In the past decades research focusing on bacterial pathogens has
-largely been driven by analysis of the contents of bacterial genomes
-obtained by whole-genome sequencing. Although the price of sequencing
-itself has decreased tremendously during this timeframe, most analyses
-still rely on using sequence data from pure bacterial cultures created
-by isolating a bacterium from an initial mixed culture. Since these
+In the past decades public health research focusing on bacterial
+pathogens has been transformed by analysis of the contents of
+bacterial genomes obtained by whole-genome sequencing
+\citep{armstrong2019pathogen}. Although the price of sequencing itself
+has decreased tremendously during this time frame, most analyses still
+rely on using sequence data from pure bacterial cultures created by
+isolating a bacterium from an initial mixed culture. Since these
 cultures are created by cultivating environmental samples, they
 typically contain several distinct bacteria \textemdash and other
 microorganisms \textemdash that a thorough analysis would aim to
@@ -212,7 +213,7 @@ of a set of reads (taxonomic profiling) or assigning the individual
 sequencing reads to their taxonomic origins (taxonomic binning), the
 accuracy of these tools is significantly hindered in the presence of
 within-species variation. In practice such variation is ubiquitous in
-both clinical and envinronmental samples, rendering many of the tools
+both clinical and environmental samples, rendering many of the tools
 difficult to use when within-species level information is required.
 
 In this thesis I present research that enables both taxonomic
@@ -262,7 +263,7 @@ resource-constrained laboratories.
 
 %- Something about sequeuncing reads and sequence assembly? 16S sequencing?
 
-Preparing bacterial DNA for sequeuncing is typically done after a
+Preparing bacterial DNA for sequencing is typically done after a
 culture step, where a sample is streaked across a culture plate or
 immersed in liquid and then inoculated for some amount of time to
 allow the bacteria to multiply and grow on the culture
@@ -330,7 +331,7 @@ In epidemiological analyses, the whole-genome sequencing approach has
 so-far dominated the field due to its ability to produce highly
 accurate data. However, transitioning sequencing efforts to either
 metagenomics or plate sweep metagenomics has obvious benefits in both
-upscaling the amount of samples that can be processed and in providing
+up-scaling the amount of samples that can be processed and in providing
 better representation for both species and strain-level diversity in
 the samples. Unfortunately the accuracy from existing tools has not
 been as good as required but with recent developments in sequence
@@ -345,7 +346,7 @@ exploration.
 Sequencing data from a metagenomic source presents several challenges
 to bioinformaticians. Firstly, the increased diversity of species
 requires much larger computational resources to analyse. Secondly, the
-possible pressence of strain-level variation vastly complicates
+possible presence of strain-level variation vastly complicates
 analyses that rely on separating the reads to distinct taxonomic units
 since the differences between strains of a bacteria can be minimal to
 the level of being confused with sequencing error. Subsequently, most
@@ -395,21 +396,21 @@ taxonomic binner) and have found much use in that regard.
 Both profiling and binning methods can further be divided into
 those that leverage reference data and those that attempt
 reference-free estimation. While reference-free estimation can yield
-data from previously unknow species or strains, reference-based
+data from previously unknown species or strains, reference-based
 approaches typically obtain higher resolution. Leveraging reference
 data is one of the central aspects of the work in this thesis to
 perform both taxonomic profiling (mSWEEP) and taxonomic binning
 (mGEMS), and the benefits of a reference-based approach will be
 explored in more detail later on.
 
-These metagenomics approaches have found widespread aplications in
+These metagenomics approaches have found widespread applications in
 analysing sequencing data from highly complex environments - such as
 soil samples. Especially the reference-free approaches have proved
 highly useful in cases where the contents of a sample bear little
 similarity to previously sequenced samples. However, these scenarios
 are becoming increasingly scarce with more widespread availability of
 sequence data and new culture methods developed for species previously
-thought unculturable. Especialy in clinical settings, where the
+thought unculturable. Especially in clinical settings, where the
 bacterial diversity is rather well known and has been studied for many
 years, it is uncommon to come across an entirely new (pathogenic)
 species. In these cases, adding information in the form of reference
@@ -417,7 +418,7 @@ sequences typically results in much higher ceiling for the possible
 resolution.
 
 In the class of metagenomics analyses, the approach presented in this
-thesis falls broadly in reference-baesd taxonomic profiler and
+thesis falls broadly in reference-based taxonomic profiler and
 taxonomic binner category. However, our approach differs from previous
 research in that rather than trying to assign relative abundances to a
 set of reference sequences, we attempt to assign abundances to a
@@ -464,13 +465,13 @@ further revolutionize the way we think about disease.
 Incorporating metagenomics data into genomic epidemiological analyses
 presents the next obvious frontier. Since the microbiome is in
 practice nearly universally composed of several interacting
-micro-organisms, there is a high possibility that excluding some parts
+micro-org-organisms, there is a high possibility that excluding some parts
 may miss otherwise relevant information. For example, in a recent
-study (Gerry's), the pathogen \textit{S. pneumonimae} was found to
-often co-colonize patients with a dominant strain and a nondominant
+study (Gerry's), the pathogen \textit{S. pneumoniae} was found to
+often co-colonize patients with a dominant strain and a non-dominant
 strain. In the developed world, vaccine development has targeted the
-dominant strain but entirely ignored the nondominant strain, which has
-not been identified with previous methods. The nondominant strain
+dominant strain but entirely ignored the non-dominant strain, which has
+not been identified with previous methods. The non-dominant strain
 does, however, have the capability to cause the same disease and is,
 in fact, the leading cause in the developing world. The results from
 this study highlight that by focusing only on the non-metagenomic
@@ -493,7 +494,7 @@ the samples for future analyses, should methods capable for more
 detailed exploration become available.
 
 In conclusion, the already relatively recent field of genomic
-epidemiology can be seen as underogoing a transform into becoming
+epidemiology can be seen as undergoing a transform into becoming
 widespread public practice. With the development of methods - such as
 the ones presented in this thesis - capable of lowering the costs and
 increasing the resolution, the field will likely produce significant
@@ -596,8 +597,9 @@ articles.
 %% 
 
 Mixture models have been utilized in sequence data analysis since the
-introduction of RNA-Seq (TODO citations), where sequencing is used to
-identify the expresison levels of different isoforms. Their use has
+introduction of RNA-Seq, where sequencing identifying the expression
+levels of different isoforms is one of the main problems
+\citep{garber2011computational, wang2009rna}. Their use has
 specifically focused in solving the problem of determining the
 expressed genes when the input data does not allow for uniquely doing
 so but could plausibly originate from multiple sources. This is in
@@ -721,7 +723,7 @@ depending on the environmental conditions and species. This has
 several implications for analyses that incorporate the use of
 reference data from previously sequenced organisms. First, major
 changes in the genomic contents happen within human-observable
-timeframes and are reflected in sequence data obtained from what is
+time-frames and are reflected in sequence data obtained from what is
 assumed to be the same strain. Secondly, the DNA from bacteria is
 single-stranded, which is less stable than double-stranded
 DNA. Finally, bacterial genomes can undergo major horizontal gene
@@ -729,7 +731,7 @@ transfer events even across large evolutionary distances, resulting in
 major genomic differences. Together these factors mean that reference
 sequences for any set of bacteria are almost certainly at least
 somewhat different than what would be obtained from sequencing a
-descendant of the same culture that produecd the reference sequence.
+descendant of the same culture that produced the reference sequence.
 
 As already seen in BIB, the problem of rapid evolution in the
 reference can be solved by considering clusters of sequences as a unit
@@ -750,7 +752,7 @@ assemblies for a bacterial species, or several, lies at the core of
 the mSWEEP method. Since the abundance estimation is based on
 modelling pseudoalignments of reads against the reference sequences,
 the quality of the reference collection naturally affects the
-reliablity of the results. Our approach does not place constraints on
+reliability of the results. Our approach does not place constraints on
 the kinds of sequences that can be included, and thus allows for
 building bespoke databases that reflect the data being analysed. This
 has the advantage of allowing inclusion of isolate sequencing data
@@ -806,14 +808,14 @@ reference sequence. Instead of this location-based alignment, mSWEEP
 makes use of pseudoalignments, where only a 0 or 1 is reported for
 whether the read aligns somewhere within the reference sequence or
 nowhere. The mSWEEP publication used the kallisto method, which
-originaly introduced pseudoalignments, but the mGEMS paper introduced
-a more scalable version of kallisto, called themisto, that also
+originally introduced pseudoalignments, but the mGEMS paper introduced
+a more scalable version of kallisto, called Themisto, that also
 provides an exact version of the pseudoalignment
 algorithm. Pseudoalignments have the advantage that they are much
 quicker to evaluate, enabling alignment against orders of magnitude
 larger reference collections in a short amount of time. The
 disadvantage is binarizing the alignments, which requires some changes
-in the likelihood function of the mixure models that have previously
+in the likelihood function of the mixture models that have previously
 been proposed in the similar settings covered earlier. The next
 section will cover these changes and introduce the mSWEEP and mGEMS
 methods in more detail.
@@ -887,11 +889,11 @@ reference.
 
 To solve this, the model used in BIB incorporated a clustering for the
 reference sequences \textemdash meaning that instead of estimating the
-reltaive abundancecs $\boldsymbol\theta$ for the individual reference
+relative abundances $\boldsymbol\theta$ for the individual reference
 sequences, the abundance is estimated for the entire cluster. Although
 this approach introduces an obvious loss of resolution when compared
 to the sequence-based approach, introducing the use of clustering
-provides advantages in accomodating for naturally occurring variation
+provides advantages in accommodating for naturally occurring variation
 as well as improving the scalability of the inference part by reducing
 the number of reference units.
 
@@ -915,8 +917,7 @@ The model of Equation \ref{model:grouped-joint-distribution} has,
 however, several issues that render it difficult to apply in some
 scenarios. First, the model requires selecting a representative
 sequence for each cluster $k$. This selection is by no means an easy
-task \textemdash in fact the problem is TODO cite something
-.... Secondly, using a representative sequence implies assumptions
+task and, secondly, using a representative sequence implies assumptions
 about the clustering: namely that there must be minimal variation
 within the clusters in terms of genomic contents and that each cluster
 is clearly separated from the others. In BIB, the assumptions about
@@ -963,7 +964,7 @@ be carefully defined to account for several factors arising from the
 biological facts affecting the structure of the reference. One, the
 clusters may vary greatly in size, with some of them having just one
 sequence and some of them hundreds or even thousands. Two, due to
-sequencing erros, reference errors (assembly errors or lack of
+sequencing errors, reference errors (assembly errors or lack of
 reference sequences from a cluster), and mutations, the read may not
 necessarily pseudoalign against any sequences in a cluster even though
 it belongs to the cluster. Three, the clusters are unlikely
@@ -990,22 +991,23 @@ three parts
   \end{cases}
 \end{equation}
 
-In Equation \ref{likelihood:without-normalization}, the first part provides a slight
-zero-inflation for the model, corresponding (roughly) to the error
-level in Illumina sequencing data (TODO citation). The second part
-handles the special case where the cluster $k$ contains only one
-sequence ($M_{k} = 1$). For the rest of the cases, which represent the
-majority of the reference sequences in a setting where they can be
-plausibly assigned to clusters, the likelihood is chiefly defined by
-the term $f\left(r_{n, k}, M_{k}\right)$ which is a function of the
-pseudoalignment counts $r_{n, k}$ and the cluster size $M_{k}$. In
-terms of our requirements for the likelihood, $f\left(r_{n, k},
-M_{k}\right)$ is the term that should fulfill them.
+In Equation \ref{likelihood:without-normalization}, the first part
+provides a slight zero-inflation for the model, corresponding
+(roughly) to the error rate in Illumina sequencing data with a Phred
+quality score of Q20 \citep{ewing1998baseone, ewing1998basetwo}. The
+second part handles the special case where the cluster $k$ contains
+only one sequence ($M_{k} = 1$). For the rest of the cases, which
+represent the majority of the reference sequences in a setting where
+they can be plausibly assigned to clusters, the likelihood is chiefly
+defined by the term $f\left(r_{n, k}, M_{k}\right)$ which is a
+function of the pseudoalignment counts $r_{n, k}$ and the cluster size
+$M_{k}$. In terms of our requirements for the likelihood,
+$f\left(r_{n, k}, M_{k}\right)$ is the term that should fulfill them.
 
 Had we assumed independence between the different clusters, a
 reasonable choice for $f\left(r_{n, k}, M_{k}\right)$ would be the
 beta-binomial distribution. This distribution is an extension of the
-binomial distribution, allowing for over/underdispersion through a
+binomial distribution, allowing for over/under-dispersion through a
 2-parameter formulation. The beta-binomial distribution has the
 following probability mass function $p\left(k \middle | n, \alpha,
 \beta\right)$ with parameters $\left(n, \alpha, \beta\right), n \in
@@ -1029,9 +1031,16 @@ Equation \ref{likelihood:beta-binomial-pmf} but our approach is
 nevertheless inspired by it. Namely, we use a modified version of the
 distribution $p^{\star}\left(k \middle| n, \alpha, \beta\right)$,
 where the likelihoods are divided by their respective maximum value,
-changing their range to $\left[0, 1\right]$ (TODO: we need the
-increasing assumption here!) regardless of the values of $n, k,
-\alpha$, and $\beta$.
+changing their range to $\left[0, 1\right]$. Note that achieving the
+maximum value at $k = n$ requires restricting the parameter values of
+the original beta-binomial distribution so that its probability mass
+function is increasing. This assumption is fulfilled when
+$\alpha\left(\alpha + \beta\right)^{-1} \in \left(0.5, 1\right)$
+\citep{berg1993condorcet}.
+
+Performing the scaling by the maximum value of $p$ in Equation
+\ref{likelihood:beta-binomial-pmf} results in the following likelihood
+function
 \begin{equation}
   \label{likelihood:beta-binomial-scaled}
   \begin{aligned}
@@ -1043,7 +1052,8 @@ increasing assumption here!) regardless of the values of $n, k,
 Since the scaling in Equation \ref{likelihood:beta-binomial-scaled} is
 by a constant ($p\left(n \middle| n, \alpha, \beta\right))$, the
 resulting function $p^{\star}\left(k \middle| n, \alpha, \beta\right)$
-remains an increasing function of $k$.
+remains an increasing function of $k$ when the original function $p$
+is increasing.
 
 %% Possible footnote
 %\noindent\let\thefootnote\relax\footnote{Figure source: Adapted from \cite{praveera_fenugreek-sprouts} and \cite{niaid_escherichia-coli}. Released under the \href{https://creativecommons.org/licenses/by-sa/4.0}{CC BY-SA 4.0 license}.}
@@ -1091,13 +1101,13 @@ function $p^{\star}$ itself does not sum to $1$ over its support $k
 into proper probability mass functions, we need the normalizing
 constant $Z\left(r_{n}\right)$.
 
-Although any distribution on a finite support can be normalized (TODO
-citation), in many cases the normalizing constant does not have a
-closed form. In our case it turns out that \textemdash thanks to the
-properties of the beta function (see Equation
-\ref{likelihood:beta-function} for the definition) \textemdash 
-$Z\left(r_{n, k}\right)$ has a closed form. To derive the closed form,
-we need the following identity for the beta function
+Although any distribution on a finite support can be normalized, in
+many cases the normalizing constant does not have a closed form. In
+our case it turns out that \textemdash thanks to the properties of the
+beta function (see Equation \ref{likelihood:beta-function} for the
+definition) \textemdash $Z\left(r_{n, k}\right)$ has a closed form. To
+derive the closed form, we need the following identity for the beta
+function
 \begin{theorem}
   \label{lemma:beta-function-identity}
   \[
@@ -1121,13 +1131,13 @@ Using Lemma \ref{lemma:beta-function-identity}, we can find a closed form for th
   \[
   f\left(k, n_{k}\right) = \binom{n_{k}}{k}\frac{B\left(\alpha + k, n_{k} - k + \beta\right)}{B\left(\alpha + n_{k}, \: \beta\right)}, 0 < k < n_{k}, \: \alpha > 0, \: \beta > 0,
   \]
-  and
+  \text{and}
   \[
   Z\left(r_{n}\right) = \prod_{k = 1}^{K}Z\left(n_{k}\right) = \prod_{k = 1}^{K}\prod_{j = 1}^{n_{k}}\frac{\alpha_{k} + n_{k} + k - j}{\alpha_{k} + \beta_{k} + 2n_{k} - j},
   \]
-  then TODO check after formulating the likelihood somewhere properly
+  \text{then}
   \[
-  \sum_{k = 1}^{K} \frac{f\left(k, n_{k}\right)}{\prod_{k = 1}^{K}Z\left(n_{k}\right)} = 1.
+  \prod_{k = 1}^{K} \frac{f\left(k, n_{k}\right)}{Z\left(n_{k}\right)} = 1.
   \]
 \end{theorem}
 
@@ -1165,7 +1175,7 @@ is sufficient to normalize $f\left(r_{n, k}, n_{k}\right)$ and prove Theorem \re
 
 \subsection{Likelihood hyperparameters}
 
-Insteda of the traditional parametrization for the beta binomial
+Instead of the traditional parametrization for the beta binomial
 distribution through $\alpha >0, \beta > 0$, we use a
 reparametrization that slightly changes the interpretation of the
 parameters. The transformed parameters are
@@ -1175,15 +1185,15 @@ parameters. The transformed parameters are
 \end{equation}
 where the first parameter $\pi$ has the range $\pi \in \left(0,
 1\right)$ and represents the mean success rate in repeated draws from
-the beta binomial distribution (TODO cite). The second parameter $\phi
-> 0$ measures the variation in the success rate for each draw. In our
-formulation for the likelihood, each cluster $k$ has its own
-parameters $\pi_{k}, \phi_{k}$.
+the beta binomial distribution, and the second parameter $\phi > 0$
+measures the variation in the success rate for each draw
+\citep{griffiths1973maximum}. In our formulation for the likelihood,
+each cluster $k$ has its own parameters $\pi_{k}, \phi_{k}$.
 
-Although methods such as Bayesian optimization (TODO cite) could
-be employed to find optimal values for the parameters $\pi_{k}, \phi_{k}$ in
-Equation \ref{likelihood:reparametrization}, we set their values based
-on a nonexhaustive analysis on several data sets (TODO explain). The
+Although methods such as Bayesian optimization could be employed to
+find optimal values for the parameters $\pi_{k}, \phi_{k}$ in Equation
+\ref{likelihood:reparametrization}, we set their values based on a
+reasonable compromise that performed well in the mSWEEP paper. The
 values of $\pi, \phi$ are set to
 \begin{equation}
   \begin{aligned}
@@ -1207,11 +1217,10 @@ likelihood term, the core of the inference algorithm remains the
 same. Since variational inference is an extremely broad topic outside
 of the scope of this dissertation, I will only cover the parts that
 are relevant to the original contributions in the thesis. For a more
-thorough coverage of the variational inference algorithm, readers are
-referred to TODO (cite VI papers), which cover the variational
-inference in detail, and TODO (cite gradu) which contains a summary of
-the applicable parts from the previous papers in the context of this
-model but with a slightly different format for the likelihood.
+thorough coverage of the variational inference algorithm in this
+context, readers are referred to the BitSeqVB paper \citep{hensman2015fast} where the
+algorithm is derived for the same model with a different likelihood
+function.
 
 In brief, variational inference for the mSWEEP model consists of
 finding a distribution $q\left(\boldsymbol\theta, I\right)$ that
@@ -1264,7 +1273,7 @@ runtime, the samples will be from the true posterior. When comparing
 MCMC to VI in practice, the former has been reported to better capture
 correlations between the sampled parameters (TODO cite Antti's bitseq
 paper). Because of this, we compared the VI from mSWEEP to a version
-of mWEEP compatible with the MCMC sampling from BitSeq (TODO cite
+of mSWEEP compatible with the MCMC sampling from BitSeq (TODO cite
 BitSeq) but found no significant differences between the two (TODO figure).
 
 \textbf{TODO: - Add figure of Gibbs sampler vs variational inference experiments.}
@@ -1376,7 +1385,7 @@ zero reads originated from the cluster $k$. Because of this, values
 $\theta_{k} < \frac{1}{N}$ are meaningless and all represent the same
 case of 0 reads from the cluster. Due to the constraint that
 $\theta_{k}$ must sum up to $1$ over $k$, these essentially-zero
-values do, however, contribute a small amount of noies to the
+values do, however, contribute a small amount of noise to the
 estimates. Since there are $K$ clusters, the fraction of noise $d$ is
 (in the worst-case scenario) at most
 \begin{equation}
@@ -1427,7 +1436,7 @@ Section \ref{three-approaches-to-metagenomics}. In our case, the
 methods of interest are mSWEEP and mGEMS. This chapter will deal with
 the benchmarking and experimental results from the first two papers,
 which focus on analysing plate sweep metagenomics data. At the end of
-the chapter some technicalities arising from the model formulatin will
+the chapter some technicalities arising from the model formulating will
 also be covered \textemdash namely questions about reliability of the
 results when applied to realistic use-cases and sensitivity to
 parameter changes.
@@ -1487,7 +1496,7 @@ assemblies, the reference-based approach employed by mSWEEP and mGEMS
 is ideal for disentangling variation in the same setting. When
 combined with tools with other kinds of approaches to sequencing, the
 methods together have the potential for unprecedented level of detail
-in epidemiologic analyses and tracking
+in epidemiological analyses and tracking
 
 While the previous chapter covered the theoretical foundations of
 mSWEEP and mGEMS, the rest of this chapter will focus on evaluating
@@ -1527,10 +1536,10 @@ reference sequence set is the most important factor in obtaining
 trustworthy results from the pipeline.
 
 After the appropriate reference sequences have been collected, they
-should be clusered in some meaningful way to obtain the grouping. For
+should be clustered in some meaningful way to obtain the grouping. For
 some species, multilocus sequence typing is sufficient but for others
 with more variable genome contents, algorithms that attempt to
-identify clonal complex analogues may be uesful. One such algorithm is
+identify clonal complex analogues may be useful. One such algorithm is
 PopPUNK, which is demonstrated to perform relatively well in the third
 paper included in this thesis. PopPUNK clusters the reference
 sequences based on accessory and core genome distances, and provides
@@ -1564,11 +1573,11 @@ reads corresponding to each bin from the original set.
 In the second article of this thesis, the mGEMS pipeline also includes
 an optional step to assemble the sequences. The suggested assembler is
 shovill, which is an assembly pipeline built around the spades
-assembler but incorporating some pre- and postprocessing
+assembler but incorporating some pre- and post-processing
 steps. Naturally other assemblers may also be used, or the assembly
 step skipped entirely and the analysis instead focusing the reads. In
 the second article we mostly focused on analysing the assemblies, as
-including an assembly step introduces a postprocessing step that can
+including an assembly step introduces a post-processing step that can
 be useful in filtering out reads that have been mistakenly assigned to
 the bin.
 
@@ -1589,14 +1598,14 @@ derived from isolate sequencing data.
 
 The mGEMS pipeline as described above is the method that has been
 applied in the third paper with the additional inclusion of a
-postprocessing step aimed at identifying whether the reference
-sequences suitably cover the reads or not. This postprocessing step,
+post-processing step aimed at identifying whether the reference
+sequences suitably cover the reads or not. This post-processing step,
 demix\_check (\url{https://github.com/harry-thorpe/demix_check/}),
 performs several quality control checks on the results from mSWEEP and
 mGEMS, aiming to determine whether the created read bins correspond to
 a reference cluster or not. Although this step was not included in the
 two methods papers presenting mSWEEP and mGEMS, its inclusion
-addressess an important question regarding the applicability of the
+addresses an important question regarding the applicability of the
 results from mSWEEP/mGEMS. Therefore, including demix\_check
 \textemdash or other similar approach \textemdash as part of the mGEMS
 pipeline (between the mGEMS and the assembly steps) is recommended for
@@ -1638,7 +1647,7 @@ kinds of applications that mSWEEP and mGEMS perform well in.
 \subsection{mSWEEP}
 The first paper in the thesis presented a comparison of mSWEEP with
 the Bayesian Identification of Bacteria (BIB) and the
-pseudoalignment-based metakalisto methods. Although a myriad of
+pseudoalignment-based metakallisto methods. Although a myriad of
 taxonomic profilers have been developed (these will be covered in more
 detail in Section \ref{other-metagenomics-approaches}), the vast
 majority of them do not attempt within-species profiling or have been
@@ -1661,7 +1670,7 @@ compare the estimates from mSWEEP, BIB, and metakallisto.
 The main result of the first paper is that mSWEEP vastly outperforms
 both BIB and metakallisto for most species. For species with a
 strictly defined clonal structure \textemdash such as
-\textit{S. aureus} \textemdash, BIB and metakalisto are able to derive
+\textit{S. aureus} \textemdash, BIB and metakallisto are able to derive
 comparable performance, but for other species that exhibit more varied
 clonal structures incorporating the probabilistic model from mSWEEP
 proves to be a necessary step in obtaining accurate
@@ -1741,7 +1750,7 @@ which adds to the difficulty of the problem. Nevertheless, the mGEMS
 derived-assemblies do recover the overall structure of the phylogeny
 and place to sequences from the same ST to the same clade. While the
 global structure is somewhat different from the isolate assembly
-phyolgeny, these kind of differences may easily be explained by
+phylogeny, these kind of differences may easily be explained by
 uncertainty arsing from recombination affecting the placement of the
 STs globally. This phenomenon is also apparent in the bootstrap
 support values for both the isolate and mGEMS-derived phylogenies.
@@ -1763,7 +1772,7 @@ of separation between the sublineages.
 
 The second paper also included an \textit{in vitro} benchmark data,
 where known amounts of DNA from three different strains were mixed
-together using Qbit, and both the mixed sample and the corresonding
+together using Qbit, and both the mixed sample and the corresponding
 isolate cultures were sequenced. This data was used to re-test the
 performance of both mSWEEP (covered in the previous subsection) and
 mGEMS. The mGEMS part of the test examined the recovery of SNPs from
@@ -1832,7 +1841,7 @@ relative abundance estimates that are given for the \textit{absent}
 lineages, and combined across all values generated when varying the
 removed reference sequences. When repeated for all reference lineages,
 this approach gives a set of values that represent the false estimates
-when the true contents of the sample are differen. The false estimates
+when the true contents of the sample are different. The false estimates
 for each lineage are ordered, and one of the higher values is picked
 as a cutoff point that defines the detection threshold for this
 lineage with an accompanying p-value-analogue that depends on the
@@ -1844,7 +1853,7 @@ While the detection thresholds approach has some merit in its
 theoretical foundations in using bootstrapping to estimate the
 magnitude of the false estimates, the approach has some problems when
 applied in practice. Namely, the need to remove a reference sequence
-to bootstrap the abundance estimates necessitaes reconstruction of the
+to bootstrap the abundance estimates necessitates reconstruction of the
 pseudoalignment index for each sample that is generated from the
 removed sequences. Since dynamic indexing (meaning that sequences can
 be added/removed without rebuilding the whole index) remains an open
@@ -1939,7 +1948,7 @@ and diversity of the pathogen population. These analyses are typically
 performed using cultivated colonies, where the bacterial strains of
 interest are isolated and sequenced from their own plates in order to
 produce sufficiently deep sequencing depth for SNP calling, assembly,
-and other genomic analyses. In the same spirot, metagenomic
+and other genomic analyses. In the same spirit, metagenomic
 epidemiology refers to performing the genomic epidemiology tasks but
 forgoing the culture step and using for example WGS metagenomics to
 identify and analyse the pathogens. While in the previous literature
@@ -2118,7 +2127,7 @@ This analysis demonstrates simple means to analyse the
 lineage-contents of some sets of samples using only the relative
 abundance estimates. While it would be optimal to include the mGEMS
 pipeline steps (unavailable at the time the article was written), the
-results obtained using only abundace estimates are in line with the
+results obtained using only abundance estimates are in line with the
 hypothesis/knowledge that commensal lineages may be replaced
 antibiotic-resistance harbouring lineages because of treatment. If a
 more thorough sampling had been performed, the abundance estimates
