@@ -146,110 +146,123 @@
 
 \chapter{Introduction}
 
-In the past decades public health research focusing on bacterial
-pathogens has been transformed by analysis of the contents of
-bacterial genomes obtained by whole-genome sequencing
-\citep{armstrong2019pathogen}. Although the price of sequencing itself
-has decreased tremendously during this time frame, most analyses still
-rely on using sequence data from pure bacterial cultures created by
-isolating a bacterium from an initial mixed culture. Since these
-cultures are created by cultivating environmental samples, they
-typically contain several distinct bacteria \textemdash and other
-microorganisms \textemdash that a thorough analysis would aim to
-isolate in a pure culture. In practice, the number of isolations that
-can be performed is limited and preparing large numbers of samples for
-DNA sequencing rapidly becomes a significant economical barrier even
-in well-resourced public health laboratories.
+Public health research focusing on bacterial pathogens has been
+transformed by analysis of the contents of bacterial genomes obtained
+by whole-genome sequencing (WGS) during the past few decades
+\citep{armstrong2019pathogen}. In this time frame, the price of
+sequencing has decreased tremendously \citep{dnaseqcost,
+  goodwin2016coming}, enabling adoption of sequencing as a standard
+tool in the infectious diseases and genomic epidemiology toolkits
+\citep{tang2017infection, grad2014epidemiologic, kwong2015whole}. Many
+of the standard analyses in these fields require data from pure
+bacterial cultures, created by isolating a bacterium on its own plate
+from an inital mixed culture, which often contain several distinct
+bacteria and other micro-organisms. Isolating all of these presents
+substantial economical barriers to more widespread adoption of WGS as
+a routine tool since the cost and turnaround time of the library
+preparation and DNA extraction steps, performed once per each isolated
+organism, are approaching the price of sequencing itself \citep{rossen2018practical}.
 
-The typical use for sequencing data in public health settings is
-genomic epidemiology, where researchers are interested analysing the
-genomes of the pathogens to trace their transmission and spread. For
-example, comparing mutations in the genomes of a pathogen isolated
-from several patients during an epidemic may aid in inferring the
-transmission chain by elucidating the short-term evolutionary
-history. Similarly the long-term history can be inferred by looking
-for larger structural changes, horizontal gene transfer, and
-accumulated mutations in genomes assembled from the sequence data. If
-the sequencing is performed routinely and the data is made publicly
-available, the reporting from several laboratories may be combined to
-create an extremely valuable resource for both researchers and
-policymakers. However, the vast majority of genomic epidemiological
-analyses require high coverage and high quality sequence data to
-achieve meaningful resolution, which has translated to dominance of
-the expensive pure-colony isolation approach in data generation.
+Whole-genome shotgun metagenomics, where DNA is extracted and
+sequenced directly from the original environmental sample, presents a
+potential cost-effective alternative to the isolate sequencing
+approach. Contrary to isolate sequencing, WGS metagenomics requires
+only a single library preparation and DNA extraction step and no
+cultivation steps since the sample is sequenced directly. However,
+direct sequencing may require significantly higher sequencing depths
+due to presence of host DNA \citep{pereira2019impact,
+  mcardle2020sensitivity} and contamination
+\citep{mcardle2020sensitivity, salter2014reagent}. Due to these
+factors, WGS metagenomics can be difficult to apply when only a subset
+of the diversity is targeted but the planned analyses require high
+sequencing depth data, which is the typical setting in genomic
+epidemiological studies.
 
-Recently, shotgun metagenomics, where DNA is extracted and sequenced
-directly from the original environmental sample, has emerged as a
-potential cost-effective alternative to pure whole-genome
-sequencing. Although this approach conveniently gets around both the
-economic barrier and potential biases introduced by the cultivation
-steps, direct sequencing often requires significantly higher
-sequencing depths. Sequencing at depths typical to isolate analyses
-often results in excess amounts of host DNA and fails to provide
-sufficient resolution for the more elusive members of the microbiome
-that are present only at low abundances. Due to these factors, shotgun
-metagenomics may be difficult to apply in situations where researchers
-are only interested in some subset of bacteria but wish to perform
-analyses that require high sequencing depth.
+Genomic epidemiology is the study of the spread and transmission of
+bacterial pathogens based on WGS data. Sequencing the genomes of
+bacterial pathogens during an outbreak allows for comparing
+accumulated mutations in their genomes \citep{tang2017infection},
+elucidating their short-term evolutionary history and enabling case
+linking when combined with appropriate metadata
+\citep{grad2014epidemiologic, hill2021progress}. Similarly, long-term
+routine surveillance aids in hastening the detection of outbreaks
+\citep{eyre2012pilot, gardy2018towards}, identifying potential
+high-risk clones \citep{aanensen2016whole}, or reservoirs for
+antimicrobial resistance \citep{weingarten2018genomic,
+  coipan2020genomic}. Many of these analyses require assembling the
+genomes of the bacteria from the sequencing reads which has led to
+dominance of the isolate sequencing approach and a lack of studies
+attempting to solve the problems with metagenomics.
 
-When choosing between shotgun metagenomics and isolate sequencing, a
-middle-ground can be found in creating the initial mixed culture but
-skipping the isolation steps and instead sweeping and sequencing the
-mixed culture. Since culture media are available for most clinically
-relevant bacteria, this approach allows enrichment of the species of
-interest while simultaneously filtering out host DNA, effectively
-avoiding the pitfalls in both isolate and shotgun metagenomics by
-limiting the diversity of the sample. Accordingly, this approach is
-sometimes called limited-diversity metagenomics
-\citep{cocker_drivers_2022} but will be referred to as plate sweep
-metagenomics in this thesis.
+When choosing between WGS metagenomics and isolate sequencing, a
+middle-ground can be found plate sweep metagenomics
+\cite{maklin_high-resolution_2021} \textemdash sometimes also called
+limited-diversity metagenomics \citep{cocker_drivers_2022}. In this
+approach the initial culture from an environmental sample is sweeped
+and sequenced in its entirety rather than preparing several isolate
+cultures from it. Since selective culture media are available for many
+clinically relevant bacteria \citep{lagier2015current}, plate sweep
+metagenomics simultaneously both reduces the number of library
+preparation \& DNA extraction steps by using only a single culture,
+and solves the host DNA overabundance \& sequencing depth issues in
+WGS metagenomics through selective media enrichment. Incorporating an
+enrichment step has also been found to increase the sensitivity to
+low-abundance organisms that might be missed in direct sequencing
+\citep{whelan2020culture}.
 
-Although both plate sweep metagenomics and shotgun metagenomics
-have technically been possible for many years, the development of
-computational methods has largely focused on analysing data from pure
-cultures. Although some advances have been made in developing
-computational tools capable of identifying the taxonomic composition
-of a set of reads (taxonomic profiling) or assigning the individual
-sequencing reads to their taxonomic origins (taxonomic binning), the
-accuracy of these tools is significantly hindered in the presence of
-within-species variation. In practice such variation is ubiquitous in
-both clinical and environmental samples, rendering many of the tools
-difficult to use when within-species level information is required.
+While both plate sweep metagenomics and WGS metagenomics have
+technically been possible for many years with the latter appearing
+around 2004 \citep{tyson2004community, venter2004environmental}, the
+development of computational methods has largely focused on analysing
+sequencing reads from a single organism at a time. Although many
+methods for analysis of metagenomic data at the species-level have
+been developed \citep{breitwieser2019review}, these do not typically
+perform well when applied to data containing strain-level variation
+\citep{sczyrba2017critical}. Methods diverging from the traditional
+relative abundance estimation (taxonomic profiling)
+\citep{truong2017microbial} or metagenomic sequence read demixing
+(taxonomic binning) \citep{van2022strainge} context do successfully
+tackle strain-level variation but do not easily translate to replacing
+assembly-based analyses such as SNP calling or phylogenetic inference.
 
-In this thesis I present research that enables both taxonomic
-profiling and binning from either metagenomic or plate sweep
-sequencing data using computational methods. While the methods were
-initially developed for plate sweeps metagenomics work, I also
-demonstrate that they can reliably be applied to whole metagenome
-sequencing data as well. Using either of the two approaches to
-generate metagenomic sequencing data enables performing completely new
-types of analyses which are also briefly covered.
+In this thesis I present two computational methods that enable
+taxonomic profiling and taxonomic binning from either WGS metagenomic
+or plate sweep metagenomic short-read sequencing data. While the plate
+sweep metagenomics approach was required by both methods during their
+initial publication, I also demonstrate that they perform reliably
+when applied to WGS metagenomics data. Using either of the two
+approaches to reduce the costs associated with data collection, the
+methods presented here enable performing routine genomic
+epidemiological analyses when significant strain-level is present in
+the collected sequencing data.
 
-The first two articles included in this thesis contain descriptions of
-the aforementioned two methods. The first of these methods, called
-mSWEEP, provides a probabilistic model for taxonomic profiling of
-bacteria at within-species lineage level based on pseudoalignments
-against a set of reference sequences. The second method, mGEMS,
-leverages the information from mSWEEP to construct an assignment rule
-for taxonomic binning of sequencing reads to bins that correspond to
-the lineages. Both methods rely on the fundamentally important insight
-that each sequencing read can - and should - pseudoalign and be
-assigned to several lineages within the species at once. By combining
-the two methods, sequencing data from samples containing several
-lineages of the same species can be computationally demixed and used
-to obtain results that are nearly indistinguishable from the results
-of using isolate data.
+The first of the two methods, called mSWEEP, consists of a
+probabilistic model for estimating the relative abundances of lineages
+of a bacterial species in a set of sequencing reads
+\citep{maklin_high-resolution_2021}. mSWEEP leverages pseudoalignment
+\citep{bray2016near} of the reads against a set of reference sequences
+that have been grouped together into lineages and outputs estimates of
+the lineage-level abundances. The second method, mGEMS, processes the
+output from mSWEEP to construct an assignment rule for assigning each
+read to one or more bins corresponding to a reference lineage
+\citep{maklin_bacterial_2021}. Both methods explicitly account for the
+fundamental characteristic of within-species sequencing data where
+each read can and often does belong to several lineages of the same
+species at the same time. The combination of mSWEEP and mGEMS enables
+effective computational quantification of metagenomic data at a high
+resolution within the species, and enables downstream processing of
+mixed samples with results comparable to using isolate data.
 
-While the methods from the first two articles are designed with direct
-analysis of sequencing data from mixed cultures in mind, the third
-article shows that both methods are applicable even when the initial
-plating step is skipped and the sequencing data is derived directly
-from an environmental sample. Thus, in the third article I have
-analysed such samples from babies born in the UK collected during
-their neonatal period and discovered several results showing strong
+Even though both mSWEEP and mGEMS were originally designed with
+applications in plate sweep metagenomics in mind, this thesis includes
+a third article \citep{maklin_strong_2022} that demonstrates
+applicability of both methods to WGS metagenomics data. In the third
+article, we have analysed WGS metagenomics data from babies born in
+the UK collected during their neonatal period
+\citep{shao2019stunted}. Results from this data show strong
 competition between bacterial species and strains during the initial
-colonization of the gut microbiome. More importantly, from a methods
-perspective, this analysis shows that mSWEEP and mGEMS provide
+colonization of the newborn gut microbiome. More importantly from a
+methods perspective, this analysis shows that mSWEEP and mGEMS provide
 (so-far) completely unprecedented levels of resolution in analysis of
 metagenomic sequencing data.
 
