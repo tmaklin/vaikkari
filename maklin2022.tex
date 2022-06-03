@@ -156,7 +156,7 @@ tool in the infectious diseases and genomic epidemiology toolkits
 \citep{tang2017infection, grad2014epidemiologic, kwong2015whole}. Many
 of the standard analyses in these fields require data from pure
 bacterial cultures, created by isolating a bacterium on its own plate
-from an inital mixed culture, which often contain several distinct
+from an initial mixed culture, which often contain several distinct
 bacteria and other micro-organisms. Isolating all of these presents
 substantial economical barriers to more widespread adoption of WGS as
 a routine tool since the cost and turnaround time of the library
@@ -198,7 +198,7 @@ When choosing between WGS metagenomics and isolate sequencing, a
 middle-ground can be found plate sweep metagenomics
 \cite{maklin_high-resolution_2021} \textemdash sometimes also called
 limited-diversity metagenomics \citep{cocker_drivers_2022}. In this
-approach the initial culture from an environmental sample is sweeped
+approach the initial culture from an environmental sample is swept
 and sequenced in its entirety rather than preparing several isolate
 cultures from it. Since selective culture media are available for many
 clinically relevant bacteria \citep{lagier2015current}, plate sweep
@@ -277,7 +277,7 @@ resource-constrained laboratories.
 %- Something about sequeuncing reads and sequence assembly? 16S sequencing?
 
 Preparing bacterial DNA for sequencing is often done after a
-culture step that enriches the number of baceterial cells. Culturing
+culture step that enriches the number of bacterial cells. Culturing
 is performed by plating a sample and inoculating it for a period of
 time that allows the bacteria to multiply
 \citep{sanders2012aseptic}. After inoculation, visible colonies may be
@@ -319,7 +319,7 @@ step allows for generating large numbers of sequencing reads from the
 bacteria that thrive in the chosen media, circumventing both the
 sequencing depth and host DNA issues in WGS metagenomics while
 improving the sensitivity to bacteria found in low abundance in the
-original sample (TODO citations, cystic fibriosis study + gerry's
+original sample (TODO citations, cystic fibrosis study + gerry's
 study? + see if there are others). Furthermore, focusing the
 sequencing efforts on the relevant bacteria enables application of
 bioinformatics tools that require a high sequencing depth provided
@@ -413,7 +413,7 @@ profiling. These two approaches sometimes go hand-in-hand since the
 abundance of a taxonomic unit can naively be defined as the number of
 contigs assigned to the unit. When the units are closely related
 species or strains, more sophisticated methods are necessary since the
-contigs may plausibly belong to several taxons, which has led to the
+contigs may plausibly belong to several taxa, which has led to the
 development of dedicated taxonomic profilers that do not attempt to
 bin the contigs or sequencing reads (TODO cite metaphlan, msweep,
 others).
@@ -421,7 +421,7 @@ others).
 % TODO citations
 Recently, a third category of methods attempting to track the
 presence/absence of a specific strain of bacteria across several
-samples has emerged (TODO cite striange, strianphlan, midas?). Methods
+samples has emerged (TODO cite strainge, strianphlan, midas?). Methods
 in this category aim to infer similarity and shared strains and
 provide an attractive tool for transmission analysis when the genome
 assemblies of the individual strains are not required or cannot be
@@ -540,13 +540,14 @@ Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
 Antti Honkela. Published in \textit{Wellcome Open Research} (2021),
 5:14, doi: 10.12688/wellcomeopenres.15639.2.
 
-In the first paper, we presented and benchmarked the mSWEEP method for
-taxonomic profiling of sequencing data containing multiple strains
-from the same bacterial species. My contributions included
-conceptualization of the study, formal analysis and investigation of
-the data, developing the methodology and software implementations,
-validation and visualization of the reuslts, and writing \& editing
-both the original draft and the revised manuscript.
+In the first paper \citep{maklin_high-resolution_2021}, we presented
+and benchmarked the mSWEEP method for taxonomic profiling of
+sequencing data containing multiple strains from the same bacterial
+species. My contributions included conceptualization of the study,
+formal analysis and investigation of the data, developing the
+methodology and software implementations, validation and visualization
+of the results, and writing \& editing both the original draft and the
+revised manuscript.
 
 Software implementation of the ideas presented in Paper I is
 available from GitHub at
@@ -560,15 +561,15 @@ Samuelsen, Kristin Hegstad, Veli Mäkinen, Jukka Corander, Eva Heinz,
 and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
 7.11, doi: 10.1099/mgen.0.000691.
 
-The second paper continued to build upon mSWEEP by developing an
-algorithm for binning sequencing reads at lineage-level of
-mSWEEP. This approach and the accompanying software implementation are
-both mGEMS. I contributed to the second paper by taking part in
-conceiving the study, developing the mGEMS pipeline, in designing both
-the synthetic and the \textit{in vitro} experiments, developing the
-mGEMS assignment algorithm, running the experiments, creating the
-visualizations, interpreting the results, and in writing \& editing
-the main manuscript and the final published version
+The second paper \citep{maklin_bacterial_2021} continued to build upon
+mSWEEP by developing an algorithm for binning sequencing reads at
+lineage-level of mSWEEP. This approach and the accompanying software
+implementation are both mGEMS. I contributed to the second paper by
+taking part in conceiving the study, developing the mGEMS pipeline, in
+designing both the synthetic and the \textit{in vitro} experiments,
+developing the mGEMS assignment algorithm, running the experiments,
+creating the visualizations, interpreting the results, and in writing
+\& editing the main manuscript and the final published version
 
 Software implementation of the ideas presented in Paper II is
 available from GitHub at
@@ -583,17 +584,17 @@ Johnsen, Trevor Lawley, Antti Honkela, and Jukka Corander. Awaiting
 peer-review; available from \textit{bioRxiv} (2022), doi:
 XXX.XX/XXX.XXX.XXX.
 
-The third paper provides an example of applying mSWEEP and mGEMS to
-whole-genome shotgun metagenomics sequencing data and explores the
-dynamics of pathogen competition and colonization in the gut
-microbiome of babies in their first three weeks of life. My
-contributions to this paper include running the mSWEEP/mGEMS pipeline
-on all data used in the paper, updating the reference databases for
-the investigated species, performing the analysis of the mSWEEP/mGEMS
-results for the samples containing \textit{E. coli}, and aiding the
-coauthors in analysing the other species. I additionally contributed
-to creating the visualisations, interpreting the results, and
-naturally to writing the article.
+The third paper \citep{maklin_strong_2022} provides an example of
+applying mSWEEP and mGEMS to whole-genome shotgun metagenomics
+sequencing data and explores the dynamics of pathogen competition and
+colonization in the gut microbiome of babies in their first three
+weeks of life. My contributions to this paper include running the
+mSWEEP/mGEMS pipeline on all data used in the paper, updating the
+reference databases for the investigated species, performing the
+analysis of the mSWEEP/mGEMS results for the samples containing
+\textit{E. coli}, and aiding the coauthors in analysing the other
+species. I additionally contributed to creating the visualisations,
+interpreting the results, and naturally to writing the article.
 
 \section{Structure}
 
