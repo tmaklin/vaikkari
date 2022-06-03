@@ -464,71 +464,63 @@ settings, where the diversity of potential pathogenic bacteria has
 been thoroughly studied using whole-genome sequencing (TODO citation)
 and the clinically relevant lineages are often well-known.
 
-\section{Genomic epidemiology as a tool for pathogen surveillance}
+\section{Using metagenomics data in genomic epidemiology}
 
 \textbf{Figure about genomic epidemiology analyses}
 
-The other significant aspect of this thesis has to do with tracing the
-spread of pathogens using sequence data, called genomic
-epidemiology. In recent years, the use of genome-informed analyses has
-greatly expanded the capability of researchers to track and trace
-pathogens and identify genetic elements relevant for e. g. antibiotics
-resistance and pathogenesis. This analysis has typically been
-performed using isolate sequencing data, which provides great detail
-into a single bacterial genome but has some downsides covered in the
-previous sections. One important goal of the thesis work has been to
-provide tools that extend the analysis capabilities to metagenomic
-data from either plate sweeps or whole-genome shotgun sequencing.
+Aside metagenomics tools, the second significant aspect of this thesis
+has to do with their application in genomic epidemiology, where the
+goal is to trace the transmission of pathogenic bacteria using genomic
+sequence data. Genome-informed analyses have in recent years greatly
+expanded the ability of researchers to investigate outbreaks, identify
+epidemiologically relevant genetic elements, and detect emerging
+public health concerns (TODO citations). Due to the high level of
+accuracy required, these analyses have been performed using isolate
+WGS data, which has a relatively high economical cost and slow
+turnaround time (TODO citations, one of the already cited papers),
+rendering the research more reactive in nature. One of the goals of
+mSWEEP and mGEMS is to enable partially replacing the use of isolate
+data with metagenomics data, decreasing both the cost and turnaround
+time of the existing genomic epidemiology pipelines.
 
-Combining the genomic sequences of pathogens with data about the time,
-location, and other clinically relevant features provides clinical
-practitioners, policy makers, and researchers with a much wider
-perspective into transmission and evolutionary analysis than using
-either of the information alone. This has enabled several significant
-advantages in e.g. analysis of the transmission of plasmids and
-targeting vaccine design, as well as in providing novel insights into
-several causative agents of disease that could not be identified
-without including genome information. With the price of sequencing
-constantly decreasing, genomics-driven analysis has high potential to
-further revolutionize the way we think about disease.
+In addition to the improving both cost- and time-effectiveness,
+incorporating some kind of metagenomics data into genomic epidemiology
+presents some obviously attractive advantages in increasing the
+sensitivity to genetic diversity that might be obscured by the use of
+isolate data in routine surveillance (TODO citation?). As an example,
+a recent study into within-host diversity of the common respiratory
+pathogen \textit{Streptococcus pneumoniae} utilized an analogue of
+plate sweep metagenomics and found low-frequency co-colonization of
+epidemic serotypes alongside known carriage serotypes
+\citep{tonkin-hill_pneumococcal_2022}. This finding helped explain the
+previously unknown source of the epidemic serotypes in outbreaks of
+disease, which could not be fully explained by isolate sequencing
+data. Since naturally occurring variation is common in many species of
+clinical interest (TODO citations), similar findings in other fields
+are likely with more widespread use of metagenomics data.
 
-Incorporating metagenomics data into genomic epidemiological analyses
-presents the next obvious frontier. Since the microbiome is in
-practice nearly universally composed of several interacting
-micro-org-organisms, there is a high possibility that excluding some parts
-may miss otherwise relevant information. For example, in a recent
-study (Gerry's), the pathogen \textit{S. pneumoniae} was found to
-often co-colonize patients with a dominant strain and a non-dominant
-strain. In the developed world, vaccine development has targeted the
-dominant strain but entirely ignored the non-dominant strain, which has
-not been identified with previous methods. The non-dominant strain
-does, however, have the capability to cause the same disease and is,
-in fact, the leading cause in the developing world. The results from
-this study highlight that by focusing only on the non-metagenomic
-contents of the microbiome, potentially significant information is
-missed.
+% TODO this *really* needs citations
+Another related aspect in favour of using more metagenomics-oriented
+approaches arises from simple practicality: sequencing several
+organisms at once is simply easier than performing the several steps
+required to isolate an organism for DNA extraction. Direct sequencing
+of the samples combined with nearly equally accurate analyses should,
+in principle, make implementing routine surveillance significantly
+more accessible to locations and laboratories lacking in funding and
+resources. This in turn combined with data sharing practices across
+borders has the potential to vastly increase the capabilities of
+proactive surveillance. Furthermore, sequencing the whole sample and
+publicly archiving the reads has the benefit of preserving the full
+variety of organisms in the sample and making it available for future
+analyses with different goals from the original studies.
 
-Another aspect in favour of using a more metagenomics-oriented
-approach arises from simple practicality: sequencing several taxons at
-once is simply more cost-effective than performing many isolations, as
-covered in the previous sections. Using a metagenomics-oriented
-approach makes the analyses much more widely available in the form of
-significant cost reductions. This means that analyses which would not
-be possible to perform in locations lacking funding and resources
-might find a way through the use of metagenomic sequencing. Currently
-especially data from lower-middle income countries is scarce due to
-the limited sequencing capability which metagenomics has the potential
-address. Furthermore, performing metagenomics sequencing alongside the
-traditional sequencing types has the potential to preserve data from
-the samples for future analyses, should methods capable for more
-detailed exploration become available.
-
-In conclusion, the already relatively recent field of genomic
-epidemiology can be seen as undergoing a transform into becoming
-widespread public practice. With the development of methods - such as
-the ones presented in this thesis - capable of lowering the costs and
-increasing the resolution, the field will likely produce significant
-discoveries through the inclusion of metagenomics data.
+In conclusion, the field of genomic epidemiology that was established
+with the spread of WGS sequencing in the early 2010's can be seen as
+entering a transformative period with the price of data generation
+decreasing and more powerful computation tools becoming available. The
+development of methods such as mSWEEP and mGEMS will, hopefully,
+further speed up this transformation and enable entirely novel types
+of analyses and discoveries through the inclusion of metagenomic data.
 
 \section{Contributions}
 
