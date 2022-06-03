@@ -388,9 +388,7 @@ majority of methods development has focused on operating with the
 assumption that only a single strain from each species is present in
 the same sample (TODO citation, review by florian breitweiser?). In
 this section I will briefly cover some of the previous approaches and
-introduce my own attempt at increasing the resolution to the
-within-species level with several strains present.
-% TODO check that mSWEEP and mGEMS are introduced in this section
+describe how mSWEEP and mGEMS fit into the metagenomics toolkit.
 
 % TODO cite some appropriate reviews, check mGEMS paper
 One of the more commonly used tools for analysing WGS metagenomics
@@ -433,50 +431,38 @@ bins, together enabling both a wide analysis covering all samples and
 strains and a focused analysis of the strains that are found in high enough
 abundance to assemble their genomes.
 
-%%%%%%%%%%
-%% WIP
-%% continue from here with " all three ..... "
+% TODO citations? or is this original content
+All of the above can be further divided into reference-based methods
+that leverage reference data in their analysis, and reference-free
+methods that perform the analysis solely based on the sequencing
+reads. While reference-free methods are able to handle data containing
+previously unknown bacteria that do not have any available genome
+assemblies, reference-based methods provide an easily interpretable
+context for the results and typically reach a higher resolution (TODO
+citation). If detailed quantification is only required for some subset
+of organisms in the sample, reference-based methods frequently also
+provide means to filter out the reads belonging to the uninteresting
+organisms.
 
-Both profiling and binning methods can further be divided into those
-that leverage reference data and those that attempt reference-free
-estimation. While reference-free estimation can yield data from
-previously unknown species or strains, reference-based approaches
-typically obtain higher resolution. Leveraging reference data is one
-of the central aspects of the work in this thesis to perform both
-taxonomic profiling (mSWEEP) and taxonomic binning (mGEMS), and the
-benefits of a reference-based approach will be explored in more detail
-later on.
-
-These metagenomics approaches have found widespread applications in % mentioned already
-analysing sequencing data from highly complex environments - such as
-soil samples. Especially the reference-free approaches have proved
-highly useful in cases where the contents of a sample bear little
-similarity to previously sequenced samples. However, these scenarios
-are becoming increasingly scarce with more widespread availability of
-sequence data and new culture methods developed for species previously
-thought unculturable. Especially in clinical settings, where the
-bacterial diversity is rather well known and has been studied for many
-years, it is uncommon to come across an entirely new (pathogenic)
-species. In these cases, adding information in the form of reference
-sequences typically results in much higher ceiling for the possible
-resolution.
-
-In the class of metagenomics analyses, the approach presented in this
-thesis falls broadly in reference-based taxonomic profiler and
-taxonomic binner category. However, our approach differs from previous
-research in that rather than trying to assign relative abundances to a
-set of reference sequences, we attempt to assign abundances to a
-reference \textit{lineage} - i. e. some group of reference sequences
-that is somehow related to each other. This approach has the benefit
-of covering the possible variation in a reference lineage, which
-typically present problems for reference-based metagenomics
-tools. Additionally, our tool works with bespoke sets of reference
-sequences, which means that it can be applied to explore the diversity
-of a specific species in great detail while excluding the
-uninteresting species. While this discards some data that might be
-useful, the approach greatly simplifies the modelling task, allowing
-for a much higher accuracy in the exploration of within-species
-variation.
+The strain-level methods from this thesis take the reference-based
+approach and specifically leverage bespoke reference
+collections. Tailoring the reference genome assemblies to fit the
+presumed contents of the samples allows both mSWEEP and mGEMS to
+perform at a resolution that is mainly limited by the quality and
+variety of the available assemblies. Contrary to many existing
+reference-based methods, mSWEEP and mGEMS do not attempt
+identification of the individual reference sequences, but rather
+incorporate a clustering of the reference assemblies within a species
+to biologically sensible lineages. Since the lineage-level differences
+are generally more pronounced, the identification task at this level
+becomes significantly easier (cite BIB paper) and additionally allows
+for handling cases where the sequencing reads originate from an
+unknown sequence which belongs to a known reference lineage. Trading
+the ability to imprecisely identify the exact sequence to precisely
+identifying the lineage it belongs to is especially useful in clinical
+settings, where the diversity of potential pathogenic bacteria has
+been thoroughly studied using whole-genome sequencing (TODO citation)
+and the clinically relevant lineages are often well-known.
 
 \section{Genomic epidemiology as a tool for pathogen surveillance}
 
