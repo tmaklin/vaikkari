@@ -524,12 +524,14 @@ of analyses and discoveries through the inclusion of metagenomic data.
 
 \section{Contributions}
 
-This thesis comprises three publications covering both mSWEEP and
-mGEMS as well as a third article demonstrating their application to
-whole-genome shotgun metagenomic sequencing data. The first two
-publications are accompanied by software implementations. The third
-article is more applied in nature, exploring in more detail the types
-of analyses enabled by the first two papers.
+This thesis comprises three publications covering both mSWEEP
+\citep{maklin_high-resolution_2021} and mGEMS
+\citep{maklin_bacterial_2021} as well as a third article demonstrating
+their application to whole-genome shotgun metagenomic sequencing data
+\citep{maklin_strong_2022}. The first two publications are accompanied
+by software implementations \citep{maklin_mSWEEP, maklin_mGEMS}. The
+third article is more applied in nature, exploring in more detail the
+types of analyses enabled by the first two papers.
 
 \subsection*{Paper I \textemdash High-resolution sweep metagenomics using fast probabilistic inference}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Sophia David, Christine J
@@ -540,10 +542,11 @@ Antti Honkela. Published in \textit{Wellcome Open Research} (2021),
 
 In the first paper, we presented and benchmarked the mSWEEP method for
 taxonomic profiling of sequencing data containing multiple strains
-from the same bacterial species. My contributions included development
-and implementation of the method, designing the benchmarks and
-comparisons with similar methods, running all analyses with mSWEEP,
-writing the manuscript, and to reviewing and editing the article.
+from the same bacterial species. My contributions included
+conceptualization of the study, formal analysis and investigation of
+the data, developing the methodology and software implementations,
+validation and visualization of the reuslts, and writing \& editing
+both the original draft and the revised manuscript.
 
 Software implementation of the ideas presented in Paper I is
 available from GitHub at
@@ -558,24 +561,27 @@ and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
 7.11, doi: 10.1099/mgen.0.000691.
 
 The second paper continued to build upon mSWEEP by developing an
-algorithm for taxonomic binning at within-species variation level,
-called mGEMS. I contributed to the development of both the mGEMS
-binning algorithm and the full mGEMS pipeline, designing the synthetic
-and the \textit{in vitro} benchmark experiments, running the analyses
-and creating the visualisations, interpreting the results and writing
-the article, and to reviewing and editing the article.
+algorithm for binning sequencing reads at lineage-level of
+mSWEEP. This approach and the accompanying software implementation are
+both mGEMS. I contributed to the second paper by taking part in
+conceiving the study, developing the mGEMS pipeline, in designing both
+the synthetic and the \textit{in vitro} experiments, developing the
+mGEMS assignment algorithm, running the experiments, creating the
+visualizations, interpreting the results, and in writing \& editing
+the main manuscript and the final published version
 
 Software implementation of the ideas presented in Paper II is
 available from GitHub at
 \href{https://github.com/PROBIC/mGEMS}{PROBIC/mGEMS} (latest version).
 The latest version at the time of writing is archived and available in
-Zenodo \citep{maklin_mSWEEP}.
+Zenodo \citep{maklin_mGEMS}.
 
 \subsection*{Paper III \textemdash Strong pathogen competition in neonatal gut colonization}
 By \underline{Tommi Mäklin}, Harry Thorpe, Anna Pöntinen, Rebecca
-Gladstone, Alan McNally, Ørjan Samuelsen, Pål Johnsen, Trevor Lawley,
-Antti Honkela, and Jukka Corander. Awaiting peer-review; available
-from \textit{bioRxiv} (2022), doi: XXX.XX/XXX.XXX.XXX.
+Gladstone, Yan Shao, Maiju Pesonen, Alan McNally, Ørjan Samuelsen, Pål
+Johnsen, Trevor Lawley, Antti Honkela, and Jukka Corander. Awaiting
+peer-review; available from \textit{bioRxiv} (2022), doi:
+XXX.XX/XXX.XXX.XXX.
 
 The third paper provides an example of applying mSWEEP and mGEMS to
 whole-genome shotgun metagenomics sequencing data and explores the
@@ -592,18 +598,18 @@ naturally to writing the article.
 \section{Structure}
 
 The rest of the thesis is structured into three chapters that describe
-how the included papers contribute to the topics presented in the
-introduction chapter. The first of the three chapters describes the
-basic ideas behind the mSWEEP and mGEMS methods and provides
-historical context for the parts of the methods that have their
-origins within analysis of RNA sequencing data. The second chapter
-describes the experimental results from the three papers in more
-detail, focusing more on the applied part rather than the theoretical
-foundations. The third chapter is more speculative in nature, covering
-both the demonstrated epidemiological applications from the papers as
+the contents of the three included papers and how they contribute to
+the topics presented in the introduction chapter. The first of the
+three chapters describes the basic ideas behind the mSWEEP and mGEMS
+methods and provides historical context for the parts of the methods
+that have their origins within analysis of RNA sequencing data. The
+second chapter describes the experimental results from the three
+papers in more detail, focusing more on the applied part rather than
+the theoretical foundations. The third chapter is more speculative in
+nature, covering both the demonstrated applications from the papers as
 well as exploring potential future avenues for use of the developed
-methods. The thesis concludes with a reprinting of the three included
-articles.
+methods. The three chapters are followed by a concluding chapter
+followed by reprints of the three included original research papers.
 
 \chapter{Mixture modeling of sequence data}
 
