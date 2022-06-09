@@ -614,243 +614,303 @@ followed by reprints of the three included original research papers.
 
 \chapter{Mixture modeling of sequence data}
 
-% Mixture models for RNA-seq
-%% models with sequencing error (double check)
-%% https://www.nature.com/articles/nmeth.1528
-%% https://academic.oup.com/bioinformatics/article/26/4/493/243395?login=true
-%% poisson likelihoods, this is fairly similar to pseudoaligmnnts
-%% https://academic.oup.com/bioinformatics/article/25/8/1026/324948?login=true
-%% https://www.worldscientific.com/doi/epdf/10.1142/S0219720010005178
-%% 
-%% microarray data
-%% 
+Mixture models are a family of probabilistic models which model
+sampling from an overall population as a mixture of sampling from
+several distinct subpopulations. Each subpopulation is typically
+assumed to have its own distribution, which can be from the same or a
+different distribution family, and mixing parameters that determine
+the percentages of data each subpopulation contributes to the overall
+population.
 
-Mixture models have been utilized in sequence data analysis since the
-introduction of RNA-Seq, where sequencing identifying the expression
-levels of different isoforms is one of the main problems
-\citep{garber2011computational, wang2009rna}. Their use has
-specifically focused in solving the problem of determining the
-expressed genes when the input data does not allow for uniquely doing
-so but could plausibly originate from multiple sources. This is in
-contrast to the preceding microarray technology, where the microarrays
-have been considered specific to the genes and have allowed for
-near-unique identification of the expressed genes. Although
-probabilistic models have been used in analysis of microarray data,
-the inclusion of mixture modelling components happened with the
-transition to the RNA-Seq approach.
+In sequencing data analysis, a key area of application for mixture
+models has been in RNA-Seq, where identifying the expression levels
+(relative contributions) of protein isoforms in some set of RNA
+sequencing reads is one of the main problems
+\citep{garber2011computational, wang2009rna}. Specifically, mixture
+models are useful in cases where the sequencing reads do not uniquely
+identify the isoform but could plausibly be the product of several
+genes. This is in contrast to the microarray technology that preceded
+RNA-Seq, where the technology itself allows for unique identification
+of the expressed gene and applications of probabilistic models focused
+more on obtaining uncertainty estimates (TODO citation).
 
-\section{Overview}
+The ability of mixture models to differentiate between expression of
+genes with similar nucleotide contents makes them ideal for analysis
+of short-read sequencing data from bacterial strains. Since the
+strains within a species typically share a large percentage of their
+genome (although the exact values vary greatly by species TODO
+citation), sequencing reads from one will match with a large number of
+genomes from the same species. Indeed, the models from RNA-Seq have
+been adapted almost directly to identify bacterial strains from
+sequencing data \citep{sankar2016bayesian} with great effect but not
+without some caveats related to more general applicability across
+different bacterial species. The work in this thesis extends the
+previous work in the field \citep{sankar2016bayesian} by introducing a
+more general formulation of the model that generalizes well to
+arbitrary bacterial species and allows for assigning sequencing reads
+to the bacterial strains in addition to identifying their relative
+contributions in a set of sequencing reads.
+
+\section{mSWEEP and mGEMS}
 
 The mSWEEP method is a tool for estimating the relative abundances of
-lineages of bacterial species in a set of sequencing reads. mSWEEP
-consists of a pipeline split into a preparation and an analysis
-stage. In the preparation stage, a reference collection capturing
-variation within the species that are expected to be found in the
-samples is constructed and prepared for further analysis by clustering
-the reference sequences. In the analysis stage, sequencing reads from
-the samples are pseudoaligned against the reference collection, and
-the pseudoalignments are fed to mSWEEP alongside the cluster
-definitions. mSWEEP then estimates the relative abundances of the
-reference clusters using a probabilistic model and variational
-inference. The output from mSWEEP are the relative abundances across
-the full set of reads, and additionally a probability matrix
-describing the fit of each read to each reference cluster.
+lineages of bacterial species in a set of sequencing reads. The method
+consists of two parts: preparing and clustering a reference genome
+assembly collection, and estimating the relative abundances using
+pseudoalignment \citep{bray2016near} and probabilistic modelling. In
+the preparation part, a reference collection consisting of genome
+assemblies for some predefined set of bacterial species is constructed
+and prepared for analysis by clustering the assemblies into
+biologically sensible lineages. In the analysis part, short-read
+sequencing data are pseudoaligned against the reference collection and
+the alignments used alongside the lineage clustering as the input to
+the mSWEEP probabilistic model. With results of the pseudoalignment
+mSWEEP estimates the relative abundances of each lineage in the
+reference collection using a mixture model and variational
+inference. The output from mSWEEP are the relative abundances of the
+lineages defined in the reference collection and a probability matrix
+describing the fit of each sequencign read to each reference lineage.
 
 Accompanying mSWEEP is the mGEMS pipeline, which is a method for
-assigning each read in the sample to some (or none) of the reference
-clusters found in the reference collection. mGEMS utilizes the
-relative abundance estimates and the probability matrix output by
-mSWEEP to assign the cluster membership of each read. Importantly,
-mGEMS allows for multi-cluster membership, since many reads can
-plausibly originate from several strains within the same species.
+assigning each read in the sample to some (or none) of the lineages in
+the reference collection. mGEMS utilizes the relative abundance
+estimates and the probability matrix from mSWEEP to assign the
+lineage membership of each read. Importantly, mGEMS allows for
+multi-lineage membership, since many reads can plausibly originate
+from several strains within the same species.
 
 Although both mSWEEP and mGEMS are novel methods that have been
 published in the papers included in the thesis, the roots of mSWEEP
-especially lie in research previously conducted in RNA-Seq
-analysis. The next section will cover some of the previous uses of
-probabilistic model in RNA-Seq and explain how they relate to the
-approach in mSWEEP. The differences in bacterial sequencing data
-necessitate some changes to the traditional RNA-Seq models, which give
-rise to the mSWEEP model.
+especially lie in the mixture modelling context from RNA-Seq. These
+roots will be examined in more detail in the next section, which
+explains how they relate to the approach used in mSWEEP for bacterial
+data. The differences between reads from bacteria and RNA-Seq
+necessitate some changes to the probabilistic models employed in
+RNA-Seq, which eventually produces the model used in mSWEEP.
 
 \subsection{Relationship to RNA-Seq methods}
+%% MCMC katz 2010
+%% EM algorithm li 2010
+%% maximum likelihood wang 2010 
+%% importance sampling jiang 2009
 
-Estimating the isoform expression levels with a mixture model first
-appeared around 2010 with papers proposing a model based on using read
-alignments against some reference isoforms. In these approaches, the
-mixture model is defined through latent indicator variables denoting
-the source isoform for the read, and some expected proportions of
-reads generated from each source \citep{katz2010analysis, li2010rna,
-  jiang2009statistical, wang2010isoform}. While some methods based
-their estimation on a likelihood function that modelled the
-probability of generating the read based on various characteristics
-related to the quality and length of the alignment
-\citep{katz2010analysis, li2010rna}, others base their estimation on a
-Poisson model of the reads that fit with some reference unit
-\citep{jiang2009statistical, wang2010isoform}.
+In RNA-Seq, mixture models were proposed as a solution to the isoform
+expression level estimation problem around 2010 with several methods
+appearing around the same time \citep{katz2010analysis, li2010rna,
+  jiang2009statistical, wang2010isoform}. In these methods, the model
+is defined through latent indicator variables that denote the source
+isoform for each sequencing read and the parameter of interest (the
+expression levels) are the proportions of reads assigned to each
+indicator variable. The proportions are inferred using either a
+likelihood function based on assessing the fit of the read to the
+reference isoforms based on sequence alignment
+\citep{katz2010analysis, li2010rna}, or by assuming a Poisson
+distribution on the numbers of reads that are compatible with each
+reference \citep{jiang2009statistical, wang2010isoform}. Estimating
+the parameters themselves was performed using a variety of algorithms
+ranging from Markov chain Monte Carlo (MCMC) sampling
+\citep{katz2010analysis} and importance sampling
+\citep{jiang2009statistical} to maximum likelihood estimation
+\citep{wang2010isoform} and the EM algorithm \citep{li2010rna}.
 
-A significant (at least from the perspective of this thesis)
-development in these methods happened in 2012 with the introduction of
-BitSeq, which extended the previous mixture models by allowing the
-reads to map to several different genes
-\citep{glaus2012identifying}. Furthermore, BitSeq provided an MCMC
-algorithm for fitting the model and estimate the uncertainty in the
-estimates rather than using the EM algorithm \citep{li2010rna} or the
-maximum likelihood \citep{jiang2009statistical} based approaches that
-only provide a point estimate. Another important step happened in 2015
-with the introduction of BitSeqVB \citep{hensman2015fast}, where the
-MCMC algorithm was supplemented by a variational approach that is
-significantly faster to compute.
+From the perspective of this thesis, a significant development of the
+methods appeared in 2012 with the introduction of BitSeq
+\citep{glaus2012identifying}. BitSeq extended the previous models by
+accounting for reads that map to several different reference sequences
+and derived update equations for a collapsed Gibbs sampler (TODO
+citation) to implement the MCMC sampling over the posterior
+distribution defined by the model. A further development of BitSeq
+appeared in 2015 with the introduction of BitSeqVB
+\citep{hensman2015fast}, where the sampling approach was supplemented
+by a collapsed variational Bayes approach that is significantly faster
+in fitting the model than the collapsed Gibbs sampler in BitSeq.
 
 \subsection{Applying RNA-Seq methods to data from bacteria}
 
 Solving the RNA-Seq isoform expression estimation problem had some
-unforeseen consequences in that the probabilistic models developed
-there can be applied almost directly to estimating the relative
-abundances of different bacteria in a set of sequencing reads. In
-2016, this problem was solved by the BIB \citep{sankar2016bayesian}
-which made the connection between the RNA-Seq approach of BitSeq and
-the bacterial relative abundance estimation task. In the bacterial
-context, the isoforms can simply be replaced by the genomes of
-reference bacterial strains, and the expression levels become the
-relative abundances of these strains. However, due to the fact that
-strains of the same species share a high percentage of their genome,
-BIB incorporated a step where the reference sequences were clustered
-to make them more differentiable and the estimation was performed for
-the core genomes of representative sequences from each cluster.
+unforeseen consequences in that the mixture models used can be almost
+directly applied to estimating the relative abundances of different
+strains of bacteria in a set of DNA sequencing reads. In 2016, the
+alikeness of the two problems was noted by the BIB method
+\citep{sankar2016bayesian} which solved the analogous bacterial strain
+relative abundance problem leveraging the work from BitSeq and
+BitSeqVB. In BIB, the reference isoforms are simply replaced by the
+genomes of reference bacterial strains, turning the expression level
+estimates into relative abundances of these strains. However, due to
+the fact that the strains within a bacterial species are more alike
+than the isoforms BitSeq was developed to handle, BIB incorporated a
+step where the reference sequences were made more differentiable by
+clustering them into lineages. Each lineage was represented in the
+reference collection by a reference sequence randomly sampled from all
+those belonging to the lineage, and the representative sequences were
+further trimmed down to contain only the core genome of the species.
 
-The methods from this thesis, mSWEEP and mGEMS, build upon BIB by
-removing the need to select a representative sequence from each
-cluster and by including the full reference sequences rather than only
-the core genomes. Removal of the representative sequence primarily
-gets around the problem of having to define an adequate sequence to
-represent the whole cluster and allows accounting for the full
-(sequenced) variety within a single cluster. The second related
-change, removal of the core genome requirement, provides the benefit
-of being able to include the accessory genome of the cluster in the
-reference collection while extending the method for species that have
-less stable core genomes than \textit{S. aureus}, the example organism
-in the BIB paper. Additionally, mSWEEP replaces the use of
-location-based sequence alignment with pseudoalignment
-\citep{bray2016near}, where only a 0 or 1 is reported for aligned or
-not, which allows for simplifying the likelihood function for the
-mixture model to just using the pseudoalignment count within each
-cluster. In this sense, mSWEEP can be seen as a descendant of both the
-count-based Poisson models \citep{jiang2009statistical,
-  wang2010isoform} through the inclusion of pseudoalignment, and of
-the earlier work in RNA-Seq through the relation to BitSeq through
-BIB.
+The relative abundance estimation method from this thesis, mSWEEP,
+builds upon the work in BIB by using both the accessory and core
+genomes of the reference sequence assemblies, and by removing the need
+to select a representative sequence from each lineage. Instead of
+selecting a representative sequence, mSWEEP uses all available
+assemblies from each lineage as the reference sequences, which gets
+around the problem of having to define an adequate sequence to
+represent the whole lineage. Furthermore, using all available
+sequences from each lineage provides better coverage of the variation
+in the now-included accessory genomes and allows applying the method
+to species that do not have as stable core genomes as
+\textit{Staphylococcus aureus}, which was used as one of the example
+organisms in BIB \citep{sankar2016bayesian}.
+
+In order to make the alignment against a much larger reference
+sequence collection feasible, mSWEEP additionally replaces the use of
+the location-based alignment in BIB with pseudoalignment
+\citep{bray2016near} which reports only a 0 or 1 depending on whether
+the read aligns somewhere (1) within a reference sequence or not at
+all (0). This also allows for simplifying the likelihood function used
+in the mixture model by using just the pseudoalignment count within
+each lineage as the observations. In this sense, the mixture model
+used in mSWEEP can be seen as a descendant of both Poisson RNA-Seq
+models \citep{jiang2009statistical, wang2010isoform}, which used the
+alignment counts, and the models leveraging location-based information
+about the alignments \citep{katz2010analysis, li2010rna,
+  glaus2012identifying} through the relation to BitSeq through BIB.
 
 \subsection{Differences between RNA-Seq and bacterial data}
 \label{section:bacterial-data}
 
 Sequencing data and reference sequences from bacteria have some unique
 characteristics that distinguish them from data originating from
-humans or other more complex organisms. Mainly the generation time for
-bacterial organisms is much shorter, measured in hours or even minutes
-depending on the environmental conditions and species. This has
-several implications for analyses that incorporate the use of
-reference data from previously sequenced organisms. First, major
-changes in the genomic contents happen within human-observable
+humans or other more complex organisms. Mainly, the generation time
+for bacterial organisms is much shorter, measured in hours or even
+minutes depending on the environmental conditions and species (TODO
+citation). This has several implications for analyses that incorporate
+the use of reference data from previously sequenced organisms. First,
+major changes in the genomic contents happen within human-observable
 time-frames and are reflected in sequence data obtained from what is
-assumed to be the same strain. Secondly, the DNA from bacteria is
-single-stranded, which is less stable than double-stranded
-DNA. Finally, bacterial genomes can undergo major horizontal gene
-transfer events even across large evolutionary distances, resulting in
-major genomic differences. Together these factors mean that reference
-sequences for any set of bacteria are almost certainly at least
-somewhat different than what would be obtained from sequencing a
-descendant of the same culture that produced the reference sequence.
+assumed to be the same strain (TODO citation). Secondly, the DNA from
+bacteria is single-stranded, which is less stable than double-stranded
+DNA (TODO citation). Finally, bacterial genomes can undergo major
+horizontal gene transfer events even across large evolutionary
+distances, resulting in major genomic differences (TODO
+citation). Together these factors imply that reference sequences for
+any set of bacteria are almost certainly at least somewhat different
+than what would be obtained from sequencing descendants of the
+organisms corresponding to the original reference sequence.
 
-As already seen in BIB, the problem of rapid evolution in the
-reference can be solved by considering clusters of sequences as a unit
-for relative abundance estimation rather than the sequences
-themselves. When the clustering is performed in a way that conforms to
-phylogenetically distinct clades, the estimation problem becomes
-significantly easier since the short-term genetic variation is in
-theory contained within the clades. With the inclusion of several
-reference sequences per cluster in mSWEEP, the clades become much
-easier to separate due to the increased representation. Clustering the
-reference has to be performed carefully, however, since the estimation
-will be reliant on signals that are unique to the cluster.
+As noticed in the BIB method, the problems introduced by quicker
+evolution of the bacterial organisms can be solved by replacing the
+individual reference sequences with lineages within a bacterial
+species as the unit for relative abundance estimation
+\citep{sankar2016bayesian}. When estimation is performed for suitably
+clustered sequences, the problem becomes significantly easier since
+the short-term genetic variation, at least presumably, more contained
+within the lineages, provided that they are biologically
+sensible. Since mSWEEP allows representing the lineages through
+several reference sequences, they become easier to distinguish since
+the differences between lineages are often larger than the differences
+between strains. However, selecting the clustering algorithm for
+identifying the lineages needs to be performed carefully, since the
+estimation will be reliant on the signals that are somewhat contained
+within the lineages.
 
 \section{Significance of reference databases}
 
-The reference collection consisting of some set of available genome
-assemblies for a bacterial species, or several, lies at the core of
-the mSWEEP method. Since the abundance estimation is based on
-modelling pseudoalignments of reads against the reference sequences,
-the quality of the reference collection naturally affects the
-reliability of the results. Our approach does not place constraints on
-the kinds of sequences that can be included, and thus allows for
-building bespoke databases that reflect the data being analysed. This
-has the advantage of allowing inclusion of isolate sequencing data
-from the same samples as the metagenomic reads while having the
-disadvantage of requiring user input in constructing the
-reference. Many metagenomics methods supply a prebuilt reference that
-can optionally be extended but in our experience prebuilding the
-reference is not feasible when dealing with within-species
-variation. Nevertheless, some reference databases have been shared
-alongside the publication in this thesis and they can be reused.
+In addition to the lineage definitions, the reference collection of
+some available genome assemblies for a bacterial species of interest,
+or several, lies at the very core of mSWEEP. Since the method
+estimates the relative abundances of the lineages based on information
+provided by pseudoalignment of the reads against the reference
+sequences, the accuracy of the results is naturally constrained by the
+quality of the reference collection. The included sequences can be
+tailored to the problem at hand since mSWEEP does not place
+constraints on the kind of assemblies that are used. This bespoke
+approach to reference building is particularly useful when isolate
+sequencing data is available from the same or closely related
+organisms presumably found in the analysed sequencing reads.
 
-A significant step in building the reference collection is deciding on
-the desired level of detail through the application of some clustering
-methods. While the fit of the reference sequences to the reads
-ultimately determines the quality of the results, tweaking the depth
-of the within-species clustering can enable identification in cases
-where the sequences are not exactly from the same source as the
-reads. Fortunately, many of the existing clustering methods for
-bacterial sequences can be reused in mSWEEP.
+Due to the disadvantages of requiring significant user effort in
+constructing the reference collection, many metagenomics methods rely
+on prebuilt references covering multiple species that have a high
+availability of sequences assemblies. For mSWEEP, supplying similar
+prebuilt references for a wide variety of species is not currently
+feasible due to the computational requirements of the pseudoalignment
+step, hence opting to use study or species-specific collections
+instead. Nevertheless, the publications included in the thesis do
+include the databases that were used and allow for their reuse in
+future analyses but extending them with isolate data is highly
+encouraged.
+
+Another significant step in building the reference collection is
+deciding on the desired level of detail in the lienage
+definitions. While the fit of the reference sequences to the
+sequencing reads ultimately determines the relative abundance
+estimates, tweaking the depth of the within-species clustering into
+lineages can enable identification in cases where the sequences are
+not exactly from the same source as the reads. The publications in
+this thesis employ several different approaches to the lineage
+definitions, making use of multilocus sequence typing (MLST) (TODO
+citation), and several clustering algorithms (TODO citations baps +
+poppunk).
 
 \subsection{Clustering bacterial sequences}
 
 Various methods for clustering bacterial genomes have been
-developed. The most commonly used is multilocus sequence typing
-(MLST), where sequence clusters are defined based on some conserved
-alleles, the combinations of which correspond to a unique sequence
-type. For many biological applications, MLST happens to provide
-taxonomic units that correspond to observable differences in
-phenotypes, and has subsequently led to widespread adoption among
-microbiologists. The downside of MLST is that it is defined based on
-curated databases, which means that the method is only applicable to
-extensively studied species and cannot assign sequences where the
-alleles have been affected by mutation or horizontal gene transfer.
+developed. One of the most commonly used of these is MLST, where
+sequence clusters are defined based on some conserved alleles (TODO
+citations), the combinations of which correspond to a unique sequence
+type. For many biological applications, the sequence types defined by
+MLST correspond to taxonomic units that have observable differences in
+phenotypes (TODO citation). This has subsequently led to widespread
+adoption of the method among microbiologists (TODO citation). The
+downside of MLST is that it is defined based on curated databases
+(TODO citation), which means that the method is only applicable to
+extensively studied species and additionally cannot assign sequences
+where the regions of the genome containing the alleles have been
+affected by mutation events.
 
-The \textit{k}-mer based PopPUNK method provides an alternative to
-MLST that uses \textit{k}-mer distances and a Bayesian generalized
-mixture model or DBSCAN to identify the clusters. In practice, the
-clusters PopPUNK identifies typically correspond to clonal complexes
-\textemdash an extension of MLST to a format with a central sequence
-type (ST) and its closely related variants forming each complex. The
-main advantage of PopPUNK is the ability to assign arbitrary reference
-sequences to clusters while mostly conforming to the MLST
-definitions. Additionally, the method allows for the inclusion of the
-more variable accessory genome, making PopPUNK ideal for defining the
-reference clusters for mSWEEP.
+The \textit{k}-mer based PopPUNK method \citep{lees2019fast} provides
+an alternative to MLST that uses \textit{k}-mer distances and a
+Bayesian generalized mixture model (TODO citation?) or DBSCAN (TODO
+citation) to define the lineages. In practice, the lineages that
+PopPUNK identifies typically correspond to clonal complexes (TODO
+citation) which are sequence clusters containing the sequences
+assigned to a central multilocus sequence type (ST) and closely
+related single or double locus variants of the central ST. Main
+advantage of using the clonal complex analogues provided by PopPUNK is
+the ability to assign arbitrary reference sequences to lineages while
+mostly conforming to the MLST complexes. Additionally, using PopPUNK
+allows for including the accessory genome in defining the lineages if
+desired, making PopPUNK an ideal choice for defining the reference
+lineages for mSWEEP.
 
 \subsection{Sequence alignment}
 \label{section:sequence-alignment}
 
-The sequence alignment utilized by mSWEEP differs from traditional
-alignment methods that report the location a read aligns to in a
-reference sequence. Instead of this location-based alignment, mSWEEP
-makes use of pseudoalignments, where only a 0 or 1 is reported for
-whether the read aligns somewhere within the reference sequence or
-nowhere. The mSWEEP publication used the kallisto method, which
-originally introduced pseudoalignments, but the mGEMS paper introduced
-a more scalable version of kallisto, called Themisto, that also
-provides an exact version of the pseudoalignment
-algorithm. Pseudoalignments have the advantage that they are much
-quicker to evaluate, enabling alignment against orders of magnitude
-larger reference collections in a short amount of time. The
-disadvantage is binarizing the alignments, which requires some changes
-in the likelihood function of the mixture models that have previously
-been proposed in the similar settings covered earlier. The next
-section will cover these changes and introduce the mSWEEP and mGEMS
-methods in more detail.
+The reference collection is used in mSWEEP as the target for
+pseudoalignment. Contrary to the location-based alignment method
+employed in BIB \citep{sankar2016bayesian}, pseudoalignment only
+reports a 0 when the read being pseudoaligned does not align anywhere
+within a reference sequence, and 1 in the when the read does align
+somewhere. In the original mSWEEP publication, the kallisto method
+\citep{bray2016near}, which introduced the pseudoalignment concept,
+was used to pseudoalign the reads, but the subsequent mGEMS paper
+introduced a more scalable method, called Themisto, that replaces
+kallisto in the pipeline. In addition to its scalability, Themisto
+also provides an exact version of the kallisto pseudoalignment
+algorithm \citep{maklin_bacterial_2021}.
+
+Pseudoaligning the reads has the advantage of being much quicker to
+compute, enabling the more expansive reference collections employed by
+mSWEEP. Although the disadvantage in information loss from binarizing
+the alignments does require some adjustments of the likelihood
+function in mSWEEP when compared to BIB, the added reference coverage
+more than makes up for any potential losses in accuracy. The next
+section will cover this mixture model formulation and the changes
+introduced by mSWEEP in more detail, as well as the theory behind the
+mGEMS algorithm for assigning the sequencing reads themselves to bins
+corresponding to the reference lineages.
 
 \section{A probabilistic model for sequences from mixed sources}
 \label{section:model}
+%% WIP continue from here
 
 In this section I will introduce and cover the probabilistic model
 used by mSWEEP. This model is an extension of the probabilistic model
