@@ -1306,7 +1306,6 @@ mSWEEP paper. The values of $\pi_{k}, \phi_{k}$ are set to
 \end{equation}
 
 \subsection{Fitting the model using variational inference}
-%% WIP continue from here
 
 With the likelihood defined in Equations
 \ref{likelihood:without-normalization} and
@@ -1358,30 +1357,32 @@ mixture model structure is available from
 \subsection{Alternative fit using MCMC sampling}
 Alternatively, the model could be fitted using Markov chain Monte
 Carlo (MCMC) sampling methods (TODO citations or explain). Instead of
-finding an approximating distribution $q\left(\boldsymbol\theta,
-I\right)$, MCMC sampling attempts to produce a set of samples from the
-true posterior $p\left(\boldsymbol\theta, I\middle|
-R\right)$. Averaging over the values produced via MCMC sampling
-$\hat{\boldsymbol\theta}$ asymptotically produces the true parameters
-$\boldsymbol\theta$ as the number of samples $n_{MCMC}$
-increases. Even though producing the true values is tempting instead
-of using the values from the variational approximation, MCMC has
-several problems when applied in practice (TODO citations). First, the
-true values are only found asymptotically, meaning that it is
-difficult to measure when the sampling has been performed for long
-enough for the chain to have converged to the true
-posterior. Secondly, due to the first point, the number of samples
-that need to be drawn may be excessively high, resulting in extremely
-long run times when compared to the faster variational inference (TODO
-cite).
+the variational inference approach of finding an approximating
+distribution $q\left(\boldsymbol\theta, I\right)$, MCMC sampling
+attempts to produce a set of samples from the true posterior
+$p\left(\boldsymbol\theta, I\middle| R\right)$. Averaging over the
+values produced via MCMC sampling $\hat{\boldsymbol\theta}$
+(asymptotically) produces the true parameters $\boldsymbol\theta$ as
+the number of samples increases.
 
-MCMC does however have the advantage that, provided sufficient
-runtime, the samples will be from the true posterior. When comparing
-MCMC to VI in practice, the former has been reported to better capture
-correlations between the sampled parameters (TODO cite Antti's bitseq
-paper). Because of this, we compared the VI from mSWEEP to a version
-of mSWEEP compatible with the MCMC sampling from BitSeq (TODO cite
-BitSeq) but found no significant differences between the two (TODO figure).
+Even though producing the true values is tempting, MCMC has several
+problems when applied in practice (TODO citations). First, the true
+values are only found asymptotically, meaning that it is difficult to
+determine when the MCMC sampler has converged to the true
+posterior. Secondly, due to the first point, the number of samples
+that need to be drawn may be excessively high, resulting in long run
+times when compared to the significantly faster variational inference
+(TODO cite, variational inference for statisticians paper?).
+
+Compared to variational inference, MCMC does have the advantage that,
+provided sufficient runtime, the samples will be from the true
+posterior. In practice, this leads to better estimates of the
+covariance between the sampled parameters when the model is of the
+form in Equation \ref{model:joint-distribution} (cite BitSeqVB
+paper). However, replacing the variational inference algorithm in the
+mSWEEP model with the Gibbs sampler from the original BitSeq
+\citep{glaus2012identifying} does not seem to produce any significant
+differences between the parameter estimates (Figure TODO gibbs vs vi).
 
 \textbf{TODO: - Add figure of Gibbs sampler vs variational inference experiments.}
 
