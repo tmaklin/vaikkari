@@ -1389,58 +1389,78 @@ differences between the parameter estimates (Figure TODO gibbs vs vi).
 \section{From profiling to binning}
 \label{section:binning}
 
-This sections covers using the model from mSWEEP to provide an
-algorithm for binning sequencing reads. Binning differs from the
-abundance estimation, or taxonomic profiling, in that the goal is to
-produce some assignment of the reads to reference units. In typical
-cases, bins correspond to some individual species or genuses, but in
-this thesis binning will be performed on the level of the clusters
-that mSWEEP uses for reporting the relative abundances. Compared to
-merely doing taxonomic profiling, binning provides a much higher level
-of detail about the contents of a sample, since many read-based
-downstream analyses may be performed once the bins have been
-constructed. Contrary to the section presenting the probabilistic
-model, the binning algorithm is quite straightforward.
+This sections covers using the model from mSWEEP to derive an
+algorithm for assigning the sequencing reads $r_{n, k}$ to the
+reference lineages $k$, also known as binning. Binning differs from
+relative abundance estimation in that the goal is to produce some
+assignment of the reads to reference units. Typically the reference
+units and the created bins correspond to some species or even
+genuses. In this thesis, the bins will be created on the level of the
+reference lineages/clusters that mSWEEP reports the relative
+abundances for. Compared to estimating only the abundances, the
+addition of binning provides much extra detail about the contents of a
+sample, since the creation of lineage-level sequencing read bins
+allows performing many downstream analyses that require sequencing
+reads or even assemblies. The binning algorithm presented in this
+section is called the mGEMS binning algorithm, which in itself is a
+part of the mGEMS pipeline for binning sequencing reads.
 
 The work in this section is based on the results from the second paper
-included in the dissertation \citep{maklin_bacterial_2021}.
+included in the dissertation \citep{maklin_bacterial_2021}. Compared
+to the previous section presenting the mSWEEP probabilistic model, the
+binning algorithm is somewhat more straightforward.
 
 \subsection{The mGEMS binning algorithm}
 
 A crucial feature for the binning algorithm to handle lineage-level
-differences between bacteria is the possibility for a single read to
-belong to multiple bins at the same time. This differs from most of
-the work on binning, where the reads are typically only assigned to a
-single bin and the variation between the bins is assumed large enough
-that this approach is correct. For strain-level-binning to work, this
-assumption is obviously not correct, since the differences between the
-genomes can be minimal. Thus, the binning algorithm must be derived
-with this feature in mind.
+differences between bacteria is that the algorithm must allow for
+assignment of a single read to multiple bins at the same time. Because
+of the relatively small differences between different lineages of a
+bacterial species, the read could easily have been generated from
+several of them. This differs from most work on binning, where the
+reads are typically only allowed an assignment in a single bin at a
+time because the variation between the organisms belonging to
+different bins is assumed large enough that multi-bin assignment is
+not necessary (TODO citations). For within-species-level binning, this
+assumption obviously does not hold because of the shared genomic
+contents when the species are defined in a manner that reflects their
+phylogenetic characteristics. This means that the mGEMS binning
+algorithm must be explicitly defined in a way that allows for
+assignment to multiple bins.
 
-The mGEMS binning algorithm is derived by leveraging the read-level
-assignment probabilities $\gamma_{n, k} \in \left(0, 1\right), n = 1,
-\dots, N, k = 1, \dots, K, \sum_{k = 1}^{K}\gamma_{n, k} = 1$ produced
-by the variational approximation (Equation
-\ref{likelihood:vi-factorization}). We assume that the sequencing
-reads do not contain several members of the same cluster and that,
-should the true reference sequence that generated the reads be missing
-from the reference, the set of reference sequences adequately captures
-the variation present in the cluster. To fulfill our requirement that
-the read can belong to several bins at the same time, we define a bin
-$G_{k}$ for each cluster $k$ as a subset of sequencing reads $r_{n}$
-such that
+The mGEMS binning algorithm consists of a rule for assigning the reads
+to the bins. This rule is derived by leveraging the read-level
+assignment probabilities $\gamma_{n, k} \in \left(0, 1\right)$, $n =
+1, \dots, N$, $k = 1, \dots, K$, $\sum_{k = 1}^{K}\gamma_{n, k} = 1$
+produced by the variational approximation used in fitting the mSWEEP
+model (Equation \ref{likelihood:vi-factorization}). To derive the
+assignment rule, some further assumptions regarding the reads and the
+reference sequences are required. Firstly, the sequencing reads are
+assumed to contain only one member of the same lineage \textemdash
+similarly to the typical metagenomic binners assuming only variation
+at the level they operate on. Secondly, should the true reference
+sequence that generated the reads be missing from the reference, the
+set of reference sequences in the lineage that generated the reads is
+assumed to adequately cover the variation in the missing sequence. The
+second assumption is necessary since reads that do not pseudoalign to
+any reference sequence in the collection are discarded by mSWEEP.
+
+To fulfill our requirement that a read can be assigned to several bins
+at the same time, the bins $G_{k}$ for each cluster $k$ are defined as
+a subset of sequencing reads $r_{n}$ such that
 \begin{equation}
   \label{binning:bins-definition}
   G_{k} = \left\{r_{n} : \gamma_{n, k} \geq q_{k}\right\}
 \end{equation}
-holds for a threshold $q_{k} \in \left[0, 1\right]$. The threshold may
-be different for each cluster $k$. Because of the way the bins $G_{k}$
-are defined in Equation \ref{binning:bins-definition}, this definition
-obviously allows for the reads to belong to several bins (for a
-trivial example, consider the case where $q_{k} = 0$ for all $k$).
+holds for some threshold $q_{k} \in \left[0, 1\right]$. Note that the
+threshold may be different for each cluster $k$. Because of the way
+the bins $G_{k}$ are defined in Equation
+\ref{binning:bins-definition}, this definition obviously allows for
+a read to belong to several bins (for a trivial example, consider
+the case where $q_{k} = 0$ for all $k$).
 
 \subsection{Assignment rule for multi-cluster membership}
-
+%% WIP
 Next, we need to find a sensible value for the thresholds $q_{k}$ that
 ideally maximizes the probability $A_{n, k}$ of assigning the read
 $r_{n}$ to the bin $G_{k}$ if the cluster $k$ (could have) generated
