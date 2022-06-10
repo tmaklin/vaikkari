@@ -1461,7 +1461,7 @@ a read to belong to several bins (for a trivial example, consider
 the case where $q_{k} = 0$ for all $k$).
 
 \subsection{Assignment rule for multi-cluster membership}
-%% WIP
+
 Next, the thresholds $q_{k}$ should be assigned some sensible value
 that maximizes the probability $A_{n, k}$ of assigning the read
 $r_{n}$ to the bin $G_{k}$ if the cluster $k$ (could have) generated
@@ -1568,36 +1568,36 @@ first and second papers (TODO cite).
 High-resolution metagenomics (in the context of this thesis) refers to
 applying some method capable of recovering variation at the
 within-species level to some sort of metagenomics data as defined in
-Section \ref{three-approaches-to-metagenomics}. In our case, the
-methods of interest are mSWEEP and mGEMS. This chapter will deal with
+Section \ref{three-approaches-to-metagenomics}. In this chapter, the
+methods of interest are mSWEEP and mGEMS. The chapter will deal with
 the benchmarking and experimental results from the first two papers,
 which focus on analysing plate sweep metagenomics data. At the end of
-the chapter some technicalities arising from the model formulating will
-also be covered \textemdash namely questions about reliability of the
-results when applied to realistic use-cases and sensitivity to
-parameter changes.
+the chapter some technicalities arising from the model formulation
+presented in Chapter 2 will also be covered. These mostly cover
+questions about reliability of the results when applied to realistic
+use-cases.
 
 \section{Plate sweep and WGS metagenomics}
 
 The primary methods for obtaining metagenomics sequencing data
-considered in this thesis are plate sweep metagenomics and
-whole-genome shotgun (WGS) metagenomics (see Section
-\ref{three-approaches-to-metagenomics} for more details). Of these
-two, plate sweep metagenomics has the advantage of being able to focus
-sequencing efforts to species that are known to grow on specific
-plates, while WGS metagenomics provides data of \textit{all} organisms
-on some sample (including for example host DNA, fungi, commensal
-species). When the goal is to investigate strain-level variation, both
-approaches have their uses in either producing more data from the
-species of interest or providing a less biased view of the sample
-contents at the expense of sequencing depth. The first two papers
-included in the thesis were written with only plate sweep metagenomics
-in mind but the third paper demonstrated that mSWEEP and mGEMS are
-applicable in the WGS metagenomics context. Thus, this chapter will
-not discriminate between the two.
+considered are plate sweep metagenomics and whole-genome shotgun (WGS)
+metagenomics (see Section \ref{three-approaches-to-metagenomics} for
+more details). Of these two, plate sweep metagenomics has the
+advantage of being able to focus sequencing efforts to species that
+are known to grow on specific culture media, while WGS metagenomics
+provides data of \textit{all} organisms on some sample (including for
+example host DNA, fungi, commensal species, and so on). When the goal
+is to investigate strain-level variation, both approaches have their
+uses in either producing more data from the species of interest or
+providing a less biased view of the sample contents at the expense of
+sequencing depth. The first two papers included in the thesis were
+written with only plate sweep metagenomics in mind but the third paper
+demonstrated that mSWEEP and mGEMS are applicable in the WGS
+metagenomics context. Thus, this chapter will not discriminate between
+the two.
 
 \subsection{Benefits of metagenomics over culturing}
-
+% WIP continue from here
 When comparing metagenomics approaches to culturing, the obvious
 difference is that the former will provide a better view of the
 microbiome in the sample. Although epidemiological analyses in the
