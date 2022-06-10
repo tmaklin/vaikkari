@@ -1285,18 +1285,19 @@ of the parameters. The reparametrised forms for $\alpha$ and $\beta$ are
   \pi = \frac{\alpha}{\alpha + \beta}, \phi = \frac{1}{\alpha + \beta},
 \end{equation}
 where the first parameter $\pi$ has the range $\pi \in \left(0,
-1\right)$ and represents the mean success rate in repeated draws from
-the beta binomial distribution, and the second parameter $\phi > 0$
-measures the variation in the success rate for each draw
+1\right)$ unless constraints are placed on $\alpha$ and $\beta$ and
+represents the mean success rate in repeated draws from the beta
+binomial distribution. The second parameter $\phi > 0$ measures
+the variation in the success rate for each draw
 \citep{griffiths1973maximum}. In the formulation for the likelihood in
 Equation \ref{likelihood:normalized}, each cluster $k$ has its own
 parameters $\pi_{k}, \phi_{k}$.
 
-Although methods such as Bayesian optimization could be employed to
-find optimal values for the parameters $\pi_{k}, \phi_{k}$ in Equation
-\ref{likelihood:reparametrization}, we set their values based on a
-reasonable compromise that performed well in the mSWEEP paper. The
-values of $\pi_{k}, \phi_{k}$ are set to
+Although methods such as Bayesian optimization (TODO citation) could
+be employed to find optimal values for the parameters $\pi_{k},
+\phi_{k}$ in Equation \ref{likelihood:reparametrization}, we set their
+values based on a reasonable compromise that performed well in the
+mSWEEP paper. The values of $\pi_{k}, \phi_{k}$ are set to
 \begin{equation}
   \begin{aligned}
     \pi_k &= 0.65, \text{ for all } k = 1, \dots, K, \\
@@ -1311,32 +1312,35 @@ With the likelihood defined in Equations
 \ref{likelihood:without-normalization} and
 \ref{likelihood:normalized}, all that remains is to come up with a
 suitable method to infer the relative abundances
-$\boldsymbol\theta$. Since our model is principally the same as the
+$\boldsymbol\theta$. Since the model is principally the same as the
 one used in BIB (Equation \ref{model:grouped-joint-distribution}),
 just with a different formula for the likelihood term $p\left(r_{n, k}
-= k \middle| I_{n} = k\right)$, we can adapt the variational inference
-used in BIB to our needs. Since this requires only changing the
-likelihood term, the core of the inference algorithm remains the
-same. Since variational inference is an extremely broad topic outside
-of the scope of this dissertation, I will only cover the parts that
-are relevant to the original contributions in the thesis. For a more
-thorough coverage of the variational inference algorithm in this
-context, readers are referred to the BitSeqVB paper \citep{hensman2015fast} where the
-algorithm is derived for the same model with a different likelihood
-function.
+= k \middle| I_{n} = k\right)$, the variational inference algorithm
+from BIB can be adjusted by simply changing the likelihood term to
+that of Equation \ref{likelihood:without-normalization} and the rest of
+the algorithm remains the same.
+
+Variational inference by itself is an extremely broad topic that lies
+somewhat outside the scope of this dissertation. Thus, I will only
+cover the parts that are directly relevant to the contributions from
+the thesis \textemdash namely, how the probability matrix that mSWEEP
+generates and mGEMS leverages is obtained. For a more thorough
+coverage of variational inference in this context, the BitSeqVB paper
+\citep{hensman2015fast} provides an explanation for the case where the
+algorithm is derived for the same model, only with a different
+likelihood function.
 
 In brief, variational inference for the mSWEEP model consists of
 finding a distribution $q\left(\boldsymbol\theta, I\right)$ that
 minimizes the Kullback-Leibler divergence to the true posterior
 $p\left(\boldsymbol\theta, I \middle| R\right) \approx
-q\left(\boldsymbol\theta, I\right)$. For simplicity, we assume that
-the approximation $q\left(\boldsymbol\theta, I\right)$ factorizes into
+q\left(\boldsymbol\theta, I\right)$. For simplicity, assume that the
+approximation $q\left(\boldsymbol\theta, I\right)$ factorizes into
 $q\left(\boldsymbol\theta, I\right) =
-q\left(\boldsymbol\theta\right)q\left(I\right)$. Since we assumed that
-each $I_{n}$ has a categorical distribution
-$Cat\left(\boldsymbol\theta\right)$ and are independent of each other,
-$I_{n} \indept I_{m}, n \neq m$, the second term $q\left(I\right)$
-simplifies to
+q\left(\boldsymbol\theta\right)q\left(I\right)$. Because each $I_{n}$
+has a categorical distribution $Cat\left(\boldsymbol\theta\right)$ and
+they are furthermore assumed independent of each other, $I_{n} \indept
+I_{m}, n \neq m$, the second term $q\left(I\right)$ simplifies to
 \begin{equation}
   \label{likelihood:vi-factorization}
   q\left(I\right) = \prod_{n = 1}^N\prod_{k = 1}^K \gamma_{n, k}^{I_{n, k}}.
@@ -1345,10 +1349,10 @@ simplifies to
 In practice, the best approximation $q\left(\boldsymbol\theta,
 I\right)$ is found when optimal values for the parameters $\gamma_{n,
   k}$ in Equation \ref{likelihood:vi-factorization} are found (TODO
-cite). We use the Riemannian conjugate gradient (RCG) method to find
-the optimal values for $\gamma_{n, k}$ (TODO cite). A generic and
-parallel \& distributable implementation for arbitrary likelihood with
-this mixture model structure is available from
+cite). The Riemannian conjugate gradient (RCG) method is used to find the
+optimal values for $\gamma_{n, k}$ (TODO cite). A generic and parallel
+\& distributable implementation for arbitrary likelihood with this
+mixture model structure is available from
 \url{https://github.com/tmaklin/rcgpar}.
 
 \subsection{Alternative fit using MCMC sampling}
