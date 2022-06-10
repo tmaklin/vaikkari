@@ -785,10 +785,11 @@ citation). This has several implications for analyses that incorporate
 the use of reference data from previously sequenced organisms. First,
 major changes in the genomic contents happen within human-observable
 time-frames and are reflected in sequence data obtained from what is
-assumed to be the same strain (TODO citation). Secondly, the DNA from
-bacteria is single-stranded, which is less stable than double-stranded
-DNA (TODO citation). Finally, bacterial genomes can undergo major
-horizontal gene transfer events even across large evolutionary
+assumed to be the same strain (TODO citation). Secondly, most bacteria
+only have a single copy of their chromosome, which means that any
+mutations in their chromosome are usually also inherited by their
+descendants (TODO citation). Finaly, bacterial genomes can undergo
+major horizontal gene transfer events even across large evolutionary
 distances, resulting in major genomic differences (TODO
 citation). Together these factors imply that reference sequences for
 any set of bacteria are almost certainly at least somewhat different
@@ -1461,18 +1462,19 @@ the case where $q_{k} = 0$ for all $k$).
 
 \subsection{Assignment rule for multi-cluster membership}
 %% WIP
-Next, we need to find a sensible value for the thresholds $q_{k}$ that
-ideally maximizes the probability $A_{n, k}$ of assigning the read
+Next, the thresholds $q_{k}$ should be assigned some sensible value
+that maximizes the probability $A_{n, k}$ of assigning the read
 $r_{n}$ to the bin $G_{k}$ if the cluster $k$ (could have) generated
-the read $r_{n}$. Ideally, we would define the probability $A$ through
-another probability $B_{n, k}$: the cluster $k$ contains a sequence
-that contains the true (error-free) nucleotide sequence of the read
-$r_{n}$. However, the probability $B$ is difficult to estimate
-directly since 1) the reads cannot be error-corrected with full
-accuracy, and 2) the reference collection is non-complete. However, by
-assuming that the sample is composed mostly of closely related
-organisms, we can derive the following relationships between $A_{n,
-  k}$ and $B_{n, k}$
+the read $r_{n}$. Ideally, the probabilities $A_{n, k}$ could be
+defined through other probabilities $B_{n, k}$ with the meaning: the
+cluster $k$ contains a sequence that contains the true (error-free)
+nucleotide sequence of the read $r_{n}$. However, the probabilities
+$B_{n, k}$ are quite difficult to estimate directly since 1) the reads
+cannot be error-corrected with full accuracy, and 2) the reference
+collection is nearly always incomplete. These two problems can be
+remedied by assuming that the sample is composed mostly of closely
+related organisms, which allows deriving the following relationship
+between $A_{n, k}$ and $B_{n, k}$
 \begin{equation}
   \label{binning:a-is-approximately-b}
   P\left[A_{n, k} = 1\right] \approx \theta_{k}P\left[J_{n, k} = 1\right],
@@ -1484,22 +1486,23 @@ sample that generated the reads $r_{n}$. Equation
 be ``large'' for the approximation to hold. A more detailed derivation
 for this statement about the magnitude of $B_{n, k}$ and Equation
 \ref{binning:a-is-approximately-b} is provided in the methods section
-of the mGEMS article \cite{maklin_bacterial_2021}, supplied in the
-appendix for this thesis, and thus omitted from here.
+of the mGEMS article \citep{maklin_bacterial_2021}, supplied in the
+appendix for this thesis and omitted from here.
 
 The implied statement about the magnitude of $B_{n, k}$ when
 $P\left[A_{n, k} = 1\right] \geq \theta_{k}$ means that there is a
-high chance that $B_{n, k} = 1$ when the former holds. Through this,
-we can derive an assignment rule by using the estimates $\gamma_{n,
-  k}$ (Equation \ref{likelihood:vi-factorization}) for the probability
-$P\left[A_{n, k} = 1\right]$
+high chance that $B_{n, k} \rightarrow 1$ when the former
+holds. Because of this relationship, an assignment rule can be derived
+by using the estimates $\gamma_{n, k}$ (Equation
+\ref{likelihood:vi-factorization}) for the probability $P\left[A_{n,
+    k} = 1\right]$
 \begin{equation}
   \label{binning:theoretical-assignment-rule}
   \text{if } \gamma_{n, k} \geq \theta_{k}, \text{ assign the read } r_{n} \text{ to } G_{k}.
 \end{equation}
-Equation \ref{binning:theoretical-assignment-rule} provides us with an
+Equation \ref{binning:theoretical-assignment-rule} provides an
 inequality whose validity can be checked to assess the probability of
-the event $B_{n, k} = 1$ which we could not estimate directly.
+the event $B_{n, k} = 1$ which could not be estimated directly.
 
 \subsection{Practical considerations}
 
@@ -1510,50 +1513,55 @@ practice requires a slight adjustment due to computational
 accuracy. Namely, when estimating the relative abundances $\theta_{k}$
 of $N$ reads, any estimate that falls below $\frac{1}{N}$ means that
 zero reads originated from the cluster $k$. Because of this, values
-$\theta_{k} < \frac{1}{N}$ are meaningless and all represent the same
-case of 0 reads from the cluster. Due to the constraint that
-$\theta_{k}$ must sum up to $1$ over $k$, these essentially-zero
-values do, however, contribute a small amount of noise to the
-estimates. Since there are $K$ clusters, the fraction of noise $d$ is
-(in the worst-case scenario) at most
+$\theta_{k} < \frac{1}{N}$ are in some sense meaningless, and all
+represent the same case of 0 reads from the clusters where the
+inequality is true. Due to the constraint that $\theta_{k}$ must sum
+up to $1$ over $k$, these essentially-zero values do, however,
+contribute a small amount of noise to the other estimates that exceed
+$\frac{1}{N}$. Since there are $K$ clusters, the fraction of noise $d$
+is (in the worst-case scenario) at most
 \begin{equation}
   \label{binning:assignment-rule-noise}
-  d = K\frac{1}{N}.
+  d = (K - 1)\frac{1}{N}.
 \end{equation}
 
-Equation \ref{binning:assignment-rule-noise} means that when
-evaluating the validity of the inequality presented in Equation
-\ref{binning:theoretical-assignment-rule}, we should adjust the
-threshold $\theta_k$ with $1 - d$, meaning that we consider only the
-fraction of relative abundance that is assigned to nonzero
-estimates. This produces the final assignment rule that is used in
-mGEMS
+The noise-level in the worst-case scenario of Equation
+\ref{binning:assignment-rule-noise} means that when evaluating the
+validity of the inequality in Equation
+\ref{binning:theoretical-assignment-rule}, the thresholds $\theta_k$
+should be adjusted with $1 - d$. This adjustment in turn means that
+only the fraction of relative abundance that is assigned to nonzero
+estimates in the wost-case scenario is considered. Adjusting Equation
+\ref{binning:theoretical-assignment-rule} with $d$ produces the final
+assignment rule that is used in mGEMS
 \begin{equation}
   \label{binning:assignment-rule}
   \text{if } \gamma_{n, k} \geq (1 - d)\theta_{k}, \text{ assign the read } r_{n} \text{ to } G_{k}.
 \end{equation}
-
-Since the variational approximation used to fit the mSWEEP model
+Because the variational approximation used to fit the mSWEEP model
 already provides both the estimates $\gamma_{n, k}$ and the relative
 abundances $\theta_{k}$, the assignment rule in Equation
 \ref{binning:assignment-rule} is in practice extremely inexpensive to
 evaluate after the model has been fitted.
 
+\subsection{General applicability of the assignment rule}
+
 Since the relative abundances $\theta_k$ are derived from the values
 $\gamma_{n, k}$ by averaging over $n = 1, \dots, N$, the assignment
 rule in Equation \ref{binning:assignment-rule} can be seen as a way to
-cluster the rows (or columns) of a generic probability matrix while
-allowing assigning each row (or column) to several clusters at the
-same time. We do not, however, explore the applicability of this rule
-to other scenarios where a probability matrix should be clustered in
-this manner. Nevertheless, the rule is general enough to acknowledge
-its potential applications elsewhere.
+cluster the rows (or columns) of a generic probability matrix, whose
+rows (or columns) sum up to $1$. This rule in particular allows
+assigning each row (or column) to several clusters at the same
+time. However, more general applicability of the rule to probability
+matrices is not explored further in this thesis beyond this
+acknowledgement that the rule could be applied to more general
+scenarios where a probability matrix needs to be clustered.
 
 The next chapter will cover the application of mSWEEP and mGEMS to
-both different kinds of sequencing data and explore how the methods
-can be applied to enable new directions in analysis of sequencing
-data. The chapter also includes a brief coverage of the benchmarks and
-experiments presented in the first and second papers (TODO cite).
+different kinds of sequencing data and explore how the methods enable
+new directions in analysis of sequencing data. The chapter also
+includes a coverage of the benchmarks and experiments presented in the
+first and second papers (TODO cite).
 
 \chapter{High-resolution metagenomics}
 
