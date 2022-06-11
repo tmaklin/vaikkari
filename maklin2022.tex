@@ -1870,94 +1870,108 @@ covered in the next remains accurate in terms of its results.
 
 \subsection{mGEMS}
 \label{mgems-performance-benchmark}
-% WIP continue from here
-Our taxonomic binner mGEMS was benchmarked in the second paper using
-both synthetic data (mixtures of reads from isolate cultures of
-different strains) as well as the previously mentioned \textit{in
-  vitro} benchmark. The chief metrics used were related to those that
-are the main objects of interest in genomic epidemiological analyses:
-SNPs and phylogenies estimated from the SNP data. We looked at the
-performance of mGEMS on the level of within-ST variation using data
-from \textit{E. coli} (TODO cite paper), at the between-ST and
-within-species level using \textit{E. faecalis}, and an extreme case
-with only dozens of SNPs separating the different reference clusters
-using data from \textit{S. aureus}.
 
-\subsubsection{Synthetic data benchmarks}
+The taxonomic binner mGEMS was, in turn, benchmarked in the second
+paper using again both synthetic mixtures of reads from isolate
+sequencing, and the same \textit{in vitro} benchmark that was used
+with mSWEEP. For mGEMS, the chief measures of accuracy used were
+related to those that are the main objects of interest in genomic
+epidemiological analyses: SNPs and phylogenies estimated from the SNP
+data. In the synthetic mixtures, the performance of mGEMS was
+evaluated at the level of within-ST variation using data from
+\textit{E. coli} (TODO cite paper), at the between-ST and
+within-species level using \textit{E. faecalis} (TODO cite paper), and
+at an extreme level with only dozens of SNPs separating the different
+reference lineages using data from \textit{S. aureus} (TODO cite
+paper).
 
-In the \textit{E. coli} benchmark we investigated how well
-mGEMS-derived assemblies performed for maximum likelihood phylogeny
-estimation (using RAxML-NG, Gamma+GTR4M model) when compared to using
-isolate sequencing data. We used snippy to derive the core genome
-alignment against the same reference genome for both mGEMS-derived
-assemblies and the isolate assemblies. The results showed that mGEMS
+\subsubsection{Synthetic mixture benchmarks}
+
+The \textit{E. coli} benchmark investigated how mGEMS-derived
+assemblies performed for maximum likelihood phylogeny estimation
+(using RAxML-NG, Gamma+GTR4M model) (TODO citation) when compared to
+using isolate sequencing data in the same pipeline. The core genome
+alignment required by RAxML-NG was estimated using snippy (TODO
+citation) with the same reference genome for both mGEMS-derived and
+isolate data assemblies. The resulting phylogeny shows that mGEMS
 tends to slightly overestimate the number of SNPs in these assemblies
-(Figure 2 panel a in the paper (TODO cite)) but the phylogenetic
-relationships (Figure 3) are recovered quite well. This benchmark was
-performed at the level of variation within a sequence type
-(\textit{E. coli} ST131).
+(Figure 2 panel a in the paper (TODO reproduce figure here and cite
+source)) but the phylogenetic relationships (Figure 3 TODO reproduce
+figure here) are recovered well. This benchmark was performed at the
+level of variation within a sequence type (\textit{E. coli} ST131)
+using sublineages defined in a previous study (TODO citation, Teemu's
+paper).
 
-The \textit{E. faecalis} benchmark was performed similarly to the
-\textit{E. coli} one but with the intention of investigating
+In the \textit{E. faecalis} benchmark, the assessment was performed
+similarly to \textit{E. coli} but with the change to investigating
 performance with between-ST variation. Additionally,
 \textit{E. faecalis} is known to have a relatively high rate of
-recombination within the species across ST lines (TODO citation),
-which adds to the difficulty of the problem. Nevertheless, the mGEMS
-derived-assemblies do recover the overall structure of the phylogeny
-and place to sequences from the same ST to the same clade. While the
-global structure is somewhat different from the isolate assembly
-phylogeny, these kind of differences may easily be explained by
-uncertainty arsing from recombination affecting the placement of the
-STs globally. This phenomenon is also apparent in the bootstrap
-support values for both the isolate and mGEMS-derived phylogenies.
+recombination within the species across sequence types (TODO
+citation), which adds additional difficulty to the
+problem. Nevertheless, the mGEMS derived-assemblies do recover the
+overall structure of the phylogeny well and place sequences from the
+same ST to the same clade (TODO reproduce figure). Although the global
+structure is somewhat different from the isolate assembly phylogeny,
+even in phylogenies estimated from isolate sequencing data global
+differences are often explained by uncertainty arising from
+recombination affecting the placement of the STS within the overall
+phylogeny. This phenomenon is also apparent in the bootstrap support
+values for both the isolate and mGEMS-derived phylogenies, partially
+explaining the differences between the two.
 
 The final synthetic benchmark in the second paper investigated
-phylogeny recovery in \textit{S. aureus} ST22 sublineages that are
-separated by a few dozen SNPs (TODO citation). Although the
-performance in this benchmark was not quite as good as in the two
-others, the mGEMS-derived results nevertheless do manage to replicate
-some parts of the results relating to the transmission analysis
-performed in the source study for this data. Namely, the samples that
-were observed to be the likely source of the pathogenic strain in the
-sequenced patients were placed at the root of the phylogeny when using
-both mGEMS and isolate data. Regardless, there is some lack of detail
-further down in the tree which is likely a result of the small degree
-of separation between the sublineages.
+phylogeny recovery within \textit{S. aureus} ST22 with sublineages
+that are separated by a few dozen of SNPs (TODO citation, source
+study). Te performance in this benchmark was not quite as good as in
+the \textit{E. coli} and \textit{E. faecalis} benchmarks but the
+mGEMS-derived results do still manage to replicate the important parts
+of the results transmission analysis wise. Namely, the samples that
+were determined as the likely source of the pathogenic strain in the
+sequenced patients (TODO add which, reproduce figure here) were placed
+at the root of the phylogeny when using both mGEMS and isolate
+data. Further down in the tree there is some lack of detail which is
+likely a result of the small degree of separation between the
+sublineages, or possibly of the filtering of the assemblies performed
+in the original study that was not replicated for the mGEMS-derived
+assemblies (TODO citation?).
 
 \subsubsection{\textit{In vitro} benchmark}
 
-The second paper also included an \textit{in vitro} benchmark data,
-where known amounts of DNA from three different strains were mixed
-together using Qbit, and both the mixed sample and the corresponding
-isolate cultures were sequenced. This data was used to re-test the
-performance of both mSWEEP (covered in the previous subsection) and
-mGEMS. The mGEMS part of the test examined the recovery of SNPs from
-either the isolate sequencing data or the mixed sequencing data. In
-both the \textit{E. coli} and \textit{E. faecalis} test samples the
-SNPs recovered from the mGEMS data reflect the ``true'' values from
-the isolate data quite closely, although there is some difficulty in
-separating the ST131-C2 sublineages 4 and 6. However, due to the
-increasingly difficult task of defining sublineages within
-sublineages, this difficulty is likely not relevant for practical
-analyses.
+The second paper also included an \textit{in vitro} benchmark data
+already mentioned earlier, where known amounts of DNA from three
+different strains were mixed together using Qbit (TODO citation), and
+both the mixed sample and the corresponding isolate cultures were
+sequenced. This data was used to re-test the performance of both
+mSWEEP (covered in the previous subsection) and mGEMS. The mGEMS part
+of the test examined the recovery of SNPs from either the isolate
+sequencing data or the Qbit-mixed sequencing data. In both the
+\textit{E. coli} and \textit{E. faecalis} benchmark samples the SNPs
+recovered from the mGEMS data reflect the values from the isolate data
+quite closely. There is some difficulty in separating the ST131-C2
+sublineages 4 and 6 which, however, is likely due to the increasingly
+difficult task of defining sublineages within sublineages using the
+accessory genome. This difficulty is likely not relevant for practical
+analyses, where sequence types, or sometimes their sublineages, are
+the typical taxonomic unit that analyses operate on.
 
-Together, these benchmarks hopefully show that the mGEMS method can be
-reliably used to disentangle metagenomic sequencing data and create
-lineage-specific read bins. These bins in turn can be used in standard
-epidemiological analyses in place of isolate sequencing data,
-producing similar results. While mGEMS does not completely replace the
-use of isolate sequencing data in epidemiology \textemdash{ } the
-availability of high-quality reference sequences from isolate
-sequencing remains a critical part of the pipeline \textemdash{ } the
-method nevertheless shows promise in reducing the number of isolate
-cultures that need to be created. Additionally, applying mGEMS to pure
-metagenomics sequencing data can yield results that previously
+Together, these benchmarks show that the mGEMS method can be reliably
+used to disentangle metagenomic sequencing data and create
+lineage-specific read bins. These bins can in turn be directly used in
+standard epidemiological analyses in place of isolate sequencing data
+and produce similar results. While mGEMS does not completely replace
+the use of isolate sequencing data in epidemiology \textemdash{ } as
+the availability and continued production of high-quality reference
+sequences from isolate sequencing remains a critical part of the
+pipeline \textemdash{ } the method shows promise in reducing the
+number of isolate cultures that need to be created when the isolates
+circulating in the samples are known. Additionally, applying mGEMS to
+pure metagenomics sequencing data can yield results that previously
 available tools have not been able to produce as will be shown in more
 in Chapter \ref{section:metagenomic-epidemiology} that covers the
 experimental results from the third paper.
 
 \section{Assessing reliability of the results}
-
+% WIP continue from here, Antti's feedback?
 A principal question when applying mSWEEP/mGEMS in practice is whether
 the results from either are trustworthy or not. Since the former
 method uses a Bayesian approach to estimating the relative abundances
