@@ -196,7 +196,7 @@ attempting to solve the problems with metagenomics.
 
 When choosing between WGS metagenomics and isolate sequencing, a
 middle-ground can be found plate sweep metagenomics
-\cite{maklin_high-resolution_2021} \textemdash sometimes also called
+\cite{maklin_high-resolution_2021} \textemdash{ } sometimes also called
 limited-diversity metagenomics \citep{cocker_drivers_2022}. In this
 approach the initial culture from an environmental sample is swept
 and sequenced in its entirety rather than preparing several isolate
@@ -287,7 +287,7 @@ extraction to produce plate sweep metagenomic data. Alternatively, in
 WGS metagenomics, the whole culture procedure is skipped, and DNA is
 extracted directly from the sample with the extract procedure
 depending on the sample type \citep{bachmann2018advances}. When it
-comes to the end-result \textemdash the sequencing reads \textemdash
+comes to the end-result \textemdash{ } the sequencing reads \textemdash{ }
 all three approaches have their own characteristics that affect the
 available downstream analyses.
 
@@ -533,7 +533,7 @@ by software implementations \citep{maklin_mSWEEP, maklin_mGEMS}. The
 third article is more applied in nature, exploring in more detail the
 types of analyses enabled by the first two papers.
 
-\subsection*{Paper I \textemdash High-resolution sweep metagenomics using fast probabilistic inference}
+\subsection*{Paper I \textemdash{ } High-resolution sweep metagenomics using fast probabilistic inference}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Sophia David, Christine J
 Boinett, Ben Pascoe, Guillaume Méric, David M Aanensen, Edward J Feil,
 Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
@@ -555,7 +555,7 @@ available from GitHub at
 version). The latest version at the time of writing is archived and
 available in Zenodo \citep{maklin_mSWEEP}.
 
-\subsection*{Paper II \textemdash Bacterial genomic epidemiology with mixed samples}
+\subsection*{Paper II \textemdash{ } Bacterial genomic epidemiology with mixed samples}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Jarno Alanko, Ørjan
 Samuelsen, Kristin Hegstad, Veli Mäkinen, Jukka Corander, Eva Heinz,
 and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
@@ -577,7 +577,7 @@ available from GitHub at
 The latest version at the time of writing is archived and available in
 Zenodo \citep{maklin_mGEMS}.
 
-\subsection*{Paper III \textemdash Strong pathogen competition in neonatal gut colonization}
+\subsection*{Paper III \textemdash{ } Strong pathogen competition in neonatal gut colonization}
 By \underline{Tommi Mäklin}, Harry Thorpe, Anna Pöntinen, Rebecca
 Gladstone, Yan Shao, Maiju Pesonen, Alan McNally, Ørjan Samuelsen, Pål
 Johnsen, Trevor Lawley, Antti Honkela, and Jukka Corander. Awaiting
@@ -959,11 +959,11 @@ leads to the joint distribution from Equation
   p\left(R, I, \boldsymbol\theta\right) = p\left(\boldsymbol\theta\right)\prod_{n = 1}^{N} \prod_{s = 1}^{S} p\left(r_{n, s} \middle| I_{n} = s\right) p\left(I_{n} = s \middle| \boldsymbol\theta\right).
 \end{equation}
 
-The model in Equation \ref{model:joint-distribution-factorized}
+The model in Equation \eqref{model:joint-distribution-factorized}
 corresponds to the mixture model that has been historically used in
 the RNA-Seq context and the predecessor of mSWEEP. The difference
 between the various methods utilizing the model of Equation
-\ref{model:joint-distribution-factorized} is in the formulation of the
+\eqref{model:joint-distribution-factorized} is in the formulation of the
 likelihood term $p\left(r_{n, s} \middle| I_{n} = s\right)$ and
 consideration of either reference sequences or reference lineages as
 the target of the latent indicator variables. Note that indexing with
@@ -974,7 +974,7 @@ proportions of these reference sequences in the full set of reads $R$.
 
 \subsection{Incorporating grouped reference sequences}
 
-The model in Equation \ref{model:joint-distribution-factorized}
+The model in Equation \eqref{model:joint-distribution-factorized}
 performs admirably when the reference sequences $s$ are sufficiently
 different from each other such as in the RNA-Seq context, attempts to
 estimate the relative abundances of individual reference sequences $s$
@@ -982,7 +982,7 @@ fail when the degree of relatedness is increased. Especially when
 applying the model to reference data containing sequences from strains
 of the same bacterial species, the abundances $\boldsymbol\theta$ tend
 to become scattered among the most closely related sequences
-\textemdash even if the correct sequence is contained in the
+\textemdash{ } even if the correct sequence is contained in the
 reference.
 
 The model used by BIB incorporates a clustering of the reference
@@ -998,7 +998,7 @@ as well as improving the scalability of the inference part by reducing
 the number of reference units.
 
 In terms of the model, the clustering is included in Equation
-\ref{model:joint-distribution-factorized} by replacing alignments
+\eqref{model:joint-distribution-factorized} by replacing alignments
 against the reference sequences $r_{n, s}$ with alignments against the
 clusters $r_{n, k}, k = 1, \dots, K$. With this replacement, the
 changes to the model are minimal: the $s$:s are simply replaced by
@@ -1015,7 +1015,7 @@ solves the inference problem for several species of bacteria with
 well-defined clusterings within the species
 \citep{sankar2016bayesian}.
 
-The model of Equation \ref{model:grouped-joint-distribution} has,
+The model of Equation \eqref{model:grouped-joint-distribution} has,
 however, several issues that render it difficult to apply in some
 scenarios. First, the model requires selecting a representative
 sequence for each cluster $k$. This selection is by no means an easy
@@ -1050,7 +1050,7 @@ become the numbers of observed pseudoalignments $r_{n, k}, 0 \leq
 r_{n, k} \leq M_{k}$ against the $M_{k}$ sequences belonging to a
 cluster $k$. If assumptions about independence between the clusters
 are kept, the formulation for the model remains the same as the one
-presented in Equation \ref{model:grouped-joint-distribution} with the
+presented in Equation \eqref{model:grouped-joint-distribution} with the
 only changes being to the likelihood term $p\left(r_{n, k} \middle|
 I_{n} = k\right)$.
 
@@ -1059,7 +1059,7 @@ I_{n} = k\right)$.
 
 When dealing with pseudoalignments against clustered reference
 sequences, the likelihood term $p\left(r_{n, k} \middle| I_{n} =
-k\right)$ in Equation \ref{model:grouped-joint-distribution} needs to
+k\right)$ in Equation \eqref{model:grouped-joint-distribution} needs to
 be carefully defined to account for several factors arising from the
 biology affecting the reference sequences. One, the clusters may vary
 greatly in size, with some of them having just one reference sequence
@@ -1093,7 +1093,7 @@ the reference. This leads to defining the likelihood $p\left(r_{n,
   \end{cases}
 \end{equation}
 
-In Equation \ref{likelihood:without-normalization}, the first part
+In Equation \eqref{likelihood:without-normalization}, the first part
 provides a slight zero-inflation for the model, corresponding
 (roughly) to the error rate in Illumina sequencing data with a Phred
 quality score of Q20 \citep{ewing1998baseone, ewing1998basetwo}. The
@@ -1120,7 +1120,7 @@ on the support $k \in \left\{0, \dots, n\right\}$
   \label{likelihood:beta-binomial-pmf}
   p\left(k \middle| n, \alpha, \beta\right) = \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(\alpha, \beta\right)}.
 \end{equation}
-In Equation \ref{likelihood:beta-binomial-pmf}, $B\left(\alpha, \beta\right)$ is the beta function
+In Equation \eqref{likelihood:beta-binomial-pmf}, $B\left(\alpha, \beta\right)$ is the beta function
 \begin{equation}
   \label{likelihood:beta-function}
   B\left(\alpha, \beta\right) = \int_{0}^{1}t^{\alpha - 1}\left(1 - t\right)^{\beta - 1}dt,
@@ -1131,7 +1131,7 @@ However, since the assumptions made for the likelihood function
 require that a cluster with 100\% of sequences compatible with the
 read is a better fit than another with only 99\% regardless of their
 sizes $M_{k}$, the beta-binomial distribution of Equation
-\ref{likelihood:beta-binomial-pmf} cannot be directly
+\eqref{likelihood:beta-binomial-pmf} cannot be directly
 used. Nevertheless, a version of the likelihood function that is
 inspired by the beta-binomial distribution but fulfills the
 assumptions can be found. Namely, the function $p\left(k \middle| n,
@@ -1145,7 +1145,7 @@ beta-binomial distribution so that its probability mass function is
 increasing. This assumption is fulfilled when $\alpha\left(\alpha +
 \beta\right)^{-1} \in \left(0.5, 1\right)$ \citep{berg1993condorcet}.
 
-Performing the scaling of Equation \ref{likelihood:beta-binomial-pmf}
+Performing the scaling of Equation \eqref{likelihood:beta-binomial-pmf}
 by the maximum value $p\left(n \middle| n, \alpha, \beta\right)$
 results in the following scaled likelihood function $p^{\star}\left(k
 \middle| n, \alpha, \beta\right)$
@@ -1157,7 +1157,7 @@ results in the following scaled likelihood function $p^{\star}\left(k
     &= \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(n + \alpha, \beta\right)}
   \end{aligned}
 \end{equation}
-Since the scaling in Equation \ref{likelihood:beta-binomial-scaled} is
+Since the scaling in Equation \eqref{likelihood:beta-binomial-scaled} is
 by a constant, $p\left(n \middle| n, \alpha, \beta\right)$, the
 resulting function $p^{\star}\left(k \middle| n, \alpha, \beta\right)$
 remains an increasing function of $k$ when the original function
@@ -1171,8 +1171,8 @@ $p\left(k \middle| n, \alpha, \beta\right)$ is increasing.
 \end{figure}
 
 A comparison of the likelihood presented in Equation
-\ref{likelihood:beta-binomial-scaled} with the plain beta-binomial
-likelihood in Equation \ref{likelihood:beta-binomial-pmf} is presented
+\eqref{likelihood:beta-binomial-scaled} with the plain beta-binomial
+likelihood in Equation \eqref{likelihood:beta-binomial-pmf} is presented
 in Figure \ref{fig:msweep-vs-beta-binomial}. Figure
 \ref{fig:msweep-vs-beta-binomial} shows that the mSWEEP format gives
 more weight to values of $k$ that are close to $n$ while making the
@@ -1184,13 +1184,13 @@ mismatches are still tolerated.
 
 With the probability mass function of the distribution
 $p^{\star}\left(k \middle| n, \alpha, \beta\right)$, the full
-definition for the third part of the likelihood in Equation \ref{likelihood:without-normalization} is
+definition for the third part of the likelihood in Equation \eqref{likelihood:without-normalization} is
 \begin{equation}
   \label{likelihood:normalized}
   p\left(r_{n, k} \middle| I_{n} = k\right) = 0.99\frac{p^{\star}\left(r_{n, k} \middle| M_{k}, \alpha, \beta\right)}{Z\left(r_{n, k}\right)}\text{ if } r_{n, k} \geq 1\text{ and } M_{k} > 1,
 \end{equation}
 where $Z\left(r_{n, k}\right)$ is a normalizing constant. The scaling
-in Equation \ref{likelihood:beta-binomial-scaled} fulfills the
+in Equation \eqref{likelihood:beta-binomial-scaled} fulfills the
 requirement that the likelihood of each cluster must be on the same
 scale despite different size. The next section will derive a closed
 form for the normalizing constant $Z\left(r_{n, k}\right)$.
@@ -1198,9 +1198,9 @@ form for the normalizing constant $Z\left(r_{n, k}\right)$.
 \subsection{Normalizing the likelihood}
 
 While the function $p^{\star}\left(k \middle| n, \alpha, \beta\right)$
-in Equation \ref{likelihood:beta-binomial-scaled} closely resembles
+in Equation \eqref{likelihood:beta-binomial-scaled} closely resembles
 the probability mass function of a beta-binomial distribution
-(Equation \ref{likelihood:beta-binomial-pmf}), the function
+(Equation \eqref{likelihood:beta-binomial-pmf}), the function
 $p^{\star}\left(k \middle| n, \alpha, \beta\right)$ by itself does not
 sum to $1$ over its support $k \in \left\{ 1, \dots, K \right\}$,
 which means that the function is not a proper probability mass
@@ -1209,9 +1209,9 @@ function. To remedy this, the normalizing constant $Z\left(r_{n,
 
 In principle any distribution on a finite support can be normalized
 but in many cases the normalizing constant does not have a closed
-form. Fortunately, it turns out that \textemdash thanks to the
+form. Fortunately, it turns out that \textemdash{ } thanks to the
 properties of the beta function (see Equation
-\ref{likelihood:beta-function} for the definition) \textemdash
+\eqref{likelihood:beta-function} for the definition) \textemdash{ }
 $Z\left(r_{n, k}\right)$ does have a closed form. Deriving this closed
 form requires using the following identity for the beta function
 \begin{theorem}
@@ -1230,7 +1230,7 @@ form requires using the following identity for the beta function
   \end{align*}
 \end{proof}
 
-Applying Theorem \ref{lemma:beta-function-identity} leads to the closed form of the normalizing constant $Z\left(r_{n, k}\right)$.
+Applying Theorem \eqref{lemma:beta-function-identity} leads to the closed form of the normalizing constant $Z\left(r_{n, k}\right)$.
 \begin{theorem}
   \label{theorem:likelihood-can-be-normalized}
   Let
@@ -1252,14 +1252,14 @@ Applying Theorem \ref{lemma:beta-function-identity} leads to the closed form of 
   \[
   g\left(k \: \middle| \: n, \alpha + n, \beta\right) = \binom{n}{k} \frac{B\left(\alpha + n + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)},\: 0 \leq k \leq n.
   \]
-  Using the identity $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ (Lemma \ref{lemma:beta-function-identity}) results in an alternative form for $g$
+  Using the identity $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ (Lemma \eqref{lemma:beta-function-identity}) results in an alternative form for $g$
 \begin{align*}
   g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + n + k - 1 + n - k + \beta} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \frac{\alpha + n + k - 2}{\alpha + \beta + 2n - 2} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{2} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
-\intertext{Above, Lemma \ref{lemma:beta-function-identity} was applied twice. Repeadetly applying Lemma \ref{lemma:beta-function-identity} $n$ times yields the alternative form}
+\intertext{Above, Lemma \eqref{lemma:beta-function-identity} was applied twice. Repeadetly applying Lemma \eqref{lemma:beta-function-identity} $n$ times yields the alternative form}
   g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k - n , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
   &= \binom{n}{k} \frac{B\left(\alpha + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
   &= f\left(k, n\right) \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
@@ -1272,7 +1272,7 @@ is also a probability mass function. Thus, setting
 \[
 Z\left(n\right) = \prod_{j = 1}^{n}\frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}
 \]
-is sufficient to normalize $f\left(k, n)$ and prove Theorem \ref{theorem:likelihood-can-be-normalized}.
+is sufficient to normalize $f\left(k, n)$ and prove Theorem \eqref{theorem:likelihood-can-be-normalized}.
 \end{proof}
 
 \subsection{Likelihood hyperparameters}
@@ -1291,12 +1291,12 @@ represents the mean success rate in repeated draws from the beta
 binomial distribution. The second parameter $\phi > 0$ measures
 the variation in the success rate for each draw
 \citep{griffiths1973maximum}. In the formulation for the likelihood in
-Equation \ref{likelihood:normalized}, each cluster $k$ has its own
+Equation \eqref{likelihood:normalized}, each cluster $k$ has its own
 parameters $\pi_{k}, \phi_{k}$.
 
 Although methods such as Bayesian optimization (TODO citation) could
 be employed to find optimal values for the parameters $\pi_{k},
-\phi_{k}$ in Equation \ref{likelihood:reparametrization}, we set their
+\phi_{k}$ in Equation \eqref{likelihood:reparametrization}, we set their
 values based on a reasonable compromise that performed well in the
 mSWEEP paper. The values of $\pi_{k}, \phi_{k}$ are set to
 \begin{equation}
@@ -1309,21 +1309,21 @@ mSWEEP paper. The values of $\pi_{k}, \phi_{k}$ are set to
 \subsection{Fitting the model using variational inference}
 
 With the likelihood defined in Equations
-\ref{likelihood:without-normalization} and
-\ref{likelihood:normalized}, all that remains is to come up with a
+\eqref{likelihood:without-normalization} and
+\eqref{likelihood:normalized}, all that remains is to come up with a
 suitable method to infer the relative abundances
 $\boldsymbol\theta$. Since the model is principally the same as the
-one used in BIB (Equation \ref{model:grouped-joint-distribution}),
+one used in BIB (Equation \eqref{model:grouped-joint-distribution}),
 just with a different formula for the likelihood term $p\left(r_{n, k}
 = k \middle| I_{n} = k\right)$, the variational inference algorithm
 from BIB can be adjusted by simply changing the likelihood term to
-that of Equation \ref{likelihood:without-normalization} and the rest of
+that of Equation \eqref{likelihood:without-normalization} and the rest of
 the algorithm remains the same.
 
 Variational inference by itself is an extremely broad topic that lies
 somewhat outside the scope of this dissertation. Thus, I will only
 cover the parts that are directly relevant to the contributions from
-the thesis \textemdash namely, how the probability matrix that mSWEEP
+the thesis \textemdash{ } namely, how the probability matrix that mSWEEP
 generates and mGEMS leverages is obtained. For a more thorough
 coverage of variational inference in this context, the BitSeqVB paper
 \citep{hensman2015fast} provides an explanation for the case where the
@@ -1348,7 +1348,7 @@ I_{m}, n \neq m$, the second term $q\left(I\right)$ simplifies to
 
 In practice, the best approximation $q\left(\boldsymbol\theta,
 I\right)$ is found when optimal values for the parameters $\gamma_{n,
-  k}$ in Equation \ref{likelihood:vi-factorization} are found (TODO
+  k}$ in Equation \eqref{likelihood:vi-factorization} are found (TODO
 cite). The Riemannian conjugate gradient (RCG) method is used to find the
 optimal values for $\gamma_{n, k}$ (TODO cite). A generic and parallel
 \& distributable implementation for arbitrary likelihood with this
@@ -1379,7 +1379,7 @@ Compared to variational inference, MCMC does have the advantage that,
 provided sufficient runtime, the samples will be from the true
 posterior. In practice, this leads to better estimates of the
 covariance between the sampled parameters when the model is of the
-form in Equation \ref{model:joint-distribution} (cite BitSeqVB
+form in Equation \eqref{model:joint-distribution} (cite BitSeqVB
 paper). However, replacing the variational inference algorithm in the
 mSWEEP model with the Gibbs sampler from the original BitSeq
 \citep{glaus2012identifying} does not seem to produce any significant
@@ -1434,10 +1434,10 @@ to the bins. This rule is derived by leveraging the read-level
 assignment probabilities $\gamma_{n, k} \in \left(0, 1\right)$, $n =
 1, \dots, N$, $k = 1, \dots, K$, $\sum_{k = 1}^{K}\gamma_{n, k} = 1$
 produced by the variational approximation used in fitting the mSWEEP
-model (Equation \ref{likelihood:vi-factorization}). To derive the
+model (Equation \eqref{likelihood:vi-factorization}). To derive the
 assignment rule, some further assumptions regarding the reads and the
 reference sequences are required. Firstly, the sequencing reads are
-assumed to contain only one member of the same lineage \textemdash
+assumed to contain only one member of the same lineage \textemdash{ }
 similarly to the typical metagenomic binners assuming only variation
 at the level they operate on. Secondly, should the true reference
 sequence that generated the reads be missing from the reference, the
@@ -1456,7 +1456,7 @@ a subset of sequencing reads $r_{n}$ such that
 holds for some threshold $q_{k} \in \left[0, 1\right]$. Note that the
 threshold may be different for each cluster $k$. Because of the way
 the bins $G_{k}$ are defined in Equation
-\ref{binning:bins-definition}, this definition obviously allows for
+\eqref{binning:bins-definition}, this definition obviously allows for
 a read to belong to several bins (for a trivial example, consider
 the case where $q_{k} = 0$ for all $k$).
 
@@ -1481,11 +1481,11 @@ between $A_{n, k}$ and $B_{n, k}$
 \end{equation}
 where $\theta_k$ is the relative abundance of the cluster $k$ in the
 sample that generated the reads $r_{n}$. Equation
-\ref{binning:a-is-approximately-b} implies that when $P\left[A_{n, k}
+\eqref{binning:a-is-approximately-b} implies that when $P\left[A_{n, k}
   = 1\right] \geq \theta_{k}$, then $P\left[B_{n, k} = 1\right]$ must
 be ``large'' for the approximation to hold. A more detailed derivation
 for this statement about the magnitude of $B_{n, k}$ and Equation
-\ref{binning:a-is-approximately-b} is provided in the methods section
+\eqref{binning:a-is-approximately-b} is provided in the methods section
 of the mGEMS article \citep{maklin_bacterial_2021}, supplied in the
 appendix for this thesis and omitted from here.
 
@@ -1494,20 +1494,20 @@ $P\left[A_{n, k} = 1\right] \geq \theta_{k}$ means that there is a
 high chance that $B_{n, k} \rightarrow 1$ when the former
 holds. Because of this relationship, an assignment rule can be derived
 by using the estimates $\gamma_{n, k}$ (Equation
-\ref{likelihood:vi-factorization}) for the probability $P\left[A_{n,
+\eqref{likelihood:vi-factorization}) for the probability $P\left[A_{n,
     k} = 1\right]$
 \begin{equation}
   \label{binning:theoretical-assignment-rule}
   \text{if } \gamma_{n, k} \geq \theta_{k}, \text{ assign the read } r_{n} \text{ to } G_{k}.
 \end{equation}
-Equation \ref{binning:theoretical-assignment-rule} provides an
+Equation \eqref{binning:theoretical-assignment-rule} provides an
 inequality whose validity can be checked to assess the probability of
 the event $B_{n, k} = 1$ which could not be estimated directly.
 
 \subsection{Practical considerations}
 
 While the assignment rule in Equation
-\ref{binning:theoretical-assignment-rule} provides a theoretically
+\eqref{binning:theoretical-assignment-rule} provides a theoretically
 sound tool to assign reads $r_{n}$ to the bins $G_{k}$, applying it in
 practice requires a slight adjustment due to computational
 accuracy. Namely, when estimating the relative abundances $\theta_{k}$
@@ -1526,13 +1526,13 @@ is (in the worst-case scenario) at most
 \end{equation}
 
 The noise-level in the worst-case scenario of Equation
-\ref{binning:assignment-rule-noise} means that when evaluating the
+\eqref{binning:assignment-rule-noise} means that when evaluating the
 validity of the inequality in Equation
-\ref{binning:theoretical-assignment-rule}, the thresholds $\theta_k$
+\eqref{binning:theoretical-assignment-rule}, the thresholds $\theta_k$
 should be adjusted with $1 - d$. This adjustment in turn means that
 only the fraction of relative abundance that is assigned to nonzero
 estimates in the wost-case scenario is considered. Adjusting Equation
-\ref{binning:theoretical-assignment-rule} with $d$ produces the final
+\eqref{binning:theoretical-assignment-rule} with $d$ produces the final
 assignment rule that is used in mGEMS
 \begin{equation}
   \label{binning:assignment-rule}
@@ -1541,14 +1541,14 @@ assignment rule that is used in mGEMS
 Because the variational approximation used to fit the mSWEEP model
 already provides both the estimates $\gamma_{n, k}$ and the relative
 abundances $\theta_{k}$, the assignment rule in Equation
-\ref{binning:assignment-rule} is in practice extremely inexpensive to
+\eqref{binning:assignment-rule} is in practice extremely inexpensive to
 evaluate after the model has been fitted.
 
 \subsection{General applicability of the assignment rule}
 
 Since the relative abundances $\theta_k$ are derived from the values
 $\gamma_{n, k}$ by averaging over $n = 1, \dots, N$, the assignment
-rule in Equation \ref{binning:assignment-rule} can be seen as a way to
+rule in Equation \eqref{binning:assignment-rule} can be seen as a way to
 cluster the rows (or columns) of a generic probability matrix, whose
 rows (or columns) sum up to $1$. This rule in particular allows
 assigning each row (or column) to several clusters at the same
@@ -1598,55 +1598,56 @@ the two.
 
 \subsection{Benefits of metagenomics over culturing}
 % WIP continue from here
-When comparing metagenomics approaches to culturing, the obvious
-difference is that the former will provide a better view of the
-microbiome in the sample. Although epidemiological analyses in the
-past have mostly focused on using isolate data, some studies showing
-the benefits of using a metagenomics approach have emerged. In
-particular, a recent study utilizing mSWEEP and mGEMS showed that
-using isolate sequencing data alone can result in an approach that
-dismisses the presence of non-dominant variants of the same species
-\citep{tonkin-hill_pneumococcal_2022}. Similar approaches using other
-tools have also hinted at the capability of several strains to become
-pathogenic should the opportunity present itself (TODO
-citations). These studies have demonstrated that it may be necessary
-to incorporate some level of metagenomics in epidemiological studies
-in order to better identify the causative agents (TODO citations) of
-disease.
+
+When comparing metagenomics approaches to culturing isolates, the
+major difference between the approaches is that metagenomics will
+provide a better overview of the microbiome in the sample. Although
+isolate data has mostly been used in the past in epidemiological
+studies, some demonstrating the benefits of applying a metagenomics
+approach have emerged. In particular, a recent study utilizing mSWEEP
+might not allow identifying the presence of non-dominant variants of
+the same species \citep{tonkin-hill_pneumococcal_2022}. Similar
+approaches using other tools have also hinted at the capability of
+several strains to become pathogenic should the opportunity present
+itself (TODO citations? or remove). These studies have demonstrated
+that it may be necessary to incorporate some level of metagenomics in
+epidemiological studies in order to better identify the causative
+agents (TODO citations) of disease.
 
 Microbiome studies in general have become increasingly popular with
-the advent of 16S sequencing. Although the results of some studies
-remain somewhat controversial, the widespread application of this
-method has revealed extensive variation in the microbiome contents
-sampled form comparable sources. It is currently an open question
-whether this variation extends to the strain-level but nevertheless
-there exist studies both old and new that suggest this to be the
-case.
+the advent and adoption of 16S sequencing (TODO citation). Although
+the results of some studies remain somewhat controversial (TODO
+citation), the widespread application of 16S metagenomics has revealed
+extensive variation in the microbiome. Currently it is a somewhat of
+an open question whether this naturally occurring variation extends to
+the strain-level. Nevertheless, some studies both old and new have
+demonstrated that this might be the case (TODO citations).
 
-mSWEEP and mGEMS specifically enable answering questions about
-strain-level variation by providing a method that can be targeted to
-identify the variation in some species. Since many species of clinical
-importance have been studied for several decades with significant
+mSWEEP and mGEMS enable answering these questions regarding
+strain-level variation by providing methods that can be targeted to
+capture the variation present in samples containing members of some
+bacterial species. Since many bacteria of clinical importance have
+been studied for several decades (TODO citations) with significant
 sequencing efforts aimed at them to obtain high-quality genome
-assemblies, the reference-based approach employed by mSWEEP and mGEMS
-is ideal for disentangling variation in the same setting. When
-combined with tools with other kinds of approaches to sequencing, the
-methods together have the potential for unprecedented level of detail
-in epidemiological analyses and tracking
+assemblies (TODO citations), the reference-based approach employed by
+mSWEEP and mGEMS is ideal for disentangling variation in the same
+clinical setting. When combined with tools that take different
+approaches to analysing metagenomic data, the combination has the
+potential for providing unprecedented level of detail in future
+epidemiological analyses and routine surveillance.
 
 While the previous chapter covered the theoretical foundations of
-mSWEEP and mGEMS, the rest of this chapter will focus on evaluating
-some practical considerations regarding the methods. Namely, we
-briefly overview the performance of the methods when compared to other
-established approaches, and cover some questions related to the
-reliability of the approach as well as the sensitivity to the
-parameter choices. The last part of the chapter will cover some
-results from the included papers related to what kind of information
-metagenomics-derived results provide.
-
+mSWEEP and mGEMS, the remainder of this chapter will focus on the
+practical considerations regarding these two methods. Namely, we
+briefly overview the performance of the methods in various settings,
+and cover some questions related to the reliability of the approach as
+well as the sensitivity to the reference sequence collection. The last
+part of the chapter will provide some extra coverage of the results
+from the included papers, with the aim of exploring what kind of
+information metagenomics-derived results provide.
 
 \subsection{The mSWEEP/mGEMS pipeline}
-
+% WIP continue from here
 \textbf{TODO: - Flowchart describing the analysis pipeline.}
 
 Combining the results from Sections \ref{section:model} and
@@ -1743,7 +1744,7 @@ a reference cluster or not. Although this step was not included in the
 two methods papers presenting mSWEEP and mGEMS, its inclusion
 addresses an important question regarding the applicability of the
 results from mSWEEP/mGEMS. Therefore, including demix\_check
-\textemdash or other similar approach \textemdash as part of the mGEMS
+\textemdash{ } or other similar approach \textemdash{ } as part of the mGEMS
 pipeline (between the mGEMS and the assembly steps) is recommended for
 a rigorous approach. This and other questions related to quality
 control and reliability of the results are explored further down in
@@ -1805,8 +1806,8 @@ compare the estimates from mSWEEP, BIB, and metakallisto.
 
 The main result of the first paper is that mSWEEP vastly outperforms
 both BIB and metakallisto for most species. For species with a
-strictly defined clonal structure \textemdash such as
-\textit{S. aureus} \textemdash, BIB and metakallisto are able to derive
+strictly defined clonal structure \textemdash{ } such as
+\textit{S. aureus} \textemdash{ }, BIB and metakallisto are able to derive
 comparable performance, but for other species that exhibit more varied
 clonal structures incorporating the probabilistic model from mSWEEP
 proves to be a necessary step in obtaining accurate
@@ -1926,9 +1927,9 @@ reliably used to disentangle metagenomic sequencing data and create
 lineage-specific read bins. These bins in turn can be used in standard
 epidemiological analyses in place of isolate sequencing data,
 producing similar results. While mGEMS does not completely replace the
-use of isolate sequencing data in epidemiology \textemdash the
+use of isolate sequencing data in epidemiology \textemdash{ } the
 availability of high-quality reference sequences from isolate
-sequencing remains a critical part of the pipeline \textemdash the
+sequencing remains a critical part of the pipeline \textemdash{ } the
 method nevertheless shows promise in reducing the number of isolate
 cultures that need to be created. Additionally, applying mGEMS to pure
 metagenomics sequencing data can yield results that previously
@@ -2034,7 +2035,7 @@ will align to both genomes and only $100\cdot2$ reads will align to
 just one. However, when considering the relative abundance estimates
 for these two strains, their true values are $0.50$ and $0.50$ since
 we know that both strains are present in equal proportions. This gives
-both strains a pseudocoverage of $99.5$ \textemdash a conservative
+both strains a pseudocoverage of $99.5$ \textemdash{ } a conservative
 value compared to the traditional coverage definition.
 
 Pseudocoverage can be used to define a threshold on the relative
@@ -2101,7 +2102,7 @@ when it comes to epidemiologically relevant analyses such as SNP
 calling and assembly, the mGEMS-derived read bins perform nearly
 identical to isolate sequencing data. This means that most standard
 epidemiological analyses can be performed with metagenomic sequencing
-data by applying the mGEMS pipeline \textemdash provided that a
+data by applying the mGEMS pipeline \textemdash{ } provided that a
 sufficiently accurate reference database exists for the species of
 interest. Using metagenomic sequencing data in place of isolate
 sequencing data comes with the previously covered cost-efficiency and
@@ -2197,7 +2198,7 @@ that one might be interested in and come with the acknowledged issues
 related to the reference-based approach. In practice, this implies
 that for many samples a human intervention in analysis pipelines may
 be required to identify cases that are plagued by these issues, and to
-remove them from further consideration \textemdash  a daunting and
+remove them from further consideration \textemdash{ }  a daunting and
 difficult task.
 
 \subsection{Advantages}
@@ -2337,20 +2338,20 @@ epidemiology that they enable.
 \chapter*{Included papers\markboth{Included papers}{}}
 \addcontentsline{toc}{chapter}{Included papers}
 
-\subsection*{Paper I \textemdash High-resolution sweep metagenomics using fast probabilistic inference}
+\subsection*{Paper I \textemdash{ } High-resolution sweep metagenomics using fast probabilistic inference}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Sophia David, Christine J
 Boinett, Ben Pascoe, Guillaume Méric, David M Aanensen, Edward J Feil,
 Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
 Antti Honkela. Published in \textit{Wellcome Open Research} (2021), 5:14
 (https://doi.org/10.12688/wellcomeopenres.15639.2).
 
-\subsection*{Paper II \textemdash Bacterial genomic epidemiology with mixed samples}
+\subsection*{Paper II \textemdash{ } Bacterial genomic epidemiology with mixed samples}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Jarno Alanko, Ørjan
 Samuelsen, Kristin Hegstad, Veli Mäkinen, Jukka Corander, Eva Heinz,
 and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
 7.11 (https://doi.org/10.1099/mgen.0.000691).
 
-\subsection*{Paper III \textemdash Strong pathogen competition in neonatal gut colonization}
+\subsection*{Paper III \textemdash{ } Strong pathogen competition in neonatal gut colonization}
 By \underline{Tommi Mäklin}, Harry Thorpe, Anna Pöntinen, Rebecca
 Gladstone, Alan McNally, Ørjan Samuelsen, Pål Johnsen, Trevor Lawley,
 Antti Honkela, and Jukka Corander. Awaiting peer-review; available
