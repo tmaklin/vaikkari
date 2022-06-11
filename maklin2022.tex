@@ -1597,7 +1597,6 @@ metagenomics context. Thus, this chapter will not discriminate between
 the two.
 
 \subsection{Benefits of metagenomics over culturing}
-% WIP continue from here
 
 When comparing metagenomics approaches to culturing isolates, the
 major difference between the approaches is that metagenomics will
@@ -1647,14 +1646,14 @@ from the included papers, with the aim of exploring what kind of
 information metagenomics-derived results provide.
 
 \subsection{The mSWEEP/mGEMS pipeline}
-% WIP continue from here
 \textbf{TODO: - Flowchart describing the analysis pipeline.}
 
 Combining the results from Sections \ref{section:model} and
-\ref{section:binning} produces the complete workflow for analysing
-sequencing data from mixed sources. This workflow is originally
-presented in the second paper \citep{maklin_bacterial_2021}, where it
-is referred to as the mGEMS pipeline.
+\ref{section:binning} produces the complete mSWEEP/mGEMS workflow for
+analysing sequencing data from mixed sources. This workflow is
+originally presented in the second paper
+\citep{maklin_bacterial_2021}, where it is referred to as the mGEMS
+pipeline.
 
 \subsubsection{Constructing the reference database}
 
@@ -1663,92 +1662,98 @@ that represent the variation in the target species of interest. In an
 ideal scenario, the reference should consist of high-quality
 assemblies from each lineage that is expected to be found in the
 sequencing reads. Since this is a rather unrealistic assumption,
-typical cases make use of published datasets and possible combine
-isolate sequencing data from their own studies. Either previously
-published assemblies or even curated genomes from databases such as
-RefSeq may be used but the reference may also include newly assembled
-sequences or otherwise be tailored to the problem at hand. In both
-cases a cautious approach is recommended, as the quality of the
-reference sequence set is the most important factor in obtaining
-trustworthy results from the pipeline.
+typical cases make use of published datasets and possibly combine them
+with isolate sequencing data from their own studies. Either previously
+published assemblies, or even curated genomes from databases such as
+RefSeq (TODO citation?), may be used. The reference may also include
+newly assembled sequences or otherwise be tailored to the problem at
+hand. In both cases, a cautious approach is recommended, as the
+quality of the reference sequence collection is the most important
+factor in obtaining trustworthy results from the pipeline.
 
 After the appropriate reference sequences have been collected, they
-should be clustered in some meaningful way to obtain the grouping. For
-some species, multilocus sequence typing is sufficient but for others
-with more variable genome contents, algorithms that attempt to
-identify clonal complex analogues may be useful. One such algorithm is
-PopPUNK, which is demonstrated to perform relatively well in the third
-paper included in this thesis. PopPUNK clusters the reference
-sequences based on accessory and core genome distances, and provides
-results that are very similar to clonal complexes (groups of STs) for
-species where the complexes are defined. Using a computational like
-PopPUNK instead of a curated database approach like sequence types and
-clonal complexes has the advantage of being able to assign sequences
-that have not yet been included in the curated databases, or work with
-species for which such databases do not exist.
+should be clustered in some meaningful way to obtain the lineage
+grouping. For some species, multilocus sequence typing is sufficient,
+but for others with more variable genome contents, algorithms that
+attempt to identify clonal complex analogues (central multilocus
+sequence type and its 1 or 2 locus variants) may be useful. One such
+algorithm is PopPUNK \citep{lees2019fast}, which is demonstrated to
+perform well in the third paper of this thesis. PopPUNK clusters the
+reference sequences based on accessory and core genome distances with
+an option to perform the clustering only based on the core-genome. The
+resulting clustering from PoPPUNK is similar to clonal complexe. Using
+a computational like PopPUNK instead of a curated database approach
+like the sequence types and clonal complexes has the advantage of
+providing means to assign sequences that have not yet been included in
+the curated databases, or work with species for which such databases
+do not exist.
 
 After clustering the reference sequences, the next step is to build an
 index for pseudoalignment, and pseudoalign the reads from the samples
-against the index. In the mGEMS pipeline, we use Themisto to perform
-both the index construction and the pseudoalignment. The
-pseudoalignment step produces the alignment vectors for each read
-against every reference sequence, which are used as the input to
-mSWEEP.
+against the index. In the mGEMS pipeline, we use Themisto
+\citep{maklin_bacterial_2021} to perform both the index construction
+and the pseudoalignment. The pseudoalignment step produces binary
+pseudoalignment vectors for each read against every reference
+sequence, which are used as the input to mSWEEP.
 
 \subsubsection{Estimating relative abundances and binning the reads}
 
 The next step in the pipeline is to use mSWEEP to estimate the
 relative abundances of the reference groups based on the
-pseudoalignments against the sequences. This is performed directly on
-the output from Themisto, with no intermediate steps required. After
-the relative abundances have been estimated, the results are fed to
-mGEMS which produces the read bins and optionally also extracts the
-reads corresponding to each bin from the original set.
+pseudoalignments. This is performed directly on the output from
+Themisto, with no intermediate steps required. After the relative
+abundances have been estimated, the results are fed to mGEMS which
+produces the read bins and optionally also extracts the reads
+corresponding to each bin from the original set.
 
 \subsubsection{Assembling the read bins}
 
-In the second article of this thesis, the mGEMS pipeline also includes
-an optional step to assemble the sequences. The suggested assembler is
-shovill, which is an assembly pipeline built around the spades
-assembler but incorporating some pre- and post-processing
-steps. Naturally other assemblers may also be used, or the assembly
-step skipped entirely and the analysis instead focusing the reads. In
-the second article we mostly focused on analysing the assemblies, as
-including an assembly step introduces a post-processing step that can
-be useful in filtering out reads that have been mistakenly assigned to
-the bin.
+In the second paper of this thesis, the mGEMS pipeline also contains
+an optional step to assemble the reads placed in each bin. The
+suggested assembler is shovill (TODO citation), which is an assembly
+pipeline built around the spades assembler (TODO citation) but
+incorporates some pre- and post-processing steps (TODO
+citations). Naturally, other assemblers may also be used, or the
+assembly step skipped entirely and the analysis instead focused on the
+reads. In the second paper, the analyses mostly focused on using the
+assemblies, as including an assembly step is equivalent to adding a
+post-processing step that aids in filtering out reads that may
+mistakenly have been assigned to the wrong bin.
 
-Since mGEMS allows for including a sequencing read in several bins at
-once, the produced read bins may have a very high coverage for shared
-parts of the genome when the sample contains several closely related
-organisms. Because of this, we investigated the effect of replacing
-the isolate-data optimised shovill with metagenomic assemblers, which
-presumably implement better handling of variable coverage in the
-produced genomes. Although we observed some differences in the
-resulting assemblies, there was no statistically significant evidence
-in favour of using either approach. Regardless of the assembler
-choice, using the mGEMS pipeline produced assemblies in downstream
-analyses performed similarly to a benchmark consisting of assemblies
-derived from isolate sequencing data.
+Since mGEMS allows for assigning a sequencing read to several
+bins/lineages at once, the produced bins sometimes have very high
+coverages for the the genomes that the organisms corresponding to the
+bins share. This is especially true when the sample truly contains
+several closely related organisms. Consequently, we investigated in
+the second paper the effect of replacing the isolate-data optimised
+shovill with metagenomic assemblers (TODO citations), which presumably
+implement better handling of variable coverage in the produced
+genomes. Although we observed some differences in the resulting
+assemblies (TODO reproduce figure here?), there was no statistically
+significant evidence in favour of using either approach. Regardless of
+the assembler choice, using the assemblies from the mGEMS pipeline in
+downstream analyses performed similarly to using those created from
+corresponding isolate sequencing data.
 
 \subsubsection{Quality control}
 
 The mGEMS pipeline as described above is the method that has been
-applied in the third paper with the additional inclusion of a
-post-processing step aimed at identifying whether the reference
-sequences suitably cover the reads or not. This post-processing step,
-demix\_check (\url{https://github.com/harry-thorpe/demix_check/}),
-performs several quality control checks on the results from mSWEEP and
-mGEMS, aiming to determine whether the created read bins correspond to
-a reference cluster or not. Although this step was not included in the
+applied in the third paper with the additional inclusion of a quality
+control (QC) step attempting to identify whether the reference
+sequences suitably cover the variation in the sequencing reads. This
+QC step, called demix\_check
+(\url{https://github.com/harry-thorpe/demix_check/}) (TODO move to
+footnote), performs several checks on the results from mSWEEP and
+mGEM, to determine whether the created read bins correspond to some
+reference cluster. Although the demix\_check step was not used in the
 two methods papers presenting mSWEEP and mGEMS, its inclusion
 addresses an important question regarding the applicability of the
-results from mSWEEP/mGEMS. Therefore, including demix\_check
-\textemdash{ } or other similar approach \textemdash{ } as part of the mGEMS
-pipeline (between the mGEMS and the assembly steps) is recommended for
-a rigorous approach. This and other questions related to quality
-control and reliability of the results are explored further down in
-this chapter.
+results from mSWEEP/mGEMS (TODO cite review from mSWEEP
+paper?). Therefore, including demix\_check \textemdash{ } or other
+similar approach \textemdash{ } as part of the mGEMS pipeline between
+the mGEMS and the assembly steps is recommended for a rigorous
+approach. This and other questions related to quality control and
+reliability of the results are explored further down in this chapter.
 
 \textbf{TODO:- figure from showing the threshold construction process.}
 
@@ -1758,19 +1763,25 @@ While this thesis deals with the development and usage of mSWEEP and
 mGEMS, one has to acknowledge that the use of metagenomic sequencing
 data is by no means an understudied field. In fact, dozens of methods
 exist that aim to perform similar tasks ranging from genome assembly
-from metagenomic sequencing data (metagenome assemblers) to taxonomic
-binning (metagenomic binners) and profiling, and strain tracking
-(StrainGE and Strainphlan). Compared to mSWEEP and mGEMS, these
+from metagenomic sequencing data (metagenome assemblers) (TODO
+citations) to taxonomic binning (metagenomic binners) (TODO citations)
+and profiling (TODO citations), and strain tracking (StrainGE and
+Strainphlan) (TODO citations). Compared to mSWEEP and mGEMS, these
 methods typically assume that the samples only contain a single strain
-from each species, which makes the task solvable. While it may at
-first seem suspicious that a thorough comparison between these methods
-and mSWEEP/mGEMS has not been included in the published papers, the
-assumptions about the strain complexity lie at the heart of the
-problem. Since these tools have not been developed with the kind of
-data that mSWEEP/mGEMS analyse in mind, a performance comparison
-between them is not meaningful.
+from each species \textemdash{ } with the exception of StrainGE, which
+explicitly addresses the presence of several strains \textemdash{ },
+which enables them to solve the task when the assumption holds. While
+it may at first seem suspicious that a thorough comparison between
+these methods and mSWEEP/mGEMS has not been included in the published
+papers, the assumptions about the strain complexity lie at the heart
+of the questions addressed by mSWEEP and mGEMS. Since the preceding
+metagenomics tools have typically not been developed with the
+strain-complexity in mind in mind, a performance comparison between
+them is not meaningful nor fair.
 
 \section{Benchmarking mSWEEP and mGEMS}
+% WIP continue from here
+
 This section will briefly cover the results related to benchmarking
 the performance of mSWEEP and mGEMS in the first and the second
 papers. A majority of the benchmarks were performed on synthetic
