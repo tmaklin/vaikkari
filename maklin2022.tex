@@ -1780,89 +1780,97 @@ strain-complexity in mind in mind, a performance comparison between
 them is not meaningful nor fair.
 
 \section{Benchmarking mSWEEP and mGEMS}
-% WIP continue from here
 
 This section will briefly cover the results related to benchmarking
 the performance of mSWEEP and mGEMS in the first and the second
-papers. A majority of the benchmarks were performed on synthetic
-mixtures of sequencing reads from isolate cultures but the mGEMS paper
-also provides a (significantly smaller in scale) benchmark that used
+papers. A majority of these benchmarks were performed on synthetic
+mixtures of real sequencing reads that were obtained from isolate
+cultures. The mGEMS paper additionally provides a benchmark that used
 \textit{in vitro} mixtures of DNA from isolate cultures. Figures from
-the papers have not been reproduced here, and the results are
-presented in a summarizing format merely to convince the reader of the
-kinds of applications that mSWEEP and mGEMS perform well in.
+the papers have been reproduced when necessary and are marked
+appropriately.
 
 \subsection{mSWEEP}
 The first paper in the thesis presented a comparison of mSWEEP with
-the Bayesian Identification of Bacteria (BIB) and the
-pseudoalignment-based metakallisto methods. Although a myriad of
-taxonomic profilers have been developed (these will be covered in more
-detail in Section \ref{other-metagenomics-approaches}), the vast
-majority of them do not attempt within-species profiling or have been
-developed for cases with only one strain present from each
-species. Because of these limitations, the mSWEEP paper only makes the
-comparisons with BIB and metakallisto, which have been developed for
-settings with several strains present.
+the Bayesian Identification of Bacteria (BIB) (TODO citation) and the
+pseudoalignment-based metakallisto methods (TODO citation). The vast
+majority of other metagenomics tools published at the time either did
+not attempt within-species profiling or had been developed for cases
+with only one strain present from each species. Because of these
+limitations, the mSWEEP paper only makes the comparisons with BIB and
+metakallisto, which have been developed for settings with several
+strains present.
 
-While the approach in BIB is similar to mSWEEP in that the reference
-sequences are grouped together and estimation is performed on the
-level of these groups, metakallisto attempts the much more ambitious
-task of estimating the relative abundances for the individual
-sequences. Because of this, a direct comparison between the three is
-not possible. We addressed this issue by modifying the output from
-metakallisto by including a step that sums over the abundance
-estimates within the same group. Even though this step was not
-included in the original metakallisto paper, its addition helps to
+The approach used by BIB is similar to the one in mSWEEP in that the
+reference sequences are grouped together into lineages and estimation
+is performed on the level of these lineages. Metakallisto attempts the
+much more ambitious task of estimating the relative abundances for the
+individual sequences. Hence, a direct comparison between the three is
+not possible because metakallisto reports the abundance estimates for
+the sequences. This was addressed in the mSWEEP paper by modifying the
+output from metakallisto to include a step where the abundance
+estimates within the same lineage are summed up. Even though this step was
+not included in the original metakallisto paper, its addition helps to
 compare the estimates from mSWEEP, BIB, and metakallisto.
 
 The main result of the first paper is that mSWEEP vastly outperforms
-both BIB and metakallisto for most species. For species with a
-strictly defined clonal structure \textemdash{ } such as
-\textit{S. aureus} \textemdash{ }, BIB and metakallisto are able to derive
-comparable performance, but for other species that exhibit more varied
-clonal structures incorporating the probabilistic model from mSWEEP
-proves to be a necessary step in obtaining accurate
-information. Although these performance benchmarks were only performed
-on data containing a single strain in each sample, we demonstrate in
-the paper through stochastic dominance that the methods which do not
-succeed with single-strain estimates are unlikely to provide accurate
-results from multi-strain samples.
+both BIB and metakallisto for most species (TODO which?). For species
+with a strictly defined clonal structure \textemdash{ } such as
+\textit{S. aureus} \textemdash{ }, BIB and metakallisto are able to
+derive comparable performance, but for other species (TODO which?)
+that exhibit more varied clonal structures (TODO citation)
+incorporating the probabilistic model from mSWEEP proves to be a
+necessary step in obtaining accurate information. Although these
+performance benchmarks were only performed on data containing a single
+strain in each sample, we demonstrate in the paper through stochastic
+dominance (TODO citation?) that the methods which do not succeed with
+single-strain estimates are unlikely to provide accurate results from
+multi-strain samples.
 
 Another benchmark presented in the first paper concerns evaluating
 performance in the presence of several strains from the same
-species. In this benchmark, sequence data from three strains were
-mixed together in single sample at known proportions, and mSWEEP was
-applied to estimate the proportions when the real reference sequences
-were absent from the reference data but close representatives from the
-same lineage were available. In this benchmark, mSWEEP demonstrates
-very accurate performance measured on both true positives and true
-negatives. Although \textit{K. pneumoniae} in particular proved
-challenging, possibly due to the wide variety exhibited in the
-reference set, the results were nevertheless within acceptable error
+species. In this benchmark, sequence data from three strains, obtained
+via isolate sequencing, were mixed together in single sample at known
+proportions. Then, mSWEEP was applied to estimate the proportions when
+the real reference sequences were removed from the reference
+collection but at least one close representative from the same lineage
+was still available. In this setting, mSWEEP demonstrated very
+accurate performance when measured on both true positive and true
+negative estimates. The \textit{K. pneumoniae} benchmark proved
+somewhat more challenging than the others, possibly due to the wide
+variety in the population structure of the species (TODO citation),
+but the errors in the results were nevertheless within acceptable
+limits.
 
-In addition to the synthetic experiments presented in the first paper,
-the second paper presents an \textit{in vitro} benchmark concerning
-abundance estimation. In this benchmark DNA from three different
-strains of either \textit{E. coli} or \textit{E. faecalis} was mixed
-together using Qbit, producing samples where the initial composition
-of the sample is known at the DNA level. This benchmark shows similar
-results as the synthetic benchmarks for \textit{E. faecalis}, where
-the three strains originated from three different sequence types, but
-also shows promise in differentiating between strains of the same
-clade within a single sequence type of \textit{E. coli}. This task is,
-however, much, much more difficult since the split of the ST131
-subclade C2 was based on incorporating information from the accessory
-genome using PopPUNK. The accessory genome of \textit{E. coli} is not
-as stable as the core genome, on which the ST131 and the ST131 A-C
-designations are based, resulting in some difficulties in separating
-the C2-4 and C2-6 sublineages. Nevertheless mSWEEP manages to identify
-the presence of both clades quite well, and the downstream analysis
-using mGEMS (covered in Section \ref{mgems-performance-benchmark}
-still provides accurate results.
+In addition to the synthetic mixture experiments presented in the
+first paper, the second paper presents an \textit{in vitro} benchmark
+concerning abundance estimation. \textit{In vitro} here refers to an
+experiment setup, where DNA from three different strains of either
+\textit{E. coli} or \textit{E. faecalis} was mixed together using Qbit
+(TODO citation), producing samples where the composition of the sample
+itself is known at the DNA level. The results from this benchmark show
+similar levels of accuracy as the synthetic benchmarks for the samples
+containing DNA from three different sequence types of
+\textit{E. faecalis}.
+
+The \textit{E. coli} benchmark in comparison was more challenging in
+its setup: all three strains that were used originated from ST131 and,
+to make things more interesting, two of the strains originated from
+the same subclade, called ST131-C2 (TODO citation, Teemu's
+paper). This renders the identification task substantially more
+difficult, since the split of ST131-C2 was based on incorporating
+information from the accessory genome of ST131 using PopPUNK (TODO
+citation?). The accessory genome of \textit{E. coli} is not as stable
+as the core genome (TODO citation?), on which the ST131 and the ST131
+A-C designations are based (TODO citation?), resulting in some
+difficulties for mSWEEP in separating the C2-4 and C2-6
+sublineages. Nevertheless, mSWEEP manages to identify the presence of
+both clades quite well, and the downstream analysis using mGEMS
+covered in the next remains accurate in terms of its results.
 
 \subsection{mGEMS}
 \label{mgems-performance-benchmark}
-
+% WIP continue from here
 Our taxonomic binner mGEMS was benchmarked in the second paper using
 both synthetic data (mixtures of reads from isolate cultures of
 different strains) as well as the previously mentioned \textit{in
