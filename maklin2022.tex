@@ -1971,73 +1971,89 @@ in Chapter \ref{section:metagenomic-epidemiology} that covers the
 experimental results from the third paper.
 
 \section{Assessing reliability of the results}
-% WIP continue from here, Antti's feedback?
-A principal question when applying mSWEEP/mGEMS in practice is whether
-the results from either are trustworthy or not. Since the former
-method uses a Bayesian approach to estimating the relative abundances
-of the reference lineages, none of the abundances will ever be exactly
-zero. This naturally results in the question: ``When is a lineage
-truly present in the sample?'' when applying mSWEEP in
-practice. Furthermore, since the abundance estimates from mSWEEP are
-the basis for the mGEMS pipeline, it is of importance to know when the
-results for lineages with a high (in some sense) relative abundance
-are truly correct and not just a result of, for example, missing
-reference lineages. These two questions will be covered in the rest of
-this section.
+
+A principal question when applying mSWEEP/mGEMS in practice is when
+the results from the pipeline are accurate enough. Inaccuracies may
+arise from for example a lack of reference sequences for a lineage
+that is present in the samples, which results in false positive
+estimates. Additionally, since the methods use a Bayesian approach to
+estimating the relative abundances of the reference lineages, none of
+the abundances will ever be exactly zero even though they contributed
+no sequencing reads in reality. This naturally begs the question:
+``When is a lineage truly present in the sample?'' when mSWEEP is
+applied in practice. Furthermore since the abundance estimates are the
+basis for the mGEMS pipeline, it is important to know whether the
+results for some lineage(s) with a high, nonzero relative abundance
+are truly correct or not. Some answers and means to investigate this
+question will be provided in this section.
 
 \subsection{Detection thresholds for lineages}
-To answer the question regarding the minimum abundance required to
-call an abundance estimate reliable or not, the mSWEEP paper provides
-an approach termed \textit{detection thresholds}. These thresholds aim
-to provide a minimum abundance that the estimates must exceed in order
-to be reliable, and give accompanying p-value-analogues to assess the
-degree of trust in the threshold itself. Although this approach is
-computationally somewhat cumbersome to apply in practice, especially
-when the size of the reference sequence set increases, the approach
-should nevertheless provide means for more careful consideration of
-the estimates without resorting to simpler measures such as filtering
-by a constant abundance.
+Answering the question about the presence/absence of a lineage in a
+sample requires defining some sort of threshold on the abundance
+estimates. Any estimate that falls below the threshold is then
+considered unreliable, and those that exceed it can be used in
+downstream analyses. One answer, called \textit{detection thresholds},
+is provided in the mSWEEP paper. The approach provides a minimum
+abundance that the estimates must exceed and gives accompanying
+p-value-analogues that measure the degree of trust in values exceeding
+the threshold. Including detection thresholds in an analysis provides
+means for more theoretically sound consideration of the relative
+abundance results than using simple heuristics such as filtering by a
+minimum abundance.
 
-The detection threshold approach is based on bootstrapping sequencing
-reads from existing samples with known genome assemblies in the
-reference collection. The assembly is removed from the reference, and
-the bootstrapped reads (which contain data from only the single,
-removed assembly) are put through mSWEEP to obtain a bootstrapped
-abundance estimate. This approach is then repeated for some number of
-reference sequences, each removed in turn, to provide several
-bootstrapped abundance estimates for each reference lineage. The
-bootstrapped estimates are used to evaluate the magnitude of the
-relative abundance estimates that are given for the \textit{absent}
-lineages, and combined across all values generated when varying the
-removed reference sequences. When repeated for all reference lineages,
-this approach gives a set of values that represent the false estimates
-when the true contents of the sample are different. The false estimates
-for each lineage are ordered, and one of the higher values is picked
-as a cutoff point that defines the detection threshold for this
-lineage with an accompanying p-value-analogue that depends on the
-number of estimates that are allowed to exceed the cutoff. This
-somewhat complicated approach is described in more detail in the first
+The detection thresholds are created by taking a collection of
+reference sequences with corresponding short-read sequencing data
+available, and using a bootstrapping approach to determine the
+thresholds for each lineage. Within each lineage, a single reference
+sequence is removed from the reference, and a new set of sequencing
+reads is bootstrapped from the reads that were used to assemble the
+reference sequence. The bootstrapped reads are then put through mSWEEP
+to obtain a bootstrapped abundance estimate. Repeating the
+bootstrapping for several reference sequences, each removed in turn,
+within the same lineage yields an empirical distribution for estimates
+from the lineage when the true sequence is missing. The process should
+then be repeated for all lineages which have more than one reference
+sequence, and the values combined to obtain the empirical
+distributions for all of them.
+
+The empirical distribution can be used to define the thresholds by
+taking an upper quantile of the distribution as a cutoff point. The
+cutoff defines the threshold, and any estimates that exceed it are
+considered reliable. These estimates come with an accompanying
+p-value, which depends on the number of estimates that exceed the
+chosen cutoff point. For lineages which have only one reference
+sequence, and naturally cannot be bootstrapped from in this manner,
+the cutoff point is defined as the maximum over all cutoffs that could
+be bootstrapped. The approach is described in more detail in the first
 paper.
 
-While the detection thresholds approach has some merit in its
-theoretical foundations in using bootstrapping to estimate the
-magnitude of the false estimates, the approach has some problems when
-applied in practice. Namely, the need to remove a reference sequence
-to bootstrap the abundance estimates necessitates reconstruction of the
-pseudoalignment index for each sample that is generated from the
-removed sequences. Since dynamic indexing (meaning that sequences can
-be added/removed without rebuilding the whole index) remains an open
-problem at the time of writing, the approach is quickly rendered
-computationally infeasible when applied to reference sets that are
-larger than those used in the mSWEEP paper. Unfortunately for the
-detection threshold construction, for many applications it is tempting
-to include as much reference data as possible to cover naturally
-occurring strain-level variation. This has resulted in the approach
-being not applied in practice and remaining a curiosity until dynamic
-indexes hopefully become available.
+Using bootstrapping to estimate the magnitude of the false estimates
+provides theoretically sound means to define the thresholds, and the
+accompanying p-values allow for some calibration in how trustworthy
+the results should be. There approach does, however have some
+computational issues, which limit the scaling of the method when
+dealing with large reference collections. Namely, the need to remove a
+single reference sequence at a time implies a need to reconstruct the
+pseudoalignment index every time the removal is performed. Dynamic
+indexing, which refers to removing/adding sequences to the index
+without reconstructing the whole index, would solve this issue but
+remains an open question at the time of writing. However, the
+computational demands can be somewhat alleviated by employing a design
+(TODO citation?) based strategy to remove several sequences at the
+same time, which would lead to roughly similar results.
+
+Unfortunately, the detection threshold approach has not found much use
+in the so-far published studies that use mSWEEP. The issue of defining
+trustworthy estimates has mostly been tackled by utilizing minimum
+abundance based thresholds, or by other means such as pseudocoverage,
+which will be defined in the next section. However, the detection
+thresholds could still be adopted more widely by including the
+thresholds as parts of prebuilt reference collections, or by providing
+more computationally scalable means to construct the thresholds, which
+earns them a mention here.
 
 \subsection{Pseudocoverage as a threshold}
-
+% WIP continue from here.
 One alternative to the detection thresholds can be found by figuring
 out a way to define some sort of threshold on the abundance estimates
 without utilizing bootstrapping-based approaches. In practice, this
