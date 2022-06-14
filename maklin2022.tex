@@ -1272,7 +1272,7 @@ is also a probability mass function. Thus, setting
 \[
 Z\left(n\right) = \prod_{j = 1}^{n}\frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}
 \]
-is sufficient to normalize $f\left(k, n)$ and prove Theorem \eqref{theorem:likelihood-can-be-normalized}.
+is sufficient to normalize $f\left(k, n\right)$ and prove Theorem \eqref{theorem:likelihood-can-be-normalized}.
 \end{proof}
 
 \subsection{Likelihood hyperparameters}
@@ -2394,16 +2394,62 @@ some particular subset of organisms within the samples.
 
 \chapter{Conclusions and future directions}
 
-In this last chapter of the thesis we have demonstrated some analyses
-enabled by the application of mSWEEP and mGEMS to either plate sweep
-or WGS metagenomics sequencing data. Although the first two included
-papers had been written with only plate sweep sequencing data in mind,
-the third paper provides hopefully convincing evidence of the quality
-of results that can be derived from WGS metagenomics. We hope that the
-methods will find their place in the set of tools available for
-analysis of bacterial sequencing data, and look forward to exploring
-the exiting possibilities in the field of both genomic and metagenomic
-epidemiology that they enable.
+This thesis summarized the development and introduction of the mSWEEP
+and mGEMS methods for untangling strain-level variation in metagenomic
+sequencing reads. Incorporating metagenomics data in genomic
+epidemiological studies was shown to enable novel insights into
+colonization dynamics and co-carrige of various species of bacteria
+that are capable of causing disease under the right conditions. These
+types of results that rely on sampling the full breadth of the
+bacterial species present in a host would not be possible with isolate
+sequencing data alone, demonstrating the need for methods like mSWEEP
+and mGEMS. Together, these two tools have the potential to enable
+entirely new types of analyses and broader exploration of the
+bacterial diversity by using metagenomic sequencing.
+
+All experiments presented were performed using high-throughput
+short-read sequencing data, ignoring the emerging Oxford Nanopore and
+PacBio long-read sequencing technologies. Long-read sequencing can
+provide unprecedented detail into analysis of mobile genetic elements
+and difficult-to assemble regions of the genome, which cannot be
+accurately quantified using short reads. Long-read sequencing has been
+succesfully applied in metagenomics studies (TODO citations), and the
+extension of mSWEEP and mGEMS to work on these technologies would be
+an important direction for future research.
+
+Another promising area for future development is the use of either
+short or long-read sequencing data in combination with mSWEEP/mGEMS to
+investigate plasmids. Plasmids are mobile genetic elements carreid by
+bacteria, and they often contain virulence factors or resistance genes
+(TODO citations). Especially in short-read sequencing, current methods
+are not able to differentiate between plasmid and chromosome derived
+reads. By constructing adequate reference databases for plasmids,
+mSWEEP and mGEMS could be applied to extract plasmid-derived reads
+from a set of reads by treating it as a metagenomic sample composed of
+the chromosomal and plasmid-derived parts.
+
+The third point relates to combining plate sweeps and WGS
+metagenomics. Using WGS metagenomics alone has some issues in
+detecting low abundance organisms of clinical importance, such as
+\textit{K. pneumoniae} (TODO citation), but its inclusion can provide
+useful information about other species present in the samples. When
+analysing WGS metagenomics data, plate sweeps could be incorporated
+into the pipelines to enrich for species of clinical interest that
+cannot be adequately identified without extremely deep direct
+sequencing of the sample. Since mSWEEP and mGEMS can analyse both
+types of data, they could be used to screen metagenomics datasets for
+samples that should be enrichened for interesting species.
+
+The introduction of mSWEEP and mGEMS will hopefully facilitate these
+types of analyses and other research directions. Strain-level
+variation is an ubiquitously occurring phenomena (TODO citations) and
+its inclusion in epidemiological studies is likely to advance the
+field of genomic epidemiology beyond the isolate era. With the rapid
+production of high quality reference genomes from long-read sequencing
+studies, the applications of the methods can likely be extended beyond
+the species that were analysed in this thesis, and insights into the
+already possible species expanded through the inclusion of
+high-resolution metagenomics.
 
 \printbibliography[heading=bibintoc]
 
@@ -2416,7 +2462,6 @@ Boinett, Ben Pascoe, Guillaume Méric, David M Aanensen, Edward J Feil,
 Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
 Antti Honkela. Published in \textit{Wellcome Open Research} (2021), 5:14
 (https://doi.org/10.12688/wellcomeopenres.15639.2).
-
 \subsection*{Paper II \textemdash{ } Bacterial genomic epidemiology with mixed samples}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Jarno Alanko, Ørjan
 Samuelsen, Kristin Hegstad, Veli Mäkinen, Jukka Corander, Eva Heinz,
