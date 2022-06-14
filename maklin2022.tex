@@ -110,7 +110,11 @@
   bacterial reference sequences, pseudoalignment, and a probabilistic
   model. The second method, mGEMS, builds upon mSWEEP to solve the
   binning task using an assignment rule derived from the fundamentals
-  of the probabilistic model used by mSWEEP.
+  of the probabilistic model used by mSWEEP. Both methods are
+  accompanied by efficient implementations that utilize fast
+  variational inference and pseudoalignment to fit the model in a
+  reasonable time, rendering them applicable to large-scale
+  datasets.
 
   Both mSWEEP and mGEMS have been developed for application in either
   the traditional whole-genome shotgun metagenomics context, where the
