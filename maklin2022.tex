@@ -2053,17 +2053,15 @@ more computationally scalable means to construct the thresholds, which
 earns them a mention here.
 
 \subsection{Pseudocoverage as a threshold}
-% WIP continue from here.
-One alternative to the detection thresholds can be found by figuring
-out a way to define some sort of threshold on the abundance estimates
-without utilizing bootstrapping-based approaches. In practice, this
-translates to using the number of aligned reads and the abundance
-estimates together to estimate the \textit{pseudocoverage} of the
-reference lineage. Pseudocoverage $c^{\star}_{k}$ for reference
-lineage $k$ is defined as the product of the abundance estimate
-$\theta_{k}$ for lineage $k$ and the total number of bases $b$ in the
-reads that pseudoaligned against any reference sequence divided by the
-average genome length $l_{k}$ in lineage $k$
+
+An alternative to constructing the detection thresholds can be found
+in using the number of aligned reads and the abundance estimates
+together to estimate the \textit{pseudocoverage} of the reference
+lineage in the analysed reads. The pseudocoverage $c^{\star}_{k}$ for
+reference lineage $k$ is defined as the product of the abundance
+estimate $\theta_{k}$ for lineage $k$ and the total number of bases
+$b$ in the reads that pseudoaligned against any reference sequence,
+divided by the average genome length $l_{k}$ in lineage $k$
 \begin{equation}
   \label{pseudocoverage}
   c_{k}^{\star} = \frac{\theta_{k}b}{l_{k}}.
@@ -2073,57 +2071,54 @@ the basic definition of average coverage (number of bases in aligned
 reads divided by genome length), these two definitions are not
 necessarily the same.
 
-To elucidate the difference between coverage and pseudocoverage,
-consider a set of sequencing reads originating from two bacterial
-strains, both with $100$ base pair long genomes, that differ by a
-single base pair and are present in equal proportions in the sample
-providing the sequencing reads. Assuming that we have 100 one base
-pair long reads from each position in both genomes, the average
-coverage of both strains would be $199$ since $9900\cdot2$ reads
-will align to both genomes and only $100\cdot2$ reads will align to
-just one. However, when considering the relative abundance estimates
-for these two strains, their true values are $0.50$ and $0.50$ since
-we know that both strains are present in equal proportions. This gives
-both strains a pseudocoverage of $99.5$ \textemdash{ } a conservative
-value compared to the traditional coverage definition.
+The difference between coverage and pseudocoverage can be elucidated
+by considering a set of sequencing reads originating from two
+bacterial strains, both with $100$ base pair long genomes. Now, assume
+that these strains differ by a single base pair and are present in
+equal proportions in the sample providing the sequencing
+reads. Assuming that we have 100 one base pair long reads from each
+position in both genomes, the average coverage of both strains would
+be $199$ since $9900\cdot2$ reads will align to both genomes and only
+$100\cdot2$ reads will align to just one. However, when considering
+the relative abundance estimates for these two strains, their true
+values are $0.50$ and $0.50$ \textemdash{ } contrary to the fractions
+of reads that fit with each strain, $0.99$ and $0.99$ \textemdash{ }
+since we know that both strains are present in equal proportions. In
+this setup, both strains would have a pseudocoverage of $99.5$ which
+is a conservative value compared to the traditional definition of
+coverage.
 
 Pseudocoverage can be used to define a threshold on the relative
 abundance estimates by finding the value of $\theta_{k}$ that provides
-for example a pseudocoverage of \textit{at least} $1$x. Since the
-pseudocoverage is a conservative estimate of the true coverage (the
-exact, typically more complex than in the thought experiment above,
-relationship depending on the relatedness of the lineages $k$), this
-minimum value can be taken as a sort of a threshold on the relative
-abundances. If combined with means to investigate whether the lineages
-that remain after filtering by this approach are a good fit to the
-reference lineages, pseudocoverage provides an adjustable rule that is
-more easy to evaluate than the detection thresholds described above.
+a pseudocoverage of \textit{at least} $1$x, or another higher/lower
+value. Since the pseudocoverage is a conservative estimate of the true
+coverage (the exact, typically more complex than in the thought
+experiment above, relationship depending on the relatedness of the
+lineages $k$), this minimum value can be taken as a threshold on the
+relative abundances. If combined with means to investigate whether the
+lineages that remain after filtering by this approach are a good fit
+to the reference lineages, pseudocoverage provides an adjustable rule
+that is more easy to construct than the detection thresholds earlier.
 
 \subsection{Compatibility of the clustering and the reads}
-The remaining question regarding the reliability of the estimates from
-mSWEEP concerns the fit of the reference lineages with the estimated
-contents of the bins produced by mGEMS. This issue was not covered in
-neither the mSWEEP nor the mGEMS paper but since the publication of
-the first, an external method has been developed to address the
-question. This method, called demix\_check (TODO citation), uses mash
-(TODO citation) distances between the bins from mGEMS and the
-reference sequences assigned to each lineage to evaluate the fit
-between the read bin and the lineage. In practice, demix\_check has
-proved invaluable in addressing the results from mGEMS and is an
-integral part of the processing pipeline that was used in the third
-paper of this thesis. Since this method was not developed by the
-author of this thesis, it won't be covered in more detail although its
-inclusion in the mGEMS pipeline is strongly recommended.
 
-%% \subsection{Brief consideration of model assumptions}
-%% %% * Not needed *
-%%
-%% For a reader more versed in probabilistic modelling, a final question
-%% regarding reliability would relate to the assumptions made by the
-%% mSWEEP model and when and whether those assumptions hold or not.
-%%
-%% - Zero inflation vs no inflation; degree of inflation
-%% - Sensitivity to hyperparameter values
+The remaining question regarding the reliability of the relative
+abundance estimates concerns the fit of the reference lineages with
+the estimated contents of the bins produced by mGEMS. This issue was
+not covered in neither the mSWEEP nor the mGEMS paper but since the
+publication of the two, an external method has been developed to
+address the question. This method, called demix\_check (TODO
+citation), uses mash (TODO citation) to calculate $k$-mer based
+distances between the read bins from mGEMS and the corresponding
+reference sequences in each lineage. These distances are used to
+evaluate the fit between the read bin and the lineage by comparing
+their distributions. In practice, demix\_check has proved an integral
+part of the mSWEEP/mGEMS pipeline in evaluating the reliability of the
+results from mGEMS, and is also an integral part of the processing
+pipeline that was used in the third paper of this thesis. Since this
+method was not developed by the author of this thesis, it won't be
+covered in more detail although its inclusion in mSWEEP/mGEMS analyses
+is strongly recommended.
 
 \chapter{Metagenomic epidemiology}
 \label{section:metagenomic-epidemiology}
