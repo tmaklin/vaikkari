@@ -46,8 +46,8 @@
 
 \title{Probabilistic methods for \\ high-resolution metagenomics}
 \author{Tommi Mäklin}
-\authorcontact{tommi@maklin.fi\par
-  https://maklin.fi/}
+\authorcontact{tommi.maklin@helsinki.fi\par
+  \url{https://maklin.fi/}}
 \pubtime{June}{2022}
 \reportno{0}
 \isbnpaperback{000-00-0000-0}
@@ -526,6 +526,7 @@ enable entirely novel types of analyses and discoveries through the
 inclusion of metagenomic data.
 
 \section{Contributions}
+\sloppy
 
 This thesis comprises three publications covering both mSWEEP
 \citep{maklin_high-resolution_2021} (Publication I), mGEMS
@@ -1412,7 +1413,31 @@ form in Equation \eqref{model:joint-distribution} (cite BitSeqVB
 paper). However, replacing the variational inference algorithm in the
 mSWEEP model with the Gibbs sampler from the original BitSeq
 \citep{glaus2012identifying} does not seem to produce any significant
-differences between the parameter estimates (Figure TODO gibbs vs vi).
+differences between the parameter estimates (Figures
+\ref{fig:vb-estimates} and \ref{fig:gibbs-estimates}).
+
+\begin{figure}[!h]
+  \label{fig:vb-estimates}
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{img/gibbs/msweep_reals.pdf}
+    \caption{Parameter estimates for the mSWEEP model inferred using
+      the variational inference implemented in BitSeqVB
+      \citep{hensman2015fast} on the \textit{in vitro} samples from
+      Publication II \citep{maklin_bacterial_2021}. The true value for
+      each subplot is 1.0 at the column corresponding to the highest estimate.}
+\end{figure}
+\begin{figure}[!h]
+  \label{fig:gibbs-estimates}
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{img/gibbs/msweep_reals.pdf}
+    \caption{Parameter estimates for the mSWEEP model inferred using
+      the collapsed Gibbs sampler implemented in BitSeq
+      \citep{glaus2012identifying} on the \textit{in vitro} samples
+      from Publication II \citep{maklin_bacterial_2021}. The true
+      value for each subplot is 1.0 at the column corresponding to the
+      highest estimate.}
+\end{figure}
+
 
 \section{From profiling to binning}
 \label{section:binning}
@@ -1653,7 +1678,7 @@ briefly overview the performance of the methods in various settings,
 and cover some questions related to the reliability of the approach as
 well as the sensitivity to the reference sequence collection. The last
 part of the chapter will provide some extra coverage of the results
-from Publications I-III, with the aim of exploring what kind of
+from Publications I-III, with the aim of xploring what kind of
 information metagenomics-derived results provide.
 
 \subsection{The mSWEEP/mGEMS pipeline}
@@ -1864,17 +1889,6 @@ excessive genomic variation present in the species
 nevertheless within acceptable limits when measured by the relative
 abundances for the correct lineage and the incorrect lineages.
 
-In addition to the synthetic mixture experiments presented in
-Publication I, Publication II presents an \textit{in vitro} benchmark
-concerning abundance estimation. \textit{In vitro} here refers to an
-experiment setup, where DNA from three different strains of either
-\textit{E. coli} or \textit{E. faecalis} was mixed together using Qbit
-\citep{maklin_bacterial_2021} , producing samples where the
-composition of the sample itself is known at the DNA level. The
-results from this benchmark show similar levels of accuracy as the
-synthetic benchmarks for the samples containing DNA from three
-different sequence types of \textit{E. faecalis}.
-
 The \textit{E. coli} benchmark in comparison was more challenging in
 its setup: all three strains that were used originated from ST131 and,
 to make things more interesting, two of the strains originated from
@@ -2015,18 +2029,19 @@ assemblies.
 
 
 \subsubsection{\textit{In vitro} benchmark}
-% TODO remove parts that were already explained above.
+
 Publication II also included an \textit{in vitro} benchmark data
 already mentioned earlier, where known amounts of DNA from three
-different strains were mixed together using Qbit (TODO citation), and
-both the mixed sample and the corresponding isolate cultures were
-sequenced. This data was used to re-test the performance of both
-mSWEEP (covered in the previous subsection) and mGEMS. The mGEMS part
-of the test examined the recovery of SNPs from either the isolate
-sequencing data or the Qbit-mixed sequencing data. In both the
-\textit{E. coli} and \textit{E. faecalis} benchmark samples the SNPs
-recovered from the mGEMS data reflect the values from the isolate data
-quite closely. There is some difficulty in separating the ST131-C2
+different strains were mixed together using Qbit
+\citep{maklin_bacterial_2021}, and both the mixed sample and the
+corresponding isolate cultures were sequenced. This data was used to
+re-test the performance of both mSWEEP (covered in the previous
+subsection) and mGEMS. The mGEMS part of the test examined the
+recovery of SNPs from either the isolate sequencing data or the
+Qbit-mixed sequencing data. In both the \textit{E. coli} and
+\textit{E. faecalis} benchmark samples the SNPs recovered from the
+mGEMS data reflect the values from the isolate data quite
+closely. There is some difficulty in separating the ST131-C2
 sublineages 4 and 6 which, however, is likely due to the increasingly
 difficult task of defining sublineages within sublineages using the
 accessory genome. This difficulty is likely not relevant for practical
@@ -2257,16 +2272,15 @@ about the future applicability of the methods and the types of
 analyses that are possible with the introduction of mSWEEP and mGEMS.
 
 \subsection{Metagenomics-derived results}
-% TODO NB sequencing a pool of strains can never fully resolve the
-% lineage of particular variants like single-clone sequencing does
-% unless long reads are used
 Epidemiological analyses performed on metagenomic sequencing data have
 the major advantage of covering the full spectrum of bacteria in a
 sample without the bias introduced by using cultivation steps. Because
 of this, results derived from metagenomic data should, in theory and
 with sufficiently deep sequencing, be capable of providing roughly the
-same results as non-metagenomics based approaches. Additionally,
-metagenomic approaches vastly extend the possibilities with regards to
+same results as non-metagenomics based approaches, although sequencing
+a pool of strains cannot resolve the lineage of the particular
+variants unless long reads are used. Additionally, metagenomic
+approaches vastly extend the possibilities with regards to
 interactions between non-pathogenic and pathogenic species, and in
 tracking non-dominant strains of pathogenic species. When it comes to
 applying these methods in practice and interpreting the results, there
@@ -2449,7 +2463,6 @@ the first 21 days. Switches to another strain occurred very rarely
 within this time period but were more commonly observed in a single
 follow-up sampling somewhere between 4-12 months of age.
 
-% TODO resistance was also analysed for e. faecalis (and lineage-associations in E. coli?)
 Coexistence at the within species level was rarely observed across all
 species analysed in the study (\textit{Klebsiella} genus,
 \textit{E. coli}, \textit{E. faecalis}). Within the
@@ -2459,9 +2472,13 @@ various \textit{Klebsiella} species that were identified by mSWEEP and
 mGEMS. As a final analysis, the mGEMS-derived assemblies for the
 \textit{Klebsiella} species were put through the Kleborate
 \citep{lam2021genomic} pipeline to perform analyses of the resistance
-and virulence factors in them. This analysis somewhat surprisingly
-found no significant differences between the vaginally delivered and
-caesarean section delivered babies.
+and virulence factors in them. Similar analysis was performed for the
+\textit{E. faecalis} lineages using AMRFinderPlus
+\citep{feldgarden2021amrfinderplus}. These analysis and the
+distribution of the \textit{E. coli} lineages somewhat surprisingly
+show no significant differences between the vaginally delivered and
+caesarean section delivered babies when it comes to the AMR gene
+contents.
 
 All of these analyses required the use of mSWEEP and mGEMS, as no
 other methods exist for assembly-based high-resolution analyses of the
@@ -2552,20 +2569,20 @@ By \underline{Tommi Mäklin}, Teemu Kallonen, Sophia David, Christine J
 Boinett, Ben Pascoe, Guillaume Méric, David M Aanensen, Edward J Feil,
 Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
 Antti Honkela. Published in \textit{Wellcome Open Research} (2021), 5:14
-(https://doi.org/10.12688/wellcomeopenres.15639.2).
+(\url{https://doi.org/10.12688/wellcomeopenres.15639.2}).
 \subsection*{Publication II \textemdash{ } Bacterial genomic epidemiology with mixed samples}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Jarno Alanko, Ørjan
 Samuelsen, Kristin Hegstad, Veli Mäkinen, Jukka Corander, Eva Heinz,
 and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
-7.11 (https://doi.org/10.1099/mgen.0.000691).
+7.11 (\url{https://doi.org/10.1099/mgen.0.000691}).
 
 \subsection*{Publication III \textemdash{ } Strong pathogen competition in neonatal gut colonization}
 By \underline{Tommi Mäklin}, Harry A Thorpe, Anna K Pöntinen, Rebecca
 A Gladstone, Yan Shao, Maiju Pesonen, Alan McNally, Pål J Johnsen,
 Ørjan Samuelsen, Trevor D Lawley, Antti Honkela, and Jukka
 Corander. Submitted; preprint available from \textit{bioRxiv} (2022)
-(https://doi.org/10.1101/2022.06.19.496579).
+(\url{https://doi.org/10.1101/2022.06.19.496579}).
 
-%\include{papers/maklin2022_thesis-papers}
+\include{papers/maklin2022_thesis-papers}
 
 \end{document}
