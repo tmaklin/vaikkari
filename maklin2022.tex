@@ -260,18 +260,18 @@ resolution within the species, and enables downstream processing of
 mixed samples with results often comparable to using isolate data.
 
 Even though both mSWEEP and mGEMS were originally designed with
-applications in plate sweep metagenomics in mind, this thesis includes
-a third article \citep{maklin_strong_2022} that demonstrates
-applicability of both methods to WGS metagenomics data. In the third
-article, we have analysed WGS metagenomics data from samples collected
-from a cohort of UK neonates \citep{shao2019stunted}. Results from
-this data show strong competition between bacterial species and
-strains during the initial colonization of the newborn gut
-microbiome. More importantly from a methods perspective, this analysis
-shows that mSWEEP and mGEMS provide (so-far) completely unprecedented
-levels of resolution in analysis of metagenomic sequencing data.
+applications in plate sweep metagenomics in mind, Publication III
+\citep{maklin_strong_2022} demonstrates applicability of both methods
+to WGS metagenomics data. In Publication III we have analysed WGS
+metagenomics data from samples collected from a cohort of UK neonates
+\citep{shao2019stunted}. Results from this data show strong
+competition between bacterial species and strains during the initial
+colonization of the newborn gut microbiome. More importantly from a
+methods perspective, this analysis shows that mSWEEP and mGEMS provide
+(so-far) completely unprecedented levels of resolution in analysis of
+metagenomic sequencing data.
 
-Together the three articles in this thesis represent foundational
+Together Publications I-III represent foundational
 methodological steps in both opening up high-resolution exploration of
 bacterial diversity as well as making such analyses more accessible to
 resource-constrained laboratories.
@@ -295,10 +295,6 @@ depending on the sample type \citep{bachmann2018advances}. When it
 comes to the end-result \textemdash{ } the sequencing reads
 \textemdash{ } all three approaches have their own characteristics
 that affect the available downstream analyses.
-
-% TODO read and cite
-% https://link.springer.com/article/10.1007/s00253-018-9209-9 and
-% https://www.annualreviews.org/doi/10.1146/annurev-pathmechdis-012418-012751
 
 WGS metagenomics, where all or most of the DNA in a sample is
 extracted (Figure \ref{fig:microbiome-sampling-methods}a), has emerged
@@ -532,13 +528,14 @@ inclusion of metagenomic data.
 \section{Contributions}
 
 This thesis comprises three publications covering both mSWEEP
-\citep{maklin_high-resolution_2021} and mGEMS
-\citep{maklin_bacterial_2021} as well as a third article demonstrating
-their application to whole-genome shotgun metagenomic sequencing data
-\citep{maklin_strong_2022}. The first two publications are accompanied
-by software implementations \citep{maklin_mSWEEP, maklin_mGEMS}. The
-third article is more applied in nature, exploring in more detail the
-types of analyses enabled by Publications I-II.
+\citep{maklin_high-resolution_2021} (Publication I), mGEMS
+\citep{maklin_bacterial_2021} (Publication II), and a third article
+(Publication III) demonstrating their application to whole-genome
+shotgun metagenomic sequencing data
+\citep{maklin_strong_2022}. Publications I-II are accompanied by
+software implementations \citep{maklin_mSWEEP,
+  maklin_mGEMS}. Publication III is more applied in nature, exploring
+in more detail the types of analyses enabled by Publications I-II.
 
 \subsection*{Publication I \textemdash{ } High-resolution sweep metagenomics using fast probabilistic inference}
 By \underline{Tommi Mäklin}, Teemu Kallonen, Sophia David, Christine J
@@ -601,25 +598,29 @@ reference databases for the investigated species, performing the
 analysis of the mSWEEP/mGEMS results for the samples containing
 \textit{E. coli}, and aiding the co-authors in analysing the other
 species. I additionally contributed to creating the visualisations,
-interpreting the results, and naturally to writing the article.
+interpreting the results, and naturally to writing the publication.
 
 \section{Structure}
-% TODO cross references (chapter 2 etc)
+
 The rest of the thesis is structured into three chapters that describe
 the contents of Publications I-III and how they contribute to the
 topics presented in the introduction chapter. The first of the three
-chapters describes the basic ideas behind the mSWEEP and mGEMS methods
-and provides historical context for the parts of the methods that have
-their origins within analysis of RNA sequencing data. The second
-chapter describes the experimental results from Publications I-III in
-more detail, focusing more on the applied part rather than the
-theoretical foundations. The third chapter is more speculative in
-nature, covering both the demonstrated applications from Publications I-III as
-well as exploring potential future avenues for use of the developed
-methods. The three chapters are followed by a concluding chapter
-followed by reprints of the three included original publications.
+chapters (\ref{mixture-modelling-of-sequence-data}) describes the
+basic ideas behind the mSWEEP and mGEMS methods and provides
+historical context for the parts of the methods that have their
+origins within analysis of RNA sequencing data. The second chapter
+(\ref{high-resolution-metagenomics}) describes the experimental
+results from Publications I-III in more detail, focusing more on the
+applied part rather than the theoretical foundations. The third
+chapter (\ref{section:metagenomic-epidemiology})is more speculative in
+nature, covering both the demonstrated applications from Publications
+I-III as well as exploring potential future avenues for use of the
+developed methods. The three chapters are followed by a concluding
+chapter (\ref{conclusions-and-future-directions}) followed by reprints
+of the three included original publications.
 
 \chapter{Mixture modeling of sequence data}
+\label{mixture-modelling-of-sequence-data}
 
 Mixture models are a family of probabilistic models which model
 sampling from an overall population as a mixture of sampling from
@@ -945,7 +946,6 @@ lineages, while also enabling the use of much larger reference
 sequence collections.
 
 \subsection{Mixture model formulation}
-% TODO check independence -> conditional independence
 Assume some set of sequencing reads $R = \left\{r_{1}, \dots,
 r_{N}\right\}, N \in \mathbb{N}_{+}$ that are conditionally
 independent given the mixing proportions $\mathbf{\theta}$ and
@@ -961,9 +961,10 @@ these reads can be written down by defining latent indicator variables
 $I = \left\{I_{1}, \dots, I_{N}\right\}$ that follow some mixing
 proportions $\boldsymbol{\theta} = \left(\theta_{1}, \dots,
 \theta_{S}\right), S \in \mathbb{N}_{+}, \sum_{s = 1}^{S} \theta_{s} =
-1$. Because independence between the reads $R$, $r_{j} \indept r_{i} |
-\mathbf{\theta}$ for all $i \neq j, 1 \leq i \leq N, 1 \leq j \leq N$
-was assumed, the joint distribution for this generative model is
+1$. Because conditional independence between the reads $R$, $r_{j}
+\indept r_{i} | \mathbf{\theta}$ for all $i \neq j, 1 \leq i \leq N, 1
+\leq j \leq N$ was assumed, the joint distribution for this generative
+model is
 \begin{equation}
   \label{model:joint-distribution}
   p\left(R, I, \boldsymbol\theta\right) = \prod_{n = 1}^{N}p\left(r_{n} \middle| I_{n}\right) p\left(I_{n} \middle| \boldsymbol\theta\right)p\left(\boldsymbol\theta\right).
@@ -973,7 +974,7 @@ Now, assume that for each read $r_{n}, 1 \leq n \leq N$, we observe
 alignments $r_{n, s}$ against the reference sequences $s = 1, \dots,
 S$. The information contained in $r_{n, s}$ may be anything about the
 alignment such as its length, quality, or location. Furthermore,
-assume independence between the alignments against different reference
+assume conditional independence between the alignments against different reference
 sequences $r_{n, i} \indept r_{n, j} | \mathbf{\theta}$ for all $i
 \neq j, 1 \leq i \leq S, 1 \leq j \leq S$. This leads to the joint
 distribution from Equation \ref{model:joint-distribution} factorizing
@@ -1071,7 +1072,7 @@ resolution in cases where the BIB model performs well
 With the changes in the mSWEEP model, the observations $r_{n, k}$
 become the numbers of observed pseudoalignments $r_{n, k}, 0 \leq
 r_{n, k} \leq M_{k}$ against the $M_{k}$ sequences belonging to a
-cluster $k$. If assumptions about independence between the clusters
+cluster $k$. If assumptions about conditional independence between the clusters
 are kept, the formulation for the model remains the same as the one
 presented in Equation \eqref{model:grouped-joint-distribution} with the
 only changes being to the likelihood term $p\left(r_{n, k} \middle|
@@ -1354,18 +1355,19 @@ coverage of variational inference in this context, the BitSeqVB publication
 algorithm is derived for the same model, only with a different
 likelihood function.
 
-% TODO cite hensman et al 2012 somewhere appropriate
-In brief, variational inference for the mSWEEP model \citep{hensman2012fast} consists of
-finding a distribution $q\left(\boldsymbol\theta, I\right)$ that
-minimizes the Kullback-Leibler divergence to the true posterior
+In brief, variational inference for the mSWEEP model
+\citep{hensman2012fast} consists of finding a distribution
+$q\left(\boldsymbol\theta, I\right)$ that minimizes the
+Kullback-Leibler divergence to the true posterior
 $p\left(\boldsymbol\theta, I \middle| R\right) \approx
 q\left(\boldsymbol\theta, I\right)$. For simplicity, assume that the
 approximation $q\left(\boldsymbol\theta, I\right)$ factorizes into
 $q\left(\boldsymbol\theta, I\right) =
 q\left(\boldsymbol\theta\right)q\left(I\right)$. Because each $I_{n}$
 has a categorical distribution $Cat\left(\boldsymbol\theta\right)$ and
-they are furthermore assumed independent of each other, $I_{n} \indept
-I_{m}, n \neq m | \mathbf{\theta}$, the second term $q\left(I\right)$ simplifies to
+they are furthermore assumed independent of each other given the
+mixing proportions $$, $I_{n} \indept I_{m}, n \neq m |
+\mathbf{\theta}$, the second term $q\left(I\right)$ simplifies to
 \begin{equation}
   \label{likelihood:vi-factorization}
   q\left(I\right) = \prod_{n = 1}^N\prod_{k = 1}^K \gamma_{n, k}^{I_{n, k}}.
@@ -1511,7 +1513,7 @@ sample that generated the reads $r_{n}$. Equation
 be ``large'' for the approximation to hold. A more detailed derivation
 for this statement about the magnitude of $B_{n, k}$ and Equation
 \eqref{binning:a-is-approximately-b} is provided in the methods section
-of the mGEMS article \citep{maklin_bacterial_2021}, supplied in the
+of Publication II, supplied in the
 appendix for this thesis and omitted from here.
 
 The implied statement about the magnitude of $B_{n, k}$ when
@@ -1589,6 +1591,7 @@ includes a coverage of the benchmarks and experiments presented in
 Publication I and Publication II.
 
 \chapter{High-resolution metagenomics}
+\label{high-resolution-metagenomics}
 
 High-resolution metagenomics (in the context of this thesis) refers to
 applying some method capable of recovering variation at the
@@ -1768,7 +1771,7 @@ similar approach \textemdash{ } as part of the mGEMS pipeline between
 the mGEMS and the assembly steps is recommended for a rigorous
 approach. This and other questions related to quality control and
 reliability of the results are explored further down in this
-chapter. % TODO cross reference
+chapter.
 
 \subsection{Other approaches for metagenomic analyses}
 \label{other-metagenomics-approaches}
@@ -2248,17 +2251,17 @@ sequencing a sample. Even disregarding the presence of non-bacterial
 domains such as fungi, yeasts, and bacteriophages that are commonly
 found alongside the interesting bacteria, restricting the analyses to
 the bacterial domain still leaves a massive number of bacteria that
-have not been sequenced or studied before. Although the estimates for
-the amount of ``microbial dark matter'' vary depending on the source
-(TODO citations), the discovery of even completely new genera is not
-completely unheard of (TODO citation) especially in less studied
-environments. This presents significant challenges for reference-based
-methods if the goal is to analyse the full diversity of the
-sample. Focusing on the more well-known bacteria does help in
-resolving the issue but when going further down to the within-species
-level, it is almost a certainty to find new lineages of the species
-when the sequencing effort is sufficiently large simply due to the
-short timescale that bacterial evolution happens on.
+have not been sequenced or studied before. Although the amount of
+``microbial dark matter'' \citep{rinke2013insights} is difficult to
+estimate, the discovery of completely new species
+\citep{thorpe2021one} or even genera is not completely unheard of
+\citep{conle2020studies, pitt2019aquirufa}. This presents significant
+challenges for reference-based methods if the goal is to analyse the
+full diversity of the sample. Focusing on the more well-known bacteria
+does help in resolving the issue but when going further down to the
+within-species level, it is almost a certainty to find new lineages of
+the species when the sequencing effort is sufficiently large simply
+due to the short timescale that bacterial evolution happens on.
 
 The third issue is related to the lack of maturity in methods for
 analysing metagenomic data at the strain-level, perhaps connected to
@@ -2316,27 +2319,27 @@ plate sweep samples from children sequenced at a Vietnamese
 hospital. These samples were paired, with the first being taken before
 and the second after exposure to antibiotic treatment for
 diarrhea. The samples were plated on a media selecting for
-\textit{E. coli} growth, and the whole plate was sweeped \& the DNA
+\textit{E. coli} growth, and the whole plate was sweeped and the DNA
 sequenced in accordance to the plate sweep protocol presented in
 Publication I. The samples were analysed with mSWEEP, and the results
 used to investigate differences in \textit{E. coli} sequence type
 contents and their relative abundances pre and post-treatment.
 
 The results indicated a significant difference in the lineage
-composition between the paired samples, with the commensal ST10 and
-ST14 complexes (TODO citation) being much more common in the
-pre-treatment samples. In the post-treatment samples the
-hospital-associated ST131 and ST38 (TODO citations) had taken over and
-became the dominant lineages. No significant difference was detected
-in the composition of the samples (magnitudes of the relative
-abundance estimates), meaning that there was no significant difference
-in the number of samples that contained co-existing lineages pre- or
+composition between the paired samples, with more commensal lineages
+such as ST10 \citep{maklin_strong_2022} being much more common in the
+pre-treatment samples. In the post-treatment samples the more invasive
+ST131 \citep{maklin_strong_2022} had taken over and became the
+dominant lineages. No significant difference was detected in the
+composition of the samples (magnitudes of the relative abundance
+estimates), meaning that there was no significant difference in the
+number of samples that contained co-existing lineages pre- or
 post-treatment.
 
 This analysis demonstrates simple means to analyse the
 lineage-contents of some sets of samples using only the relative
 abundance estimates. While it would be optimal to include the mGEMS
-pipeline steps (unavailable at the time the article was written), the
+pipeline steps (unavailable at the time Publication I was written), the
 results obtained using only abundance estimates are in line with the
 hypothesis/knowledge that commensal lineages may be replaced by
 antibiotic-resistance harbouring lineages when they are exposed to
@@ -2360,7 +2363,7 @@ antibiotic resistance gene finders or phylogenetic analyses.
 
 Publication III shows a set of results from applying mSWEEP and mGEMS
 to WGS metagenomics sequencing data. This data was obtained from
-another study (TODO citation) that investigated the differences in
+another study \citep{shao2019stunted} that investigated the differences in
 colonization of the newborn human gut using WGS metagenomic data from
 the first 21 days of life. In the original study, the analyses were
 performed only on the species-level. We used the same dataset to
@@ -2391,11 +2394,11 @@ species analysed in the study (\textit{Klebsiella} genus,
 species, the results showed some synergistic relationships between the
 various \textit{Klebsiella} species that were identified by mSWEEP and
 mGEMS. As a final analysis, the mGEMS-derived assemblies for the
-\textit{Klebsiella} species were put through the kleborate (TODO
-citation) pipeline to perform analyses of the resistance and virulence
-factors in them. This analysis somewhat surprisingly found no
-significant differences between the vaginally delivered and caesarean
-section delivered babies.
+\textit{Klebsiella} species were put through the Kleborate
+\citep{lam2021genomic} pipeline to perform analyses of the resistance
+and virulence factors in them. This analysis somewhat surprisingly
+found no significant differences between the vaginally delivered and
+caesarean section delivered babies.
 
 All of these analyses required the use of mSWEEP and mGEMS, as no
 other methods exist for assembly-based high-resolution analyses of the
@@ -2412,6 +2415,7 @@ information is desired about some particular subset of organisms
 within the samples.
 
 \chapter{Conclusions and future directions}
+\label{conclusions-and-future-directions}
 
 This thesis summarized the development and introduction of the mSWEEP
 and mGEMS methods for untangling strain-level variation in metagenomic
@@ -2427,48 +2431,53 @@ entirely new types of analyses and broader exploration of the
 bacterial diversity by using metagenomic sequencing.
 
 All experiments presented were performed using high-throughput
-short-read sequencing data, ignoring the more recent Oxford Nanopore and
-PacBio long-read sequencing technologies. Long-read sequencing can
+short-read sequencing data, ignoring the more recent Oxford Nanopore
+and PacBio long-read sequencing technologies. Long-read sequencing can
 provide unprecedented detail into analysis of mobile genetic elements
 and difficult-to assemble regions of the genome, which cannot be
 accurately quantified using short reads. Long-read sequencing has been
-succesfully applied in metagenomics studies (TODO citations), and the
-extension of mSWEEP and mGEMS to work on these technologies would be
-an important direction for future research.
+succesfully applied in metagenomics studies \citep{somerville2019long,
+  stewart2019compendium}, and the extension of mSWEEP and mGEMS to
+work on these technologies would be an important direction for future
+research.
 
 Another promising area for future development is the use of either
 short or long-read sequencing data in combination with mSWEEP/mGEMS to
 investigate plasmids. Plasmids are mobile genetic elements carried by
-bacteria, and they often contain virulence factors or resistance genes
-(TODO citations). Especially in short-read sequencing, current methods
-are often not able to differentiate between plasmid and chromosome derived
-reads. By constructing adequate reference databases for plasmids,
-mSWEEP and mGEMS could be applied to extract plasmid-derived reads
-from a set of reads by treating it as a metagenomic sample composed of
-the chromosomal and plasmid-derived parts.
+bacteria, and they sometimes carry virulence factors or resistance
+genes \citep{wyres2016klebsiella, denamur2021population,
+  palmer2010horizontal} , or otherwise help opportunistic pathogen
+species adapt to hospital environments
+\citep{arredondo2020plasmids}. Especially in short-read sequencing,
+current methods are often not able to differentiate between plasmid
+and chromosome derived reads. By constructing adequate reference
+databases for plasmids, mSWEEP and mGEMS could be applied to extract
+plasmid-derived reads from a set of reads by treating it as a
+metagenomic sample composed of the chromosomal and plasmid-derived
+parts.
 
 The third point relates to combining plate sweeps and WGS
 metagenomics. Using WGS metagenomics alone has some issues in
 detecting low abundance organisms of clinical importance, such as
-\textit{K. pneumoniae} (TODO citation), but its inclusion can provide
-useful information about other species present in the samples. When
-analysing WGS metagenomics data, plate sweeps could be incorporated
-into the pipelines to enrich for species of clinical interest that
-cannot be adequately identified without extremely deep direct
-sequencing of the sample. Since mSWEEP and mGEMS can analyse both
-types of data, they could be used to screen metagenomics datasets for
-samples that should be enrichened for interesting species.
+\textit{K. pneumoniae} \citep{gorrie2017gastrointestinal,
+  martin2016molecular}, but its inclusion can provide useful
+information about other species present in the samples. When analysing
+WGS metagenomics data, plate sweeps could be incorporated into the
+pipelines to enrich for species of clinical interest that cannot be
+adequately identified without extremely deep direct sequencing of the
+sample. Since mSWEEP and mGEMS can analyse both types of data, they
+could be used to screen metagenomics datasets for samples that should
+be enrichened for interesting species.
 
 The introduction of mSWEEP and mGEMS facilitates these types of
-analyses and other research directions. Strain-level variation is an
-ubiquitously occurring phenomena (TODO citations) and its inclusion in
-epidemiological studies is likely to advance the field of genomic
-epidemiology beyond the isolate era. With the rapid production of high
-quality reference genomes from long-read sequencing studies, the
-applications of the methods can likely be extended beyond the species
-that were analysed in this thesis, and insights into the already
-possible species expanded through the inclusion of high-resolution
-metagenomics.
+analyses and other research directions. Consideration of strain-level
+variation in epidemiological studies is likely to advance the field of
+genomic epidemiology beyond the isolate era. With the rapid production
+of high quality reference genomes from long-read sequencing studies,
+the applications of the methods can likely be extended beyond the
+species that were analysed in this thesis, and insights into the
+already possible species expanded through the inclusion of
+high-resolution metagenomics.
 
 \printbibliography[heading=bibintoc]
 
