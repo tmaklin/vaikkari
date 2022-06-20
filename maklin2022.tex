@@ -303,16 +303,16 @@ that affect the available downstream analyses.
 WGS metagenomics, where all or most of the DNA in a sample is
 extracted (Figure \ref{fig:microbiome-sampling-methods}a), has emerged
 as a tool for analysing the full breadth of variety in various
-microbiomes (TODO citations, at least babybiome paper plus
-others). Exploring this diversity comes at a price, however, since the
-produced sequencing reads are split across the numerous organisms
-possibly present, resulting in a need to sequence the sample more
-deeply to capture the less abundant organisms (TODO
-citations). Combined with other issues related to host DNA abundance
-(TODO citations) and a lack of bioinformatics resources (TODO
-citations), the shortcomings of WGS metagenomics have so-far prevented
-its widespread adoption as a standard tool for genomic epidemiology
-(TODO citations).
+microbiomes \citep{shao2019stunted, ghensi2020strong,
+  bertrand2019hybrid, danko2021global, whelan2020culture}. Exploring
+this diversity comes at a price, however, since the produced
+sequencing reads are split across the numerous organisms possibly
+present, resulting in a need to sequence the sample more deeply to
+capture the less abundant organisms \citep{whelan2020culture,
+  vollmers2017comparing, quince2017shotgun}. Combined with other
+issues related to host DNA abundance \citep{whelan2020culture, ivy2018direct, gu2019clinical}, the shortcomings of WGS metagenomics have
+so-far hindered its widespread adoption as a standard tool for
+genomic epidemiology.
 
 Plate sweep metagenomics proposes a middle-ground between the direct
 sequencing of WGS metagenomics and isolate studies by incorporating a
@@ -325,13 +325,13 @@ step allows for generating large numbers of sequencing reads from the
 bacteria that thrive in the chosen medium, circumventing both the
 sequencing depth and host DNA issues in WGS metagenomics while
 improving the sensitivity to bacteria found in low abundance in the
-original sample (TODO citations, cystic fibrosis study + gerry's
-study? + see if there are others). Furthermore, focusing the
-sequencing efforts on the relevant bacteria enables application of
-bioinformatics tools that require a high sequencing depth provided
-that the reads from different organisms can be computationally
-separated. Developing a tool to solve the aforementioned deconvolution
-problem is one of the key contributions of this thesis.
+original sample \citep{whelan2020culture,
+  tonkin-hill_pneumococcal_2022, zhang2022using}. Furthermore, focusing the sequencing
+efforts on the relevant bacteria enables application of bioinformatics
+tools that require a high sequencing depth provided that the reads
+from different organisms can be computationally separated. Developing
+a tool to solve the aforementioned deconvolution problem is one of the
+key contributions of this thesis.
 
 \noindent\let\thefootnote\relax\footnote{Figure source: Adapted from \cite{praveera_fenugreek-sprouts} and \cite{niaid_escherichia-coli}. Released under the \href{https://creativecommons.org/licenses/by-sa/4.0}{CC BY-SA 4.0 license}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
@@ -351,8 +351,6 @@ problem is one of the key contributions of this thesis.
       sequencing.}
 \end{figure}
 
-% (TODO citations for this paragraph? common knowledge but could try
-% to find some manual explaining the colony picks.
 In the third approach, whole-genome sequencing of isolates (Figure
 \ref{fig:microbiome-sampling-methods}c), visible colonies from the
 initial culture are picked and transferred to new plates. After
@@ -369,34 +367,35 @@ be isolated is often constrained by laboratory resources and nearly
 always restricted to rapidly growing colony-forming phenotypes.
 
 In genomic epidemiological analyses, the whole-genome sequencing
-approach has been dominant due to the ability to produce highly
-accurate genomic data (TODO citation). Producing the same results
-using WGS (or plate sweep) metagenomics has some obvious benefits in
-both increasing the number of samples that can be processed as well as
-in capturing more of the diversity in the samples, but the existing
+approach has been dominant due to its strengths in producing highly
+accurate data capable of SNP calling and differentiating between
+organisms \citep{efsa2019whole}. Producing the same results using WGS
+(or plate sweep) metagenomics has some obvious benefits in both
+increasing the number of samples that can be processed as well as in
+capturing more of the diversity in the samples, but the existing
 metagenome-analysis tools have not been able to reach the required
-level of resolution (TODO citation). In this thesis I tackle the issue
-and present methodological advances that may finally open up more
-widespread use of metagenomic sequencing data in genomic epidemiology.
+level of resolution \citep{sczyrba2017critical,
+  mcintyre2017comprehensive, maklin_bacterial_2021}. In this thesis I
+tackle the issue and present methodological advances that may finally
+open up more widespread use of metagenomic sequencing data in genomic
+epidemiology.
 
 \section{Analysing metagenomic sequence data}
 
-\textbf{- Need a picture of the different approaches.}
-
 Metagenomic sequencing data analysis presents several challenges to
-bioinformaticians (TODO citations). Firstly, the increased diversity
-of species requires much larger computational resources to analyse
-(TODO citation). Secondly, the possible presence of strain-level
-variation complicates analyses that attempt to separate the reads to
-distinct taxonomic units because the differences between strains
-within a species can be minimal (TODO citation). Subsequently, the
-bulk of method development has focused on operating with the
-assumption that only a single strain from each species is present in
-the same sample (TODO citation, review by florian breitweiser?). In
-this section I will briefly cover some of the previous approaches and
-describe how mSWEEP and mGEMS fit into the metagenomics toolkit.
+bioinformaticians). Firstly, the increased diversity of species
+requires much larger computational resources to analyse
+\citep{yang2021review}. Secondly, the possible presence of
+strain-level variation complicates analyses that attempt to separate
+the reads to distinct taxonomic units because the differences between
+strains within a species can be minimal
+\citep{meyer2022critical}. Subsequently, the bulk of method
+development has focused on operating with the assumption that only a
+single strain from each species is present in the same sample
+\citep{breitwieser2019review}. In this section I will briefly cover
+some of the previous approaches and describe how mSWEEP and mGEMS fit
+into the metagenomics toolkit.
 
-% TODO cite some appropriate reviews, check mGEMS paper
 One of the more commonly used tools for analysing WGS metagenomics
 data are metagenome assemblers. Similarly to genome assemblers,
 metagenome assemblers aim to produce a set of contigs (sets of
@@ -409,10 +408,9 @@ assumed distinct enough that they are not mistaken for sequencing
 error or minor genetic variation. When the assumption is fulfilled,
 metagenome assemblers produce contigs that are adequately accurate for
 several types of analyses, and have subsequently been adopted among
-the standard tools in a variety of microbiome studies (TODO
-citations).
+the standard tools in a variety of microbiome studies
+\citep{bertrand2019hybrid, somerville2019long, stewart2019compendium}.
 
-% TODO cite some appropriate reviews, check mGEMS paper
 Metagenome binners are closely related to another type of analysis,
 where the aim is to assign (relative) abundances to the taxonomic
 units that were identified in the sequencing reads, called taxonomic
@@ -422,34 +420,33 @@ contigs assigned to the unit. When the units are closely related
 species or strains, more sophisticated methods are necessary since the
 contigs may plausibly belong to several taxa, which has led to the
 development of dedicated taxonomic profilers that do not attempt to
-bin the contigs or sequencing reads (TODO cite metaphlan, msweep,
-others).
+bin the contigs or sequencing reads \citep{beghini2021integrating,
+  truong2017microbial, maklin_high-resolution_2021, van2022strainge}.
 
-% TODO citations
 Recently, a third category of methods attempting to track the
 presence/absence of a specific strain of bacteria across several
-samples has emerged (TODO cite strainge, strianphlan, midas?). Methods
-in this category aim to infer similarity and shared strains and
-provide an attractive tool for transmission analysis when the genome
-assemblies of the individual strains are not required or cannot be
-assembled due to the sequencing depth. Ideally, the tools for tracking
-strains would be combined with those for extracting the contig or read
-bins, together enabling both a wide analysis covering all samples and
-strains and a focused analysis of the strains that are found in high enough
-abundance to assemble their genomes.
+samples has emerged \citep{van2022strainge, truong2017microbial,
+  nayfach2016integrated}. Methods in this category aim to infer
+similarity and shared strains and provide an attractive tool for
+transmission analysis when the genome assemblies of the individual
+strains are not required or cannot be assembled due to the sequencing
+depth. Ideally, the tools for tracking strains would be combined with
+those for extracting the contig or read bins, together enabling both a
+wide analysis covering all samples and strains and a focused analysis
+of the strains that are found in high enough abundance to assemble
+their genomes.
 
-% TODO citations? or is this original content
 All of the above can be further divided into reference-based methods
 that leverage reference data in their analysis, and reference-free
 methods that perform the analysis solely based on the sequencing
 reads. While reference-free methods are able to handle data containing
 previously unknown bacteria that do not have any available genome
 assemblies, reference-based methods provide an easily interpretable
-context for the results and typically reach a higher resolution (TODO
-citation). If detailed quantification is only required for some subset
-of organisms in the sample, reference-based methods frequently also
-provide means to filter out the reads belonging to the uninteresting
-organisms.
+context for the results and typically reach a higher resolution
+\citep{hiraoka2016metagenomics, thomas2012metagenomics}. If detailed
+quantification is only required for some subset of organisms in the
+sample, reference-based methods frequently also provide means to
+filter out the reads belonging to the uninteresting organisms.
 
 The strain-level methods from this thesis take the reference-based
 approach and specifically leverage bespoke reference
@@ -463,19 +460,17 @@ incorporate a clustering of the reference assemblies within a species
 to biologically interpretable and phylogenetically reflected
 lineages. Since inter-lineage differences are generally more
 pronounced, the identification task at this level becomes
-significantly easier (cite BIB paper) and additionally allows for
-handling cases where the sequencing reads originate from a previously
-unseen isolate which nevertheless belongs to a known reference
-lineage. Trading the ability to imprecisely identify the exact
-sequence to precisely identifying the lineage it belongs to is
+significantly easier \citep{sankar2016bayesian} and additionally
+allows for handling cases where the sequencing reads originate from a
+previously unseen isolate which nevertheless belongs to a known
+reference lineage. Trading the ability to imprecisely identify the
+exact sequence to precisely identifying the lineage it belongs to is
 especially useful in clinical settings, where the diversity of
 potential pathogenic bacteria has been thoroughly studied using
-whole-genome sequencing (TODO citation) and the clinically relevant
+whole-genome sequencing and the clinically relevant
 lineages are often well-known.
 
 \section{Using metagenomics data in genomic epidemiology}
-
-\textbf{Figure about genomic epidemiology analyses}
 
 Aside metagenomics tools, the second significant aspect of this thesis
 has to do with their application in genomic epidemiology, where an
@@ -483,33 +478,34 @@ important goal is to trace the transmission of pathogenic bacteria
 using genomic sequence data. Genome-informed analyses have in recent
 years greatly expanded the ability of researchers to investigate
 outbreaks, identify epidemiologically relevant genetic elements, and
-detect emerging public health concerns (TODO citations). Due to the
+detect emerging public health concerns \citep{tang2017infection,
+  van2019status, grad2014epidemiologic, kwong2015whole}. Due to the
 high level of accuracy required, such analyses have been performed
 using isolate WGS data, which has a relatively high economical cost
-and slow turnaround time (TODO citations, one of the already cited
-papers), rendering the research more reactive in nature. One of the
-goals of mSWEEP and mGEMS is to enable partially replacing the use of
-isolate data with metagenomics data, decreasing both the cost and
-turnaround time of the existing genomic epidemiology pipelines.
+and slow turnaround time \citep{rossen2018practical}, rendering the
+research more reactive in nature. One of the goals of mSWEEP and mGEMS
+is to enable partially replacing the use of isolate data with
+metagenomics data, decreasing both the cost and turnaround time of the
+existing genomic epidemiology pipelines.
 
 In addition to improving both cost- and time-effectiveness,
 incorporating some kind of metagenomics data into genomic epidemiology
 presents some obvious advantages in increasing the sensitivity to
 genetic diversity that might be obscured by the use of isolate data in
-routine surveillance (TODO citation?). As an example, a recent study
-into within-host diversity of the common respiratory pathogen
-\textit{Streptococcus pneumoniae} utilized an analogue of plate sweep
-metagenomics and found low-frequency co-colonization of epidemic
-serotypes alongside known carriage serotypes
-\citep{tonkin-hill_pneumococcal_2022}. This finding helped explain the
-previously unknown source of the epidemic serotypes in outbreaks of
-disease, which could not be fully explained by isolate sequencing
-data. Since naturally occurring variation is common in many species of
-clinical interest (TODO citations), similar findings in other fields
-are likely with more widespread use of WGS and plate sweep
-metagenomics data.
+routine surveillance. As an example, a recent study into within-host
+diversity of the common respiratory pathogen \textit{Streptococcus
+  pneumoniae} utilized an analogue of plate sweep metagenomics and
+found low-frequency co-colonization of epidemic serotypes alongside
+known carriage serotypes \citep{tonkin-hill_pneumococcal_2022}. This
+finding helped explain the previously unknown source of the epidemic
+serotypes in outbreaks of disease, which could not be fully explained
+by isolate sequencing data. Since naturally occurring variation is
+common in many species of clinical interest
+\citep{paterson2015capturing, zlitni2020strain, dixit2018within,
+  mosavie2019sampling, tonkin-hill_pneumococcal_2022} similar findings
+in other fields are likely with more widespread use of WGS and plate
+sweep metagenomics data.
 
-% TODO this *really* needs citations
 Another related aspect in favour of using more metagenomics-oriented
 approaches arises from simple practicality: sequencing several
 organisms at once is simply easier than performing the several steps
@@ -642,25 +638,27 @@ models are useful in cases where the sequencing reads do not uniquely
 identify the isoform but could plausibly be the product of several
 genes. This is in contrast to the microarray technology that preceded
 RNA-Seq, where the technology itself allows for unique identification
-of the expressed isoform and applications of probabilistic models focused
-more on obtaining uncertainty estimates (TODO citation).
+of the expressed isoform and applications of probabilistic models
+focused more on obtaining uncertainty estimates
+\citep{rattray2006propagating, liu2007including}.
 
 The ability of mixture models to differentiate between expression of
-isoforms with similar nucleotide contents makes them ideal for analysis
-of short-read sequencing data from bacterial strains. Since the
-strains within a species typically share a large percentage of their
-genome (although the exact values vary greatly by species TODO
-citation), sequencing reads from one will match with a large number of
-genomes from the same species. Indeed, the models from RNA-Seq have
-been adapted almost directly to identify bacterial strains from
-sequencing data \citep{sankar2016bayesian} with great effect but not
-without some caveats related to more general applicability across
-different bacterial species. The work in this thesis extends the
-previous work in the field \citep{sankar2016bayesian} by introducing a
-more general formulation of the model that generalizes well to
-arbitrary bacterial species and allows for assigning sequencing reads
-to the bacterial strains in addition to identifying their relative
-contributions in a set of sequencing reads.
+isoforms with similar nucleotide contents makes them ideal for
+analysis of short-read sequencing data from bacterial strains. Since
+the strains within a species typically share a large percentage of
+their genome (although the exact values vary greatly by species
+\citep{doolittle2006genomics, van2020diversity}), sequencing reads
+from one will match with a large number of genomes from the same
+species. Indeed, the models from RNA-Seq have been adapted almost
+directly to identify bacterial strains from sequencing data
+\citep{sankar2016bayesian} with great effect but not without some
+caveats related to more general applicability across different
+bacterial species. The work in this thesis extends the previous work
+in the field \citep{sankar2016bayesian} by introducing a more general
+formulation of the model that generalizes well to arbitrary bacterial
+species and allows for assigning sequencing reads to the bacterial
+strains in addition to identifying their relative contributions in a
+set of sequencing reads.
 
 \section{mSWEEP and mGEMS}
 
@@ -731,7 +729,7 @@ methods appeared in 2012 with the introduction of BitSeq
 \citep{glaus2012identifying}. BitSeq extended the previous models by
 being the first of the methods to perform Bayesian inference on the
 relative isoform expression levels and derived update equations for a
-collapsed Gibbs sampler (TODO citation) to implement MCMC sampling
+collapsed Gibbs sampler to implement MCMC sampling
 over the posterior distribution defined by the model. A further
 development of BitSeq appeared in 2015 with the introduction of
 BitSeqVB \citep{hensman2015fast}, where the sampling approach was
@@ -789,9 +787,9 @@ about the alignments \citep{katz2010analysis, li2010rna,
   glaus2012identifying} through the relation to BitSeq through
 BIB. Pseudoalignment-based identification of the relative abundances
 of some reference sequences is also implemented in the metakallisto
-(TODO citation) method but the inclusion of the probabilistic model
-from mSWEEP is necessary for high-resolution accuracy as demonstrated
-in Publication I.
+\citep{schaeffer2017pseudoalignment} method but the inclusion of the
+probabilistic model from mSWEEP is necessary for high-resolution
+accuracy as demonstrated in Publication I.
 
 \subsection{Differences between RNA-Seq and bacterial data}
 \label{section:bacterial-data}
@@ -800,18 +798,21 @@ Sequencing data and reference sequences from bacteria have some unique
 characteristics that distinguish them from data originating from
 humans or other more complex organisms. Mainly, the generation time
 for bacterial organisms is much shorter, measured in hours or even
-minutes depending on the environmental conditions and species (TODO
-citation). This has implications for analyses that incorporate the use
-of reference data from previously sequenced organisms. First, major
-changes in the genomic contents happen within human-observable
-time-frames and are reflected in sequence data obtained from what is
-assumed to be the same strain (TODO citation). Secondly, bacterial
-genomes can undergo major horizontal gene transfer events even across
-large evolutionary distances, resulting in major genomic differences
-(TODO citation). Together these factors imply that reference sequences
-for any set of bacteria are almost certainly at least somewhat
-different than what would be obtained from sequencing descendants of
-the organisms corresponding to the original reference sequence.
+minutes depending on the environmental conditions (for example in the
+lab or in the wild) and species \citep{gibson2018distribution}. This
+has implications for analyses that incorporate the use of reference
+data from previously sequenced organisms. First, major changes in the
+genomic contents happen within human-observable time-frames and are
+reflected in sequence data obtained from what is assumed to be the
+same strain, although the accumulation rate is highly variable
+\citep{gibson2019investigating}. Secondly, bacterial genomes can
+undergo major horizontal gene transfer events even across large
+evolutionary distances, resulting in major genomic differences
+\citep{arnold2022horizontal}. Together these factors imply that
+reference sequences for any set of bacteria are almost certainly at
+least somewhat different than what would be obtained from sequencing
+descendants of the organisms corresponding to the original reference
+sequence.
 
 As noticed in the BIB method, the problems introduced by quicker
 evolution of the bacterial organisms can be solved by replacing the
@@ -865,28 +866,29 @@ lineages can enable identification in cases where the reference
 sequences are not exactly from a comparable source to the sample
 reads. Publications I-III employ several different approaches to the
 lineage definitions, making use of multilocus sequence typing (MLST)
-(TODO citation), and several clustering algorithms (TODO citations
-baps + poppunk).
+\citep{enright1999multilocus}, and several clustering algorithms
+\citep{lees2019fast, cheng2013hierarchical, corander2006bayesian}.
 
 \subsection{Clustering bacterial sequences}
 
 Various methods for clustering bacterial genomes have been
 developed. One of the most commonly used of these is MLST, where
 sequence clusters are defined based on variation observed at
-housekeeping loci (TODO citations), the combinations of which
-correspond to a unique sequence type. For many biological
+housekeeping loci \citep{enright1999multilocus}, the combinations of
+which correspond to a unique sequence type. For many biological
 applications, the sequence types defined by MLST correspond to
-taxonomic units that have observable differences in phenotypes (TODO
-citation). This has subsequently led to widespread adoption of the
-method among microbiologists (TODO citation). The downside of MLST is
-that it is only offers a limited resolution by considering a small
-fraction of the variation present in a genome.
+taxonomic units that have observable differences in phenotypes such as
+antimicrobial resistance \citep{kallonen2017systematic,
+  shaik2017comparative}. This has subsequently led to widespread
+adoption of the method among microbiologists. The
+downside of MLST is that it is only offers a limited resolution by
+considering a small fraction of the variation present in a genome.
 
 The PopPUNK method \citep{lees2019fast} provides an alternative to
-MLST that uses \textit{k}-mer distances and a Bayesian generalized
-mixture model (TODO citation?) or DBSCAN (TODO citation) to define the
+MLST that uses nucleotide distances and a Gaiussian
+mixture model or DBSCAN \citep{ester1996density} to define the
 lineages. In practice, the lineages that PopPUNK identifies typically
-correspond to clonal complexes (TODO citation) which are sequence
+correspond to clonal complexes \citep{lees2019fast} which are sequence
 clusters containing the sequences assigned to a central multilocus
 sequence type (ST) and closely related single or double locus variants
 of the central ST. Main advantage of using the clonal complex
@@ -1048,11 +1050,10 @@ each cluster is clearly separated from the others; otherwise selecting
 a representative sequence is not feasible. In BIB, these requirements
 are somewhat alleviated by defining the core genome of the species and
 using only the parts of the representative sequence that belong to the
-core. Unfortunately, this introduces a third problem: some bacterial
-species do not have a stable core genome (TODO citation, was mentioned
-earlier so use the same) and increasing the number of sequences for
-any species of bacteria tends to shrink the core genome estimate,
-depending on the method used (cite panaroo).
+core. Unfortunately, this introduces a third problem: increasing the
+number of sequences for any species of bacteria tends to shrink the
+core genome estimate, depending on the method used
+\citep{tonkin2020producing}.
 
 \subsection{Modelling alignments against sequence groups}
 
@@ -1317,7 +1318,7 @@ the variation in the success rate for each draw
 Equation \eqref{likelihood:normalized}, each cluster $k$ has its own
 parameters $\pi_{k}, \phi_{k}$.
 
-Although methods such as Bayesian optimization (TODO citation) could
+Although methods such as Bayesian optimization \citep{movckus1975bayesian} could
 be employed to find optimal values for the parameters $\pi_{k},
 \phi_{k}$ in Equation \eqref{likelihood:reparametrization}, we set
 their values based on a reasonable compromise that performed well in
@@ -1354,7 +1355,7 @@ algorithm is derived for the same model, only with a different
 likelihood function.
 
 % TODO cite hensman et al 2012 somewhere appropriate
-In brief, variational inference for the mSWEEP model consists of
+In brief, variational inference for the mSWEEP model \citep{hensman2012fast} consists of
 finding a distribution $q\left(\boldsymbol\theta, I\right)$ that
 minimizes the Kullback-Leibler divergence to the true posterior
 $p\left(\boldsymbol\theta, I \middle| R\right) \approx
@@ -1372,16 +1373,18 @@ I_{m}, n \neq m | \mathbf{\theta}$, the second term $q\left(I\right)$ simplifies
 
 In practice, the best approximation $q\left(\boldsymbol\theta,
 I\right)$ is found when optimal values for the parameters $\gamma_{n,
-  k}$ in Equation \eqref{likelihood:vi-factorization} are found (TODO
-cite). The Riemannian conjugate gradient (RCG) method is used to find the
-optimal values for $\gamma_{n, k}$ (TODO cite). A generic, parallel
-and distributable implementation for arbitrary likelihood with this
-mixture model structure is available from
+  k}$ in Equation \eqref{likelihood:vi-factorization} are found
+\citep{hensman2015fast}. The Riemannian conjugate gradient
+method and variational Bayesian expectation maximization steps are
+used to find the optimal values for $\gamma_{n, k}$
+\citep{hensman2015fast, hensman2012fast, honkela2010approximate}. A
+generic, parallel and distributable implementation for arbitrary
+likelihood with this mixture model structure is available from
 \url{https://github.com/tmaklin/rcgpar}.
 
 \subsection{Alternative fit using MCMC sampling}
 Alternatively, the model could be fitted using Markov chain Monte
-Carlo (MCMC) sampling methods (TODO citations or explain). Instead of
+Carlo (MCMC) sampling methods \citep{glaus2012identifying}. Instead of
 the variational inference approach of finding an approximating
 distribution $q\left(\boldsymbol\theta, I\right)$, MCMC sampling
 attempts to produce a set of samples from the true posterior
@@ -1391,13 +1394,13 @@ values produced via MCMC sampling $\hat{\boldsymbol\theta}$
 the number of samples increases.
 
 Even though producing the true values is tempting, MCMC has several
-problems when applied in practice (TODO citations). First, the true
-values are only found asymptotically, meaning that it is difficult to
-determine when the MCMC sampler has converged to the true
+problems when applied in practice \citep{blei2017variational}. First,
+the true values are only found asymptotically, meaning that it is
+difficult to determine when the MCMC sampler has converged to the true
 posterior. Secondly, due to the first point, the number of samples
 that need to be drawn may be excessively high, resulting in long run
 times when compared to the significantly faster variational inference
-(TODO cite, variational inference for statisticians paper?).
+\citep{blei2017variational}.
 
 Compared to variational inference, MCMC does have the advantage that,
 provided sufficient runtime, the samples will be from the true
@@ -1408,8 +1411,6 @@ paper). However, replacing the variational inference algorithm in the
 mSWEEP model with the Gibbs sampler from the original BitSeq
 \citep{glaus2012identifying} does not seem to produce any significant
 differences between the parameter estimates (Figure TODO gibbs vs vi).
-
-\textbf{TODO: - Add figure of Gibbs sampler vs variational inference experiments.}
 
 \section{From profiling to binning}
 \label{section:binning}
@@ -1445,8 +1446,8 @@ bacterial species, the read could easily have been generated from
 several of them. This differs from most work on binning, where the
 reads are typically only allowed an assignment in a single bin at a
 time because the variation between the organisms belonging to
-different bins is assumed large enough that multi-bin assignment is
-not necessary (TODO citations). For within-species-level binning, this
+different bins is assumed large enough that multi-bin assignment may
+not be necessary. For within-species-level binning, this
 assumption obviously does not hold because of the shared genomic
 contents when the species are defined in a manner that reflects their
 phylogenetic characteristics. This means that the mGEMS binning
@@ -1625,33 +1626,25 @@ When comparing metagenomics approaches to culturing isolates, the
 major difference between the approaches is that metagenomics will
 provide a better overview of the microbiome in the sample. Although
 isolate data has mostly been used in the past in epidemiological
-studies, some demonstrations of the benefits of applying a metagenomics
-approach have emerged. In particular, a recent study utilizing mSWEEP
-might not allow identifying the presence of non-dominant variants of
-the same species \citep{tonkin-hill_pneumococcal_2022}. 
+studies, some demonstrations of the benefits of applying a
+metagenomics approach have emerged. In particular, a recent study
+utilizing mSWEEP might not allow identifying the presence of
+non-dominant variants of the same species
+\citep{tonkin-hill_pneumococcal_2022}. Currently it is a somewhat of
+an open question whether similar naturally occurring variation is
+found ubiquituously across different microbiomes
 
-Microbiome studies in general have become increasingly popular with
-the advent and adoption of 16S ribosomal RNA sequencing that allows
-identifying the genus or even species of bacteria based on the highly
-conserved 16s rRNA gene (TODO citation). Although the results of some
-studies remain somewhat controversial (TODO citation), the widespread
-application of 16S metagenomics has revealed extensive variation in
-the microbiome. Currently it is a somewhat of an open question whether
-this naturally occurring variation extends to the
-strain-level. Nevertheless, some studies have demonstrated that this
-might be the case (TODO citations).
-
-mSWEEP and mGEMS enable answering these questions regarding
-strain-level variation by providing methods that can be targeted to
-capture the variation present in samples containing members of some
-bacterial species. Since many bacteria of clinical importance have
-been studied for several decades (TODO citations) with significant
-sequencing efforts aimed at them to obtain high-quality genome
-assemblies (TODO citations), the reference-based approach employed by
-mSWEEP and mGEMS is ideal for disentangling variation in the same
-clinical setting. When combined with tools that take different
-approaches to analysing metagenomic data, such as the StrainPhlAn and
-StrainGE (TODO citations) methods that track bacterial strains across
+mSWEEP and mGEMS enable answering thes question regarding strain-level
+variation by providing methods that can be targeted to capture the
+variation present in samples containing members of some bacterial
+species. Since many bacteria of clinical importance have been studied
+for several decades with significant sequencing efforts aimed at them
+to obtain high-quality genome assemblies, the reference-based approach
+employed by mSWEEP and mGEMS is ideal for disentangling variation in
+the same clinical setting. When combined with tools that take
+different approaches to analysing metagenomic data, such as the
+StrainPhlAn \citep{truong2017microbial} and StrainGE
+\citep{van2022strainge} methods that track bacterial strains across
 samples, the combination has the potential for providing unprecedented
 level of detail in future epidemiological analyses and routine
 surveillance.
@@ -1668,7 +1661,6 @@ from Publications I-III, with the aim of exploring what kind of
 information metagenomics-derived results provide.
 
 \subsection{The mSWEEP/mGEMS pipeline}
-\textbf{TODO: - Flowchart describing the analysis pipeline.}
 
 Combining the results from Sections \ref{section:model} and
 \ref{section:binning} produces the complete mSWEEP/mGEMS workflow for
@@ -1686,12 +1678,12 @@ sequencing reads. Since this is a rather strong assumption, typical
 use cases exploit published datasets and possibly combine them with
 bespoke isolate sequencing data. Either previously published
 assemblies, or even curated genomes from databases such as RefSeq
-(TODO citation?), may be used. The reference may also include newly
-assembled sequences or otherwise be tailored to the problem at
-hand. In both cases, a cautious approach regarding the inclusion of
-potentially low-quality assemblies in the reference is recommended, as
-the quality of the reference sequence collection is the most important
-factor in obtaining trustworthy results from the pipeline.
+\citep{pruitt2007ncbi}, may be used. The reference may also include
+  newly assembled sequences or otherwise be tailored to the problem at
+  hand. In both cases, a cautious approach regarding the inclusion of
+  potentially low-quality assemblies in the reference is recommended,
+  as the quality of the reference sequence collection is the most
+  important factor in obtaining trustworthy results from the pipeline.
 
 After the appropriate reference sequences have been collected, they
 should be clustered in some meaningful way to obtain the lineage
@@ -1730,16 +1722,16 @@ corresponding to each bin from the original set.
 
 \subsubsection{Assembling the read bins}
 
-In Publication II, the mGEMS pipeline also contains
-an optional step to assemble the reads placed in each bin. The
-suggested assembler is shovill (TODO citation), which is an assembly
-pipeline built around the SPAdes assembler (TODO citation) but
-incorporates some pre- and post-processing steps (TODO
-citations). Naturally, other assemblers may also be used, or the
-assembly step skipped entirely and the analysis instead focused on the
-reads. In Publication II, the analyses mostly focused on using the
-assemblies, as including an assembly step is equivalent to adding a
-post-processing step that aids in filtering out reads that may
+In Publication II, the mGEMS pipeline also contains an optional step
+to assemble the reads placed in each bin. The suggested assembler is
+shovill (\url{https://github.com/tseemann/shovill}) %TODO footnote ,
+which is an assembly pipeline built around the SPAdes assembler
+\citep{prjibelski2020using} but incorporates some pre- and
+post-processing steps. Naturally, other assemblers may also be used,
+or the assembly step skipped entirely and the analysis instead focused
+on the reads. In Publication II, the analyses mostly focused on using
+the assemblies, as including an assembly step is equivalent to adding
+a post-processing step that aids in filtering out reads that may
 mistakenly have been assigned to the wrong bin.
 
 Since mGEMS allows for assigning a sequencing read to several
@@ -1748,12 +1740,13 @@ coverages for the the genomes that the organisms corresponding to the
 bins share. This is especially true when the sample truly contains
 several closely related organisms. Consequently, we investigated in
 Publication II the effect of replacing the isolate-data optimised
-shovill with metagenomic assemblers (TODO citations), which presumably
-implement better handling of variable coverage in the produced
-genomes. Although we observed some differences in the resulting
-assemblies (TODO reproduce figure here?), there was no statistically
-significant evidence in favour of using either approach. Regardless of
-the assembler choice, using the assemblies from the mGEMS pipeline in
+shovill with metagenomic assemblers \citep{peng2012idba,
+  li2015megahit, nurk2017metaspades}, which presumably implement
+better handling of variable coverage in the produced genomes. Although
+we observed some differences in the resulting assemblies (TODO
+reproduce figure here?), there was no statistically significant
+evidence in favour of using either approach. Regardless of the
+assembler choice, using the assemblies from the mGEMS pipeline in
 downstream analyses performed similarly to using those created from
 corresponding isolate sequencing data.
 
@@ -1770,32 +1763,31 @@ mGEM, to determine whether the created read bins correspond to some
 reference cluster. Although the demix\_check step was not used in
 Publications I-II that introduced mSWEEP and mGEMS, its inclusion
 addresses an important question regarding the applicability of the
-results from mSWEEP/mGEMS (TODO cite review from mSWEEP
-paper?). Therefore, including demix\_check \textemdash{ } or other
+results from mSWEEP/mGEMS. Therefore, including demix\_check \textemdash{ } or other
 similar approach \textemdash{ } as part of the mGEMS pipeline between
 the mGEMS and the assembly steps is recommended for a rigorous
 approach. This and other questions related to quality control and
 reliability of the results are explored further down in this
 chapter. % TODO cross reference
 
-\textbf{TODO:- figure from showing the threshold construction process.}
-
 \subsection{Other approaches for metagenomic analyses}
 \label{other-metagenomics-approaches}
 While this thesis deals with the development and usage of mSWEEP and
 mGEMS, one has to acknowledge that the use of metagenomic sequencing
-data is by no means an understudied field. In fact, dozens of methods
-exist that aim to perform similar tasks ranging from genome assembly
-from metagenomic sequencing data (metagenome assemblers) (TODO
-citations) to taxonomic binning (metagenomic binners) (TODO citations)
-and profiling (TODO citations), and strain tracking (StrainGE and
-Strainphlan) (TODO citations). Compared to mSWEEP and mGEMS, these
-methods typically assume that the samples only contain a single strain
-from each species, with the exception of StrainGE, which explicitly
-addresses the presence of several strains, which enables them to solve
-the task when the assumption holds. While it may at first seem
-suspicious that a thorough comparison between these methods and
-mSWEEP/mGEMS has not been included in Publications I-II, the
+data is by no means an understudied field. In fact, many methods exist
+that aim to perform similar tasks ranging from genome assembly from
+metagenomic sequencing data (metagenome assemblers)
+\citep{peng2012idba, li2015megahit, nurk2017metaspades} to taxonomic
+binning (metagenomic binners) \citep{kang2019metabat, wu2016maxbin,
+  sieber2018recovery} and profiling \citep{beghini2021integrating,
+  van2022strainge}, and strain tracking (StrainGE and Strainphlan)
+\citep{truong2017microbial, van2022strainge}. Compared to mSWEEP and
+mGEMS, these methods typically assume that the samples only contain a
+single strain from each species, with the exception of StrainGE, which
+explicitly addresses the presence of several strains, which enables
+them to solve the task when the assumption holds. While it may at
+first seem suspicious that a thorough comparison between these methods
+and mSWEEP/mGEMS has not been included in Publications I-II, the
 assumptions about the strain complexity lie at the heart of the
 questions addressed by mSWEEP and mGEMS. Since the preceding
 metagenomics tools have typically not been developed with the
@@ -1815,8 +1807,8 @@ appropriately.
 
 \subsection{mSWEEP}
 Publication I presented a comparison of mSWEEP with
-the Bayesian Identification of Bacteria (BIB) (TODO citation) and the
-pseudoalignment-based metakallisto methods (TODO citation). The vast
+the Bayesian Identification of Bacteria (BIB) \citep{sankar2016bayesian} and the
+pseudoalignment-based metakallisto methods \citep{schaeffer2017pseudoalignment}. The vast
 majority of other metagenomics tools published at the time either did
 not attempt within-species profiling or had been developed for cases
 with only one strain present from each species. Because of these
@@ -1836,19 +1828,15 @@ estimates within the same lineage are summed up. Even though this step was
 not included in the original metakallisto publication, its addition helps to
 compare the estimates from mSWEEP, BIB, and metakallisto.
 
-The main result of Publication I is that mSWEEP vastly outperforms
-both BIB and metakallisto for most species (TODO which?). For species
-with a strictly defined clonal structure such as \textit{S. aureus},
-BIB and metakallisto are able to obtain a comparable level of
-performance, but for other species (TODO which?)  that exhibit more
-recombination (TODO citation) incorporating the
-probabilistic model from mSWEEP proves to be a necessary step in
-obtaining accurate information. Although these performance benchmarks
-were only performed on data containing a single strain in each sample,
-we demonstrate in Publication II through stochastic dominance (TODO
-citation?) that the methods which do not succeed with single-strain
-estimates are unlikely to provide accurate results from multi-strain
-samples.
+The main result of Publication I is that mSWEEP outperforms both BIB
+and metakallisto, and that incorporating the probabilistic model from
+mSWEEP proves to be a necessary step in obtaining accurate
+information. Although these performance benchmarks were only performed
+on data containing a single strain in each sample, we demonstrate in
+Publication II through stochastic dominance \citep{hadar1969rules,
+  bawa1975optimal} that the methods which do not succeed with
+single-strain estimates are unlikely to provide accurate results from
+multi-strain samples.
 
 Another benchmark presented in Publication I concerns evaluating
 performance in the presence of several strains from the same
@@ -1861,36 +1849,36 @@ was still available. In this setting, mSWEEP demonstrated very
 accurate performance when measured on both true positive and true
 negative estimates. The \textit{K. pneumoniae} benchmark proved
 somewhat more challenging than the others, possibly due to the
-excessive genomic variation present in the species (TODO citation),
-but the errors in the results were nevertheless within acceptable
-limits when measured by the relative abundances for the correct lineage
-and the incorrect lineages.
+excessive genomic variation present in the species
+\citep{wyres2016klebsiella}, but the errors in the results were
+nevertheless within acceptable limits when measured by the relative
+abundances for the correct lineage and the incorrect lineages.
 
 In addition to the synthetic mixture experiments presented in
-Publication I, Publication II presents an \textit{in vitro}
-benchmark concerning abundance estimation. \textit{In vitro} here
-refers to an experiment setup, where DNA from three different strains
-of either \textit{E. coli} or \textit{E. faecalis} was mixed together
-using Qbit (TODO citation), producing samples where the composition of
-the sample itself is known at the DNA level. The results from this
-benchmark show similar levels of accuracy as the synthetic benchmarks
-for the samples containing DNA from three different sequence types of
-\textit{E. faecalis}.
+Publication I, Publication II presents an \textit{in vitro} benchmark
+concerning abundance estimation. \textit{In vitro} here refers to an
+experiment setup, where DNA from three different strains of either
+\textit{E. coli} or \textit{E. faecalis} was mixed together using Qbit
+\citep{maklin_bacterial_2021} , producing samples where the
+composition of the sample itself is known at the DNA level. The
+results from this benchmark show similar levels of accuracy as the
+synthetic benchmarks for the samples containing DNA from three
+different sequence types of \textit{E. faecalis}.
 
 The \textit{E. coli} benchmark in comparison was more challenging in
 its setup: all three strains that were used originated from ST131 and,
 to make things more interesting, two of the strains originated from
-the same subclade, called ST131-C2 (TODO citation, Teemu's
-paper). This renders the identification task substantially more
-difficult, since the split of ST131-C2 was based on incorporating
-information from the accessory genome of ST131 using PopPUNK (TODO
-citation?). The accessory genome of \textit{E. coli} is not as stable
-as the core genome (TODO citation?), on which the ST131 and the ST131
-A-C designations are based (TODO citation?), resulting in some
-difficulties for mSWEEP in separating the C2-4 and C2-6
-sublineages. Nevertheless, mSWEEP manages to identify the presence of
-both clades quite well, and the downstream analysis using mGEMS
-covered in the next remains accurate in terms of its results.
+the same subclade, called ST131-C2
+\citep{kallonen2017systematic}. This renders the identification task
+substantially more difficult, since the split of ST131-C2 was based on
+incorporating information from the accessory genome of ST131 using
+PopPUNK \citep{lees2019fast}. The accessory genome of \textit{E. coli}
+is not as stable as the core genome, on which the
+ST131 and the ST131 A-C designations are based \citep{kallonen2017systematic},
+resulting in some difficulties for mSWEEP in separating the C2-4 and
+C2-6 sublineages. Nevertheless, mSWEEP manages to identify the
+presence of both clades quite well, and the downstream analysis using
+mGEMS covered in the next remains accurate in terms of its results.
 
 \subsection{mGEMS}
 \label{mgems-performance-benchmark}
@@ -1902,49 +1890,51 @@ mSWEEP. For mGEMS, the chief measures of accuracy used were related to
 those that are the main objects of interest in genomic epidemiological
 analyses: SNPs and phylogenies estimated from the SNP data. In the
 synthetic mixtures, the performance of mGEMS was evaluated at the
-level of within-ST variation using data from \textit{E. coli} (TODO
-cite paper), at the between-ST and within-species level using
-\textit{E. faecalis} (TODO cite paper), and at an extreme level with
-only dozens of SNPs separating the different reference lineages using
-data from \textit{S. aureus} (TODO cite paper).
+level of within-ST variation using data from \textit{E. coli}
+\citep{brodrick2017longitudinal}, at the between-ST and within-species
+level using \textit{E. faecalis} \citep{raven2016genome}, and at an
+extreme level with only dozens of SNPs separating the different
+reference lineages using data from \textit{S. aureus}
+\citep{paterson2015capturing}.
 
 \subsubsection{Synthetic mixture benchmarks}
 
 The \textit{E. coli} benchmark investigated how mGEMS-derived
 assemblies performed for maximum likelihood phylogeny estimation
-(using RAxML-NG, Gamma+GTR4M model) (TODO citation) when compared to
-using isolate sequencing data in the same pipeline. The core genome
-alignment required by RAxML-NG was estimated using snippy (TODO
-citation) with the same reference genome for both mGEMS-derived and
-isolate data assemblies. The resulting phylogeny shows that mGEMS
-tends to slightly overestimate the number of SNPs in these assemblies
-(Figure 2 panel a in Publication II (TODO reproduce figure here and cite
-source)) but the phylogenetic relationships (Figure 3 TODO reproduce
-figure here) are recovered well. This benchmark was performed at the
-level of variation within a sequence type (\textit{E. coli} ST131)
-using sublineages defined in a previous study (TODO citation, Teemu's
-paper).
+(using RAxML-NG, Gamma+GTR4M model) \citep{kozlov2019raxml} when
+compared to using isolate sequencing data in the same pipeline. The
+core genome alignment required by RAxML-NG was estimated using snippy
+\url{https://github.com/tseemann/snippy} (TODO footnote) with the same reference
+genome for both mGEMS-derived and isolate data assemblies. The
+resulting phylogeny shows that mGEMS tends to slightly overestimate
+the number of SNPs in these assemblies (Figure 2 panel a in
+Publication II (TODO reproduce figure here and cite source)) but the
+phylogenetic relationships (Figure 3 TODO reproduce figure here) are
+recovered well. This benchmark was performed at the level of variation
+within a sequence type (\textit{E. coli} ST131) using sublineages
+defined in a previous study \citep{kallonen2017systematic}.
 
 In the \textit{E. faecalis} benchmark, the assessment was performed
 similarly to \textit{E. coli} but with the change to investigating
 performance with between-ST variation. Additionally,
 \textit{E. faecalis} is known to have a relatively high rate of
-recombination within the species across sequence types (TODO
-citation), which adds additional difficulty to the
-problem. Nevertheless, the mGEMS-derived assemblies do recover the
-overall structure of the phylogeny well and place sequences from the
-same ST to the same clade (TODO reproduce figure). Although the global
-structure is somewhat different from the isolate assembly phylogeny,
-even in phylogenies estimated from isolate sequencing data global
-differences are often explained by uncertainty arising from
-recombination affecting the placement of the STS within the overall
-phylogeny. This phenomenon is also apparent in the bootstrap support
-values for both the isolate and mGEMS-derived phylogenies, partially
-explaining the differences between the two.
+recombination within the species across sequence types, particularly
+in nosocomially adapted lineages \citep{pontinen2021apparent}, which
+adds additional difficulty to the problem. Nevertheless, the
+mGEMS-derived assemblies do recover the overall structure of the
+phylogeny well and place sequences from the same ST to the same clade
+(TODO reproduce figure). Although the global structure is somewhat
+different from the isolate assembly phylogeny, even in phylogenies
+estimated from isolate sequencing data global differences are often
+explained by uncertainty arising from recombination affecting the
+placement of the STS within the overall phylogeny. This phenomenon is
+also apparent in the bootstrap support values for both the isolate and
+mGEMS-derived phylogenies, partially explaining the differences
+between the two.
 
 The final synthetic benchmark in Publication II investigated
 phylogeny recovery within \textit{S. aureus} ST22 with sublineages
-that are separated by a few dozen of SNPs (TODO citation, source
+that are separated by a few dozen of SNPs \citep{paterson2015capturing}, source
 study). Te performance in this benchmark was not quite as good as in
 the \textit{E. coli} and \textit{E. faecalis} benchmarks but the
 mGEMS-derived results do still manage to replicate the important parts
@@ -1956,7 +1946,7 @@ data. Further down in the tree there is some lack of detail which is
 likely a result of the small degree of separation between the
 sublineages, or possibly of the filtering of the assemblies performed
 in the original study that was not replicated for the mGEMS-derived
-assemblies (TODO citation?).
+assemblies.
 
 \subsubsection{\textit{In vitro} benchmark}
 % TODO remove parts that were already explained above.
@@ -2061,7 +2051,7 @@ performed. Dynamic indexing, which refers to removing/adding sequences
 to the index without reconstructing the whole index, would solve this
 issue but remains an open question at the time of writing. However,
 the computational demands can be somewhat alleviated by employing a
-design (TODO citation?) based strategy to remove several sequences at
+block-design based strategy to remove several sequences at
 the same time, which would lead to roughly similar results.
 
 Unfortunately, the detection threshold approach has not found much use
@@ -2129,25 +2119,26 @@ abundance estimates concerns the fit of the reference lineages with
 the estimated contents of the bins produced by mGEMS. This issue was
 not covered in neither Publication I nor Publication II but since the
 publication of the two, an external method has been developed to
-address the question. This method, called demix\_check (TODO
-citation), uses mash (TODO citation) to calculate $k$-mer based
-distances between the read bins from mGEMS and the corresponding
-reference sequences in each lineage. These distances are used to
-evaluate the fit between the read bin and the lineage by comparing
-their distributions. In practice, demix\_check has proved an integral
-part of the mSWEEP/mGEMS pipeline in evaluating the reliability of the
-results from mGEMS, and is also an integral part of the processing
-pipeline that was used in Publication III. Since this method was not
-developed by the author of this thesis, it won't be covered in more
-detail although its inclusion in mSWEEP/mGEMS analyses is strongly
-recommended.
+address the question. This method, called demix\_check
+\url{https://github.com/harry-thorpe/demix_check}, uses mash
+\citep{ondov2016mash} to calculate distances between the read bins
+from mGEMS and the corresponding reference sequences in each
+lineage. These distances are used to evaluate the fit between the read
+bin and the lineage by comparing their distributions. In practice,
+demix\_check has proved an integral part of the mSWEEP/mGEMS pipeline
+in evaluating the reliability of the results from mGEMS, and is also
+an integral part of the processing pipeline that was used in
+Publication III. Since this method was not developed by the author of
+this thesis, it won't be covered in more detail although its inclusion
+in mSWEEP/mGEMS analyses is strongly recommended.
 
 \chapter{Metagenomic epidemiology}
 \label{section:metagenomic-epidemiology}
 
-(TODO citations) Genomic epidemiology refers to the use of sequencing
-data to identify pathogen transmissions chains and analyse the spread
-and diversity of the pathogen population. These analyses are typically
+Genomic epidemiology refers to the use of sequencing data to identify
+pathogen transmissions chains and analyse the spread and diversity of
+the pathogen population \citep{tang2017infection,
+  grad2014epidemiologic, kwong2015whole}. These analyses are typically
 performed using isolate sequencing data, which is obtained by
 cultivating bacteria of interest on some selective media and isolating
 them for sequencing. The main reason for using isolate sequencing data
@@ -2156,12 +2147,14 @@ calling, assembly, and other genomic analyses. Conversely in the
 spirit of genomic epidemiology, metagenomic epidemiology refers to
 performing the genomic epidemiology tasks but forgoing the culture
 step and using metagenomics data (WGS metagenomics or other
-approaches) to identify and analyse the pathogens with similar
-methods. In the previous literature metagenomic epidemiology has
+approaches) to identify and analyse the pathogens with similar methods
+with particular attention paid to interactions within the microbiome
+\citep{francis2015metagenomic, baquero2012metagenomic}. In the
+previous literature that could be called metagenomic epidemiology has
 typically been performed using genus- or species-level resolution
-tools like 16S sequencing. In this chapter, the term also encompasses
-the use of mSWEEP/mGEMS to perform the analyses at the within-species
-level.
+tools like 16S rRNA sequencing. In this chapter, the term also
+encompasses the use of mSWEEP/mGEMS to perform the analyses at the
+within-species level.
 
 \section{From genomic to metagenomic epidemiology}
 
@@ -2235,19 +2228,19 @@ isolate sequencing.
 \subsection{Challenges}
 % WIP continue from here
 The major challenges in using metagenomic sequencing data again relate
-to the diversity found in the samples. It is not atypical to
-encounter the (pathogenically) interesting species at very low
-abundances, resulting in a need to sequence the sample at much higher
-depth than what would be enough in an isolate study. This low
-abundance can also cause problems in terms of identifying the presence
-of the species in the first place, as the number of reads that are
-\textit{unique} to the species is even lower. Many of the other
-sequencing reads will be generated from commensal or even contaminant
-species which usually have no use in the downstream
-analyses. Additionally, WGS metagenomics sometimes results in an
-overabundance of host DNA in the sample (TODO citation), which then
+to the diversity found in the samples. It is not atypical to encounter
+the (pathogenically) interesting species at very low abundances,
+resulting in a need to sequence the sample at much higher depth than
+what would be enough in an isolate study. This low abundance can also
+cause problems in terms of identifying the presence of the species in
+the first place, as the number of reads that are \textit{unique} to
+the species is even lower. Many of the other sequencing reads will be
+generated from commensal or even contaminant species which usually
+have no use in the downstream analyses. Additionally, WGS metagenomics
+sometimes results in an overabundance of host DNA in the sample
+\citep{pereira2019impact, mcardle2020sensitivity}, which then
 dominates the contents of the reads from a sequencing run if host DNA
-depletion methods are not used (TODO citation).
+depletion methods are not used.
 
 A second problem with metagenomics analyses relates to the lack of
 reference data from many domains of life that might be found in direct
