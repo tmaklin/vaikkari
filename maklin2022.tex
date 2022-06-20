@@ -1366,7 +1366,7 @@ $q\left(\boldsymbol\theta, I\right) =
 q\left(\boldsymbol\theta\right)q\left(I\right)$. Because each $I_{n}$
 has a categorical distribution $Cat\left(\boldsymbol\theta\right)$ and
 they are furthermore assumed independent of each other given the
-mixing proportions $$, $I_{n} \indept I_{m}, n \neq m |
+mixing proportions, $I_{n} \indept I_{m}, n \neq m |
 \mathbf{\theta}$, the second term $q\left(I\right)$ simplifies to
 \begin{equation}
   \label{likelihood:vi-factorization}
@@ -1488,7 +1488,7 @@ a read to belong to several bins (for a trivial example, consider
 the case where $q_{k} = 0$ for all $k$).
 
 \subsection{Assignment rule for multi-cluster membership}
-% TODO rewrite removing A, B
+
 Next, the thresholds $q_{k}$ should be assigned some sensible value
 that maximizes the probability $A_{n, k}$ of assigning the read
 $r_{n}$ to the bin $G_{k}$ if the cluster $k$ (could have) generated
@@ -1498,23 +1498,16 @@ cluster $k$ contains a sequence that contains the true (error-free)
 nucleotide sequence of the read $r_{n}$. However, the probabilities
 $B_{n, k}$ are quite difficult to estimate directly since 1) the reads
 cannot be error-corrected with full accuracy, and 2) the reference
-collection is nearly always incomplete. These two problems can be
-remedied by assuming that the sample is composed mostly of closely
-related organisms, which allows deriving the following relationship
-between $A_{n, k}$ and $B_{n, k}$
-\begin{equation}
-  \label{binning:a-is-approximately-b}
-  P\left[A_{n, k} = 1\right] \approx \theta_{k}P\left[J_{n, k} = 1\right],
-\end{equation}
-where $\theta_k$ is the relative abundance of the cluster $k$ in the
-sample that generated the reads $r_{n}$. Equation
-\eqref{binning:a-is-approximately-b} implies that when $P\left[A_{n, k}
-  = 1\right] \geq \theta_{k}$, then $P\left[B_{n, k} = 1\right]$ must
-be ``large'' for the approximation to hold. A more detailed derivation
-for this statement about the magnitude of $B_{n, k}$ and Equation
-\eqref{binning:a-is-approximately-b} is provided in the methods section
-of Publication II, supplied in the
-appendix for this thesis and omitted from here.
+collection is nearly always incomplete.
+
+These two problems can be remedied by assuming that the sample is
+mostly composed of closely related organisms, which implies that when
+$P\left[A_{n, k} = 1\right] \geq \theta_{k}$, then $P\left[B_{n, k} =
+  1\right]$ must be ``large'' because the cluster must contain a
+sequence to generate it. A more detailed derivation for this statement
+about the magnitude of $B_{n, k}$ and is provided in the methods
+section of Publication II, supplied in the appendix for this thesis
+and omitted from here.
 
 The implied statement about the magnitude of $B_{n, k}$ when
 $P\left[A_{n, k} = 1\right] \geq \theta_{k}$ means that there is a
@@ -1725,11 +1718,11 @@ corresponding to each bin from the original set.
 
 \subsubsection{Assembling the read bins}
 
+\noindent\let\thefootnote\relax\footnote{$^{\star}$ \url{https://github.com/tseemann/shovill}}
 In Publication II, the mGEMS pipeline also contains an optional step
 to assemble the reads placed in each bin. The suggested assembler is
-shovill (\url{https://github.com/tseemann/shovill}) %TODO footnote ,
-which is an assembly pipeline built around the SPAdes assembler
-\citep{prjibelski2020using} but incorporates some pre- and
+shovill$^{\star}$, which is an assembly pipeline built around the SPAdes
+assembler \citep{prjibelski2020using} but incorporates some pre- and
 post-processing steps. Naturally, other assemblers may also be used,
 or the assembly step skipped entirely and the analysis instead focused
 on the reads. In Publication II, the analyses mostly focused on using
@@ -1746,22 +1739,36 @@ Publication II the effect of replacing the isolate-data optimised
 shovill with metagenomic assemblers \citep{peng2012idba,
   li2015megahit, nurk2017metaspades}, which presumably implement
 better handling of variable coverage in the produced genomes. Although
-we observed some differences in the resulting assemblies (TODO
-reproduce figure here?), there was no statistically significant
-evidence in favour of using either approach. Regardless of the
-assembler choice, using the assemblies from the mGEMS pipeline in
-downstream analyses performed similarly to using those created from
-corresponding isolate sequencing data.
+we observed some differences in the resulting assemblies
+(Figure \ref{fig:mgems-assembler-choice-statistics}), there was no
+statistically significant evidence in favour of using either
+approach. Regardless of the assembler choice, using the assemblies
+from the mGEMS pipeline in downstream analyses performed similarly to
+using those created from corresponding isolate sequencing data.
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-assembler-choice-statistics} source: Adapted from Publication II, Figure 3 \citep{maklin_bacterial_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!ht]
+  \label{fig:mgems-assembler-choice-statistics}
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_3d.pdf}
+    \caption{Comparing mGEMS-derived assemblies with different
+      assembler choices. The boxes are colored according to the type
+      of assembly. The presented statistics are the summed lengths of
+      all contigs (total length), the number of contigs, the sequence
+      length of the shortest contig at 50\% genome length (N50), and
+      the smallest number of contigs whose sum of lengths is at least
+      50\% of the genome length (L50).}
+\end{figure}
+
 
 \subsubsection{Quality control}
 
+\noindent\let\thefootnote\relax\footnote{$^{\star}$ \url{https://github.com/harry-thorpe/demix_check}}
 The mGEMS pipeline as described above is the method that has been
 applied in Publication III with the additional inclusion of a quality
 control (QC) step attempting to identify whether the reference
 sequences suitably cover the variation in the sequencing reads. This
-QC step, called demix\_check
-(\url{https://github.com/harry-thorpe/demix_check/}) (TODO move to
-footnote), performs several checks on the results from mSWEEP and
+QC step, called demix\_check$^{\star}$, performs several checks on the results from mSWEEP and
 mGEM, to determine whether the created read bins correspond to some
 reference cluster. Although the demix\_check step was not used in
 Publications I-II that introduced mSWEEP and mGEMS, its inclusion
@@ -1902,20 +1909,46 @@ reference lineages using data from \textit{S. aureus}
 
 \subsubsection{Synthetic mixture benchmarks}
 
+\noindent\let\thefootnote\relax\footnote{$^{\star}$ \url{https://github.com/tseemann/snippy}}
 The \textit{E. coli} benchmark investigated how mGEMS-derived
 assemblies performed for maximum likelihood phylogeny estimation
 (using RAxML-NG, Gamma+GTR4M model) \citep{kozlov2019raxml} when
 compared to using isolate sequencing data in the same pipeline. The
-core genome alignment required by RAxML-NG was estimated using snippy
-\url{https://github.com/tseemann/snippy} (TODO footnote) with the same reference
-genome for both mGEMS-derived and isolate data assemblies. The
-resulting phylogeny shows that mGEMS tends to slightly overestimate
-the number of SNPs in these assemblies (Figure 2 panel a in
-Publication II (TODO reproduce figure here and cite source)) but the
-phylogenetic relationships (Figure 3 TODO reproduce figure here) are
-recovered well. This benchmark was performed at the level of variation
-within a sequence type (\textit{E. coli} ST131) using sublineages
-defined in a previous study \citep{kallonen2017systematic}.
+core genome alignment required by RAxML-NG was estimated using
+snippy$^{\star}$ with the same reference genome for both mGEMS-derived
+and isolate data assemblies. The resulting phylogeny shows that mGEMS
+tends to slightly overestimate the number of SNPs in these assemblies
+(Figure \ref{fig:mgems-ecoli-snps}) but the phylogenetic relationships (Figure \ref{fig:mgems-ecoli-snps}) are recovered well. This benchmark was
+performed at the level of variation within a sequence type
+(\textit{E. coli} ST131) using sublineages defined in a previous study
+\citep{kallonen2017systematic}.
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-snps} source: Adapted from Publication II, Figure 3 \citep{maklin_bacterial_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!t]
+  \label{fig:mgems-ecoli-snps}
+    \centering
+    \includegraphics[height=0.33\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_3a.pdf}
+    \caption{Comparing the results of SNP calling from mixed samples
+      with the mGEMS pipeline against the results from isolate
+      sequencing data for \textit{E. coli} ST131. SNPs were called
+      from contigs after assembling the reads. Points are colored
+      according to the lineage within the species (the full legend is
+      available in Fig. S3). The dashed gray line represents a
+      hypothetical perfect match between the binned and isolate
+      reads. The blue line is the posterior mean while the shaded area
+      contains the 95\% posterior credible region calculated from
+      10000 posterior samples from a Bayesian regression model with
+      the SNPs from the binned reads as the response and the SNPs from
+      the isolate sequencing data as the sole explanatory variable.}
+\end{figure}
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-phylogeny} source: Reproduced from Publication II, Figure 4 \citep{maklin_bacterial_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!t]
+  \label{fig:mgems-ecoli-phylogeny}
+    \centering
+    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_4.pdf}
+    \caption{Midpoint-rooted maximum likelihood trees from core SNP alignment of E. coli ST131 strains. The phylogeny in panel a was constructed from isolate sequencing data from 30 E. coli ST131 strains, and the phylogeny in panel b with the mGEMS pipeline from ten synthetic plate sweep samples, each mixing three isolate samples from the three main ST131 lineages (a–c; one strain from each per sample).}
+\end{figure}
 
 In the \textit{E. faecalis} benchmark, the assessment was performed
 similarly to \textit{E. coli} but with the change to investigating
@@ -1926,7 +1959,7 @@ in nosocomially adapted lineages \citep{pontinen2021apparent}, which
 adds additional difficulty to the problem. Nevertheless, the
 mGEMS-derived assemblies do recover the overall structure of the
 phylogeny well and place sequences from the same ST to the same clade
-(TODO reproduce figure). Although the global structure is somewhat
+(Figure \ref{fig:mgems-efaecalis-phylogeny}). Although the global structure is somewhat
 different from the isolate assembly phylogeny, even in phylogenies
 estimated from isolate sequencing data global differences are often
 explained by uncertainty arising from recombination affecting the
@@ -1934,6 +1967,19 @@ placement of the STS within the overall phylogeny. This phenomenon is
 also apparent in the bootstrap support values for both the isolate and
 mGEMS-derived phylogenies, partially explaining the differences
 between the two.
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-phylogeny} source: Reproduced from Publication II, Figure 5 \citep{maklin_bacterial_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!t]
+  \label{fig:mgems-efaecalis-phylogeny}
+    \centering
+    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_5.pdf}
+    \caption{Tanglegram of two midpoint-rooted maximum likelihood
+      trees from core SNP alignment of E. faecalis strains. The
+      phylogenyies were inferred with RAxML-NG. Numbers below the
+      edges indicate bootstrap support values from RAxML-NG for the
+      next branch towards the leaves of the tree. Branches are
+      coloured according to the E. faecalis STs.}
+\end{figure}
 
 The final synthetic benchmark in Publication II investigated
 phylogeny recovery within \textit{S. aureus} ST22 with sublineages
@@ -1943,13 +1989,30 @@ the \textit{E. coli} and \textit{E. faecalis} benchmarks but the
 mGEMS-derived results do still manage to replicate the important parts
 of the results transmission analysis wise. Namely, the samples that
 were determined as the likely source of the pathogenic strain in the
-sequenced patients (TODO add which, reproduce figure here) were placed
+sequenced patients (Figure \ref{fig:mgems-saureus-phylogeny}) were placed
 at the root of the phylogeny when using both mGEMS and isolate
 data. Further down in the tree there is some lack of detail which is
 likely a result of the small degree of separation between the
 sublineages, or possibly of the filtering of the assemblies performed
 in the original study that was not replicated for the mGEMS-derived
 assemblies.
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-phylogeny} source: Reproduced from Publication II, Figure 6 \citep{maklin_bacterial_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!t]
+  \label{fig:mgems-saureus-phylogeny}
+    \centering
+    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_6.pdf}
+    \caption{Midpoint-rooted maximum likelihood tree from core SNP
+      alignment of S. aureus ST22 showing strains from a single
+      lineage within the sequence type. The phylogeny was inferred
+      from a combined set of assemblies from 60 isolate sequencing
+      samples (leaves labelled Staff A-G 1 A-T, corresponding to the
+      temporally first samples from each staff member) and 312
+      assemblies obtained from the mGEMS pipeline applied to synthetic
+      mixed samples of sequencing data from each of the three
+      different S. aureus ST22 clades (1, 2, and 3).}
+\end{figure}
+
 
 \subsubsection{\textit{In vitro} benchmark}
 % TODO remove parts that were already explained above.
