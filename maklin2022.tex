@@ -20,11 +20,9 @@
 % Math environments and symbols
 \usepackage{amsmath}
 \usepackage{amsfonts}
-\usepackage[section]{placeins}
 
-% Lemma environment
-%\newtheorem{theorem}{Theorem}[section]
-%\newtheorem{lemma}[theorem]{Lemma}
+% Always place floats inside their respective sections
+\usepackage[section]{placeins}
 
 % Independence symbol
 \newcommand\indept{\protect\mathpalette{\protect\independenT}{\perp}}
@@ -59,7 +57,7 @@
 \issn{1238-8645}
 \issnonline{2814-4031}
 \printhouse{Unigrafia}
-\pubpages{7} % --- remember to update this! 
+\pubpages{165} % --- remember to update this! 
 % For monographs, the number of the last page of the list of references
 % For article-based theses, the number of the last page of the list of
 % references of the preamble part + the total number of the pages of
@@ -153,6 +151,7 @@
 \mainmatter
 
 \chapter{Introduction}
+\sloppy
 
 Public health research focusing on bacterial pathogens has been
 transformed by analysis of the contents of bacterial genomes obtained
@@ -332,7 +331,6 @@ tools that require a high sequencing depth provided that the reads
 from different organisms can be computationally separated. Developing
 a tool to solve the aforementioned deconvolution problem is one of the
 key contributions of this thesis.
-
 \noindent\let\thefootnote\relax\footnote{Figure source: Adapted from \cite{miansari_fenugreek-sprouts} and \cite{niaid_escherichia-coli}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \begin{figure}[!t]
@@ -530,7 +528,6 @@ enable entirely novel types of analyses and discoveries through the
 inclusion of metagenomic data.
 
 \section{Contributions}
-\sloppy
 
 This thesis comprises three publications covering both mSWEEP
 \citep{maklin_high-resolution_2021} (Publication I), mGEMS
@@ -547,7 +544,7 @@ By \underline{Tommi M\"aklin}, Teemu Kallonen, Sophia David, Christine J
 Boinett, Ben Pascoe, Guillaume M\'eric, David M Aanensen, Edward J Feil,
 Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
 Antti Honkela. Published in \textit{Wellcome Open Research} (2021),
-5:14, doi: 10.12688/wellcomeopenres.15639.2.
+5:14, doi: \href{https://doi.org/10.12688/wellcomeopenres.15639.2}{10.12688/wellcomeopenres.15639.2}.
 
 In Publication I \citep{maklin_high-resolution_2021}, we presented and
 benchmarked the mSWEEP method for taxonomic profiling of sequencing
@@ -568,7 +565,7 @@ archived and available in Zenodo \citep{maklin_mSWEEP}.
 By \underline{Tommi M\"aklin}, Teemu Kallonen, Jarno Alanko, \O rjan
 Samuelsen, Kristin Hegstad, Veli M\"akinen, Jukka Corander, Eva Heinz,
 and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
-7.11, doi: 10.1099/mgen.0.000691.
+7.11, doi: \href{https://doi.org/10.1099/mgen.0.000691}{10.1099/mgen.0.000691}.
 
 Publication II \citep{maklin_bacterial_2021} continued to build upon
 mSWEEP by developing an algorithm for binning sequencing reads at
@@ -591,7 +588,7 @@ By \underline{Tommi M\"aklin}, Harry A Thorpe, Anna K P\"ontinen, Rebecca
 A Gladstone, Yan Shao, Maiju Pesonen, Alan McNally, P\aa l J Johnsen,
 \O rjan Samuelsen, Trevor D Lawley, Antti Honkela, and Jukka
 Corander. Submitted; preprint available from \textit{bioRxiv} (2022),
-doi: 10.1101/2022.06.19.496579.
+doi: \href{https://doi.org/10.1101/2022.06.19.496579}{10.1101/2022.06.19.496579}.
 
 Publication III \citep{maklin_strong_2022} provides an example of
 applying mSWEEP and mGEMS to whole-genome shotgun metagenomics
@@ -1427,18 +1424,22 @@ differences between the parameter estimates (Figures
       the variational inference implemented in BitSeqVB
       \citep{hensman2015fast} on the \textit{in vitro} samples from
       Publication II \citep{maklin_bacterial_2021}. The true value for
-      each subplot is 1.0 at the column corresponding to the highest estimate.}
+      each subplot is 1.0 at the column corresponding to the highest
+      estimate. Each boxplot contains parameter estimates from
+      bootstrapping the pseudoalignments that are used as input to the
+      variational inference algorithm.}
     \label{fig:vb-estimates}
 \end{figure}
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\textwidth,keepaspectratio]{img/gibbs/msweep_reals.pdf}
+    \includegraphics[width=\textwidth,keepaspectratio]{img/gibbs/gibbs_reals.pdf}
     \caption{Parameter estimates for the mSWEEP model inferred using
       the collapsed Gibbs sampler implemented in BitSeq
       \citep{glaus2012identifying} on the \textit{in vitro} samples
       from Publication II \citep{maklin_bacterial_2021}. The true
       value for each subplot is 1.0 at the column corresponding to the
-      highest estimate.}
+      highest estimate. Each boxplot contains the samples from the
+      posterior obtained using the collapsed Gibbs sampler.}
     \label{fig:gibbs-estimates}
 \end{figure}
 
@@ -1673,7 +1674,6 @@ samples, the combination has the potential for providing unprecedented
 level of detail in future epidemiological analyses and routine
 surveillance.
 
-%TODO backslash sloppy
 While the previous chapter covered the theoretical foundations of
 mSWEEP and mGEMS, the remainder of this chapter will focus on the
 practical considerations regarding these two methods. Namely, we
@@ -2570,23 +2570,26 @@ high-resolution metagenomics.
 \addcontentsline{toc}{chapter}{Included publications}
 
 \subsection*{Publication I \textemdash{ } High-resolution sweep metagenomics using fast probabilistic inference}
-By \underline{Tommi M\"aklin}, Teemu Kallonen, Sophia David, Christine J
-Boinett, Ben Pascoe, Guillaume M\'eric, David M Aanensen, Edward J Feil,
-Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
-Antti Honkela. Published in \textit{Wellcome Open Research} (2021), 5:14
-(\url{https://doi.org/10.12688/wellcomeopenres.15639.2}).
+By \underline{Tommi M\"aklin}, Teemu Kallonen, Sophia David, Christine
+J Boinett, Ben Pascoe, Guillaume M\'eric, David M Aanensen, Edward J
+Feil, Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka
+Corander, and Antti Honkela. Published in \textit{Wellcome Open
+  Research} (2021), 5:14. \\doi:
+\href{https://doi.org/10.12688/wellcomeopenres.15639.2}{10.12688/wellcomeopenres.15639.2}.
 \subsection*{Publication II \textemdash{ } Bacterial genomic epidemiology with mixed samples}
 By \underline{Tommi M\"aklin}, Teemu Kallonen, Jarno Alanko, \O rjan
 Samuelsen, Kristin Hegstad, Veli M\"akinen, Jukka Corander, Eva Heinz,
 and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
-7.11 (\url{https://doi.org/10.1099/mgen.0.000691}).
+7.11. \\doi:
+\href{https://doi.org/10.1099/mgen.0.000691}{10.1099/mgen.0.000691}.
 
 \subsection*{Publication III \textemdash{ } Strong pathogen competition in neonatal gut colonization}
-By \underline{Tommi M\"aklin}, Harry A Thorpe, Anna K P\"ontinen, Rebecca
-A Gladstone, Yan Shao, Maiju Pesonen, Alan McNally, P\aa l J Johnsen,
-\O rjan Samuelsen, Trevor D Lawley, Antti Honkela, and Jukka
-Corander. Submitted; preprint available from \textit{bioRxiv} (2022)
-(\url{https://doi.org/10.1101/2022.06.19.496579}).
+By \underline{Tommi M\"aklin}, Harry A Thorpe, Anna K P\"ontinen,
+Rebecca A Gladstone, Yan Shao, Maiju Pesonen, Alan McNally, P\aa l J
+Johnsen, \O rjan Samuelsen, Trevor D Lawley, Antti Honkela, and Jukka
+Corander. Submitted; preprint available from \textit{bioRxiv}
+(2022). \\doi:
+\href{https://doi.org/10.1101/2022.06.19.496579}{10.1101/2022.06.19.496579}.
 
 \include{papers/maklin2022_thesis-papers}
 
