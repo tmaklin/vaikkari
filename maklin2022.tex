@@ -20,6 +20,7 @@
 % Math environments and symbols
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage[section]{placeins}
 
 % Lemma environment
 %\newtheorem{theorem}{Theorem}[section]
@@ -606,18 +607,18 @@ interpreting the results, and naturally to writing the publication.
 The rest of the thesis is structured into three chapters that describe
 the contents of Publications I-III and how they contribute to the
 topics presented in the introduction chapter. The first of the three
-chapters (\ref{mixture-modelling-of-sequence-data}) describes the
+chapters (Chapter \ref{mixture-modelling-of-sequence-data}) describes the
 basic ideas behind the mSWEEP and mGEMS methods and provides
 historical context for the parts of the methods that have their
 origins within analysis of RNA sequencing data. The second chapter
-(\ref{high-resolution-metagenomics}) describes the experimental
+(Chapter \ref{high-resolution-metagenomics}) describes the experimental
 results from Publications I-III in more detail, focusing more on the
 applied part rather than the theoretical foundations. The third
-chapter (\ref{section:metagenomic-epidemiology})is more speculative in
+chapter (Chapter \ref{section:metagenomic-epidemiology}) is more speculative in
 nature, covering both the demonstrated applications from Publications
 I-III as well as exploring potential future avenues for use of the
 developed methods. The three chapters are followed by a concluding
-chapter (\ref{conclusions-and-future-directions}) followed by reprints
+chapter (Chapter \ref{conclusions-and-future-directions}) followed by reprints
 of the three included original publications.
 
 \chapter{Mixture modeling of sequence data}
@@ -1180,7 +1181,7 @@ results in the following scaled likelihood function $p^{\star}\left(k
   \begin{aligned}
     p^{\star}\left(k \middle| n, \alpha, \beta\right) &= \frac{p\left(k \middle| n, \alpha, \beta\right)}{p\left(n \middle| n, \alpha, \beta\right)} \\
     &= \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(\alpha, \beta\right)} \binom{n}{n}^{-1}\frac{B\left(\alpha, \beta\right)}{B\left(n + \alpha, \beta\right)} \\
-    &= \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(n + \alpha, \beta\right)}
+    &= \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(n + \alpha, \beta\right)}.
   \end{aligned}
 \end{equation}
 Since the scaling in Equation \eqref{likelihood:beta-binomial-scaled} is
@@ -1278,14 +1279,14 @@ Applying Theorem \eqref{lemma:beta-function-identity} leads to the closed form o
   \[
   g\left(k \: \middle| \: n, \alpha + n, \beta\right) = \binom{n}{k} \frac{B\left(\alpha + n + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)},\: 0 \leq k \leq n.
   \]
-  Using the identity $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ (Lemma \eqref{lemma:beta-function-identity}) results in an alternative form for $g$
+  Using the identity $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ (Theorem \eqref{lemma:beta-function-identity}) results in an alternative form for $g$
 \begin{align*}
   g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + n + k - 1 + n - k + \beta} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \frac{\alpha + n + k - 2}{\alpha + \beta + 2n - 2} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{2} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
-\intertext{Above, Lemma \eqref{lemma:beta-function-identity} was applied twice. Repeadetly applying Lemma \eqref{lemma:beta-function-identity} $n$ times yields the alternative form}
+\intertext{Above, Theorem \eqref{lemma:beta-function-identity} was applied twice. Repeadetly applying Theorem \eqref{lemma:beta-function-identity} $n$ times yields the alternative form}
   g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k - n , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
   &= \binom{n}{k} \frac{B\left(\alpha + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
   &= f\left(k, n\right) \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
@@ -1416,8 +1417,7 @@ mSWEEP model with the Gibbs sampler from the original BitSeq
 differences between the parameter estimates (Figures
 \ref{fig:vb-estimates} and \ref{fig:gibbs-estimates}).
 
-\begin{figure}[!h]
-  \label{fig:vb-estimates}
+\begin{figure}[!t]
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{img/gibbs/msweep_reals.pdf}
     \caption{Parameter estimates for the mSWEEP model inferred using
@@ -1425,9 +1425,9 @@ differences between the parameter estimates (Figures
       \citep{hensman2015fast} on the \textit{in vitro} samples from
       Publication II \citep{maklin_bacterial_2021}. The true value for
       each subplot is 1.0 at the column corresponding to the highest estimate.}
+    \label{fig:vb-estimates}
 \end{figure}
-\begin{figure}[!h]
-  \label{fig:gibbs-estimates}
+\begin{figure}[!t]
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{img/gibbs/msweep_reals.pdf}
     \caption{Parameter estimates for the mSWEEP model inferred using
@@ -1436,8 +1436,8 @@ differences between the parameter estimates (Figures
       from Publication II \citep{maklin_bacterial_2021}. The true
       value for each subplot is 1.0 at the column corresponding to the
       highest estimate.}
+    \label{fig:gibbs-estimates}
 \end{figure}
-
 
 \section{From profiling to binning}
 \label{section:binning}
@@ -1743,10 +1743,10 @@ corresponding to each bin from the original set.
 
 \subsubsection{Assembling the read bins}
 
-\noindent\let\thefootnote\relax\footnote{$^{\star}$ \url{https://github.com/tseemann/shovill}}
+\noindent\let\thefootnote\relax\footnote{$^{1}$ \url{https://github.com/tseemann/shovill}}
 In Publication II, the mGEMS pipeline also contains an optional step
 to assemble the reads placed in each bin. The suggested assembler is
-shovill$^{\star}$, which is an assembly pipeline built around the SPAdes
+shovill$^{1}$, which is an assembly pipeline built around the SPAdes
 assembler \citep{prjibelski2020using} but incorporates some pre- and
 post-processing steps. Naturally, other assemblers may also be used,
 or the assembly step skipped entirely and the analysis instead focused
@@ -1770,30 +1770,32 @@ statistically significant evidence in favour of using either
 approach. Regardless of the assembler choice, using the assemblies
 from the mGEMS pipeline in downstream analyses performed similarly to
 using those created from corresponding isolate sequencing data.
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-assembler-choice-statistics} source: Adapted from Publication II, Figure 3 \citep{maklin_bacterial_2021}.}
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-assembler-choice-statistics} and legend source: adapted from Publication II, Figure 3 \citep{maklin_bacterial_2021}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
-\begin{figure}[!ht]
-  \label{fig:mgems-assembler-choice-statistics}
+\begin{figure}[!t]
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_3d.pdf}
     \caption{Comparing mGEMS-derived assemblies with different
-      assembler choices. The boxes are colored according to the type
-      of assembly. The presented statistics are the summed lengths of
-      all contigs (total length), the number of contigs, the sequence
-      length of the shortest contig at 50\% genome length (N50), and
-      the smallest number of contigs whose sum of lengths is at least
-      50\% of the genome length (L50).}
+      assembler choices (shovill, MEGAHIT \citep{li2015megahit},
+      metaSPAdes \citep{nurk2017metaspades}, and IDBA-UD
+      \citep{peng2012idba}). The boxes are colored according to the
+      assembler used. Presented statistics are the summed lengths
+      of all contigs (total length), the number of contigs, the
+      sequence length of the shortest contig at 50\% genome length
+      (N50), and the smallest number of contigs whose sum of lengths
+      is at least 50\% of the genome length (L50).}
+    \label{fig:mgems-assembler-choice-statistics}
 \end{figure}
 
 
 \subsubsection{Quality control}
 
-\noindent\let\thefootnote\relax\footnote{$^{\star}$ \url{https://github.com/harry-thorpe/demix_check}}
+\noindent\let\thefootnote\relax\footnote{$^{2}$ \url{https://github.com/harry-thorpe/demix_check}}
 The mGEMS pipeline as described above is the method that has been
 applied in Publication III with the additional inclusion of a quality
 control (QC) step attempting to identify whether the reference
 sequences suitably cover the variation in the sequencing reads. This
-QC step, called demix\_check$^{\star}$, performs several checks on the results from mSWEEP and
+QC step, called demix\_check$^{2}$, performs several checks on the results from mSWEEP and
 mGEM, to determine whether the created read bins correspond to some
 reference cluster. Although the demix\_check step was not used in
 Publications I-II that introduced mSWEEP and mGEMS, its inclusion
@@ -1923,47 +1925,61 @@ reference lineages using data from \textit{S. aureus}
 
 \subsubsection{Synthetic mixture benchmarks}
 
-\noindent\let\thefootnote\relax\footnote{$^{\star}$ \url{https://github.com/tseemann/snippy}}
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-snps} and legend source: adapted from Publication II, Figure 3 \citep{maklin_bacterial_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!b]
+    \centering
+    \includegraphics[height=0.33\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_3a.pdf}
+    \caption{SNP calling from mGEMS-derived assemblies versus isolate
+      assemblies for \textit{E. coli} ST131. SNPs were called from
+      contigs after assembling the reads. Points are colored according
+      to ST131 sublineages. The dashed gray line represents a perfect
+      match. The blue line is the posterior mean and the shaded area
+      the 95\% posterior credible region calculated from 10000
+      posterior samples using a Bayesian linear regression model.}
+  \label{fig:mgems-ecoli-snps}
+\end{figure}
+\noindent\let\thefootnote\relax\footnote{$^{3}$ \url{https://github.com/tseemann/snippy}}
 The \textit{E. coli} benchmark investigated how mGEMS-derived
 assemblies performed for maximum likelihood phylogeny estimation
 (using RAxML-NG, Gamma+GTR4M model) \citep{kozlov2019raxml} when
 compared to using isolate sequencing data in the same pipeline. The
 core genome alignment required by RAxML-NG was estimated using
-snippy$^{\star}$ with the same reference genome for both mGEMS-derived
+snippy$^{3}$ with the same reference genome for both mGEMS-derived
 and isolate data assemblies. The resulting phylogeny shows that mGEMS
 tends to slightly overestimate the number of SNPs in these assemblies
-(Figure \ref{fig:mgems-ecoli-snps}) but the phylogenetic relationships (Figure \ref{fig:mgems-ecoli-snps}) are recovered well. This benchmark was
+(Figure \ref{fig:mgems-ecoli-snps}) but the phylogenetic relationships (Figure \ref{fig:mgems-ecoli-phylogeny}) are recovered well. This benchmark was
 performed at the level of variation within a sequence type
 (\textit{E. coli} ST131) using sublineages defined in a previous study
 \citep{kallonen2017systematic}.
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-snps} source: Adapted from Publication II, Figure 3 \citep{maklin_bacterial_2021}.}
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-phylogeny} and legend source: adapted from Publication II, Figure 4 \citep{maklin_bacterial_2021}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \begin{figure}[!t]
-  \label{fig:mgems-ecoli-snps}
-    \centering
-    \includegraphics[height=0.33\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_3a.pdf}
-    \caption{Comparing the results of SNP calling from mixed samples
-      with the mGEMS pipeline against the results from isolate
-      sequencing data for \textit{E. coli} ST131. SNPs were called
-      from contigs after assembling the reads. Points are colored
-      according to the lineage within the species (the full legend is
-      available in Fig. S3). The dashed gray line represents a
-      hypothetical perfect match between the binned and isolate
-      reads. The blue line is the posterior mean while the shaded area
-      contains the 95\% posterior credible region calculated from
-      10000 posterior samples from a Bayesian regression model with
-      the SNPs from the binned reads as the response and the SNPs from
-      the isolate sequencing data as the sole explanatory variable.}
-\end{figure}
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-phylogeny} source: Reproduced from Publication II, Figure 4 \citep{maklin_bacterial_2021}.}
-\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
-\begin{figure}[!t]
-  \label{fig:mgems-ecoli-phylogeny}
     \centering
     \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_4.pdf}
-    \caption{Midpoint-rooted maximum likelihood trees from core SNP alignment of E. coli ST131 strains. The phylogeny in panel a was constructed from isolate sequencing data from 30 E. coli ST131 strains, and the phylogeny in panel b with the mGEMS pipeline from ten synthetic plate sweep samples, each mixing three isolate samples from the three main ST131 lineages (a–c; one strain from each per sample).}
+    \caption{Midpoint-rooted maximum likelihood trees from core SNP
+      alignment of \textit{E. coli} ST131 strains. The phylogeny in
+      panel \textbf{a)} was constructed from isolate sequencing data
+      from 30 E. coli ST131 strains, and the phylogeny in panel
+      \textbf{b)} with the mGEMS pipeline from ten synthetic plate
+      sweep samples, each mixing three isolate samples from the ST131
+      sublineages (A, B, B0, C1, or C2).}
+  \label{fig:mgems-ecoli-phylogeny}
 \end{figure}
 
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-efaecalis-phylogeny} and legend source: adapted from Publication II, Figure 5 \citep{maklin_bacterial_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!h]
+    \centering
+    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_5.pdf}
+    \caption{Tanglegram of two midpoint-rooted maximum likelihood
+      trees from core SNP alignment of \textit{E. faecalis}
+      strains. The phylogenies were inferred with RAxML-NG. Numbers
+      below the edges indicate bootstrap support values from RAxML-NG
+      for the next branch towards the leaves of the tree. Only values under 90 are shown. Branches are
+      coloured according to the \textit{E. faecalis} STs.}
+    \label{fig:mgems-efaecalis-phylogeny}
+\end{figure}
 In the \textit{E. faecalis} benchmark, the assessment was performed
 similarly to \textit{E. coli} but with the change to investigating
 performance with between-ST variation. Additionally,
@@ -1981,24 +1997,11 @@ placement of the STS within the overall phylogeny. This phenomenon is
 also apparent in the bootstrap support values for both the isolate and
 mGEMS-derived phylogenies, partially explaining the differences
 between the two.
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-phylogeny} source: Reproduced from Publication II, Figure 5 \citep{maklin_bacterial_2021}.}
-\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
-\begin{figure}[!t]
-  \label{fig:mgems-efaecalis-phylogeny}
-    \centering
-    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_5.pdf}
-    \caption{Tanglegram of two midpoint-rooted maximum likelihood
-      trees from core SNP alignment of E. faecalis strains. The
-      phylogenyies were inferred with RAxML-NG. Numbers below the
-      edges indicate bootstrap support values from RAxML-NG for the
-      next branch towards the leaves of the tree. Branches are
-      coloured according to the E. faecalis STs.}
-\end{figure}
 
 The final synthetic benchmark in Publication II investigated
 phylogeny recovery within \textit{S. aureus} ST22 with sublineages
 that are separated by a few dozen of SNPs \citep{paterson2015capturing}, source
-study). Te performance in this benchmark was not quite as good as in
+study). The performance in this benchmark was not quite as good as in
 the \textit{E. coli} and \textit{E. faecalis} benchmarks but the
 mGEMS-derived results do still manage to replicate the important parts
 of the results transmission analysis wise. Namely, the samples that
@@ -2010,21 +2013,20 @@ likely a result of the small degree of separation between the
 sublineages, or possibly of the filtering of the assemblies performed
 in the original study that was not replicated for the mGEMS-derived
 assemblies.
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-phylogeny} source: Reproduced from Publication II, Figure 6 \citep{maklin_bacterial_2021}.}
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-saureus-phylogeny} and legend source: adapted from Publication II, Figure 6 \citep{maklin_bacterial_2021}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \begin{figure}[!t]
-  \label{fig:mgems-saureus-phylogeny}
-    \centering
-    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_6.pdf}
-    \caption{Midpoint-rooted maximum likelihood tree from core SNP
-      alignment of S. aureus ST22 showing strains from a single
-      lineage within the sequence type. The phylogeny was inferred
-      from a combined set of assemblies from 60 isolate sequencing
-      samples (leaves labelled Staff A-G 1 A-T, corresponding to the
-      temporally first samples from each staff member) and 312
-      assemblies obtained from the mGEMS pipeline applied to synthetic
-      mixed samples of sequencing data from each of the three
-      different S. aureus ST22 clades (1, 2, and 3).}
+  \centering
+  \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_6.pdf}
+  \caption{Midpoint-rooted maximum likelihood tree from core SNP
+    alignment of \textit{S. aureus} ST22 sublineage (clade 1). The
+    phylogeny was inferred from a combined set of assemblies from 60
+    isolate sequencing samples (leaves labelled Staff A-G 1 A-T,
+    corresponding to the temporally first samples from each staff
+    member) and 312 mGEMS-derived assemblies from synthetic mixed
+    samples containing sequencing data from each of the three
+    different \textit{S. aureus} ST22 sublineages (clades 1, 2, and 3).}
+    \label{fig:mgems-saureus-phylogeny}
 \end{figure}
 
 
@@ -2200,8 +2202,7 @@ abundance estimates concerns the fit of the reference lineages with
 the estimated contents of the bins produced by mGEMS. This issue was
 not covered in neither Publication I nor Publication II but since the
 publication of the two, an external method has been developed to
-address the question. This method, called demix\_check
-\url{https://github.com/harry-thorpe/demix_check}, uses mash
+address the question. This method, demix\_check$^{4}$, uses mash
 \citep{ondov2016mash} to calculate distances between the read bins
 from mGEMS and the corresponding reference sequences in each
 lineage. These distances are used to evaluate the fit between the read
@@ -2212,6 +2213,7 @@ an integral part of the processing pipeline that was used in
 Publication III. Since this method was not developed by the author of
 this thesis, it won't be covered in more detail although its inclusion
 in mSWEEP/mGEMS analyses is strongly recommended.
+\noindent\let\thefootnote\relax\footnote{$^{4}$ \url{https://github.com/harry-thorpe/demix_check}}
 
 \chapter{Metagenomic epidemiology}
 \label{section:metagenomic-epidemiology}
