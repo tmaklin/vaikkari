@@ -419,11 +419,12 @@ where the aim is to assign (relative) abundances to the taxonomic
 units that were identified in the sequencing reads, called taxonomic
 profiling. These two approaches sometimes go hand-in-hand since the
 abundance of a taxonomic unit can naively be defined as the number of
-contigs assigned to the unit. When the units are closely related
-species or strains, more sophisticated methods are necessary since the
-contigs may plausibly belong to several taxa, which has led to the
-development of dedicated taxonomic profilers that do not attempt to
-bin the contigs or sequencing reads \citep{beghini2021integrating,
+reads that align to contigs which have been assigned to the unit. When
+the units are closely related species or strains, more sophisticated
+methods are necessary since both the reads and short contigs may
+plausibly belong to several taxa, which has led to the development of
+dedicated taxonomic profilers that do not attempt to bin the contigs
+or the sequencing reads \citep{beghini2021integrating,
   truong2017microbial, maklin_high-resolution_2021, van2022strainge}.
 
 Recently, a third category of methods attempting to track the
@@ -763,16 +764,22 @@ step where the reference sequences were made more differentiable by
 clustering them into lineages. Each lineage was represented in the
 reference collection by a reference sequence randomly sampled from all
 those belonging to the lineage, and the representative sequences were
-further trimmed down to contain only the core genome of the species.
+further trimmed down to contain only the core genome of the
+species. The core genome refers to genomic sequences that are shared
+by all, or nearly all, members of a species. In some cases it may be
+preferable to define the core genome for subunits within the species,
+such as lineages, and particularly if the species definition is not
+based on or conforming to the genetic sequences.
 
 The relative abundance estimation method from this thesis, mSWEEP,
-builds upon the work in BIB by using both the accessory and core
-genomes of the reference sequence assemblies, and by removing the need
-to select a representative sequence from each lineage. Instead of
-selecting a representative sequence, mSWEEP uses all available
-assemblies from each lineage as the reference sequences, which gets
-around the problem of having to define an adequate sequence to
-represent the whole lineage. Furthermore, using all available
+builds upon the work in BIB by using both the core genome and the
+accessory genome (accessory meaning the genome contents that are not
+contained in the core genome) of the reference sequence assemblies,
+and by removing the need to select a representative sequence from each
+lineage. Instead of selecting a representative sequence, mSWEEP uses
+all available assemblies from each lineage as the reference sequences,
+which gets around the problem of having to define an adequate sequence
+to represent the whole lineage. Furthermore, using all available
 sequences from each lineage provides better coverage of the variation
 in the now-included accessory genomes and allows applying the method
 to species that do not have as stable core genomes as
@@ -1416,11 +1423,11 @@ Compared to variational inference, MCMC does have the advantage that,
 provided sufficient runtime, the samples will be from the true
 posterior. In practice, this leads to better estimates of the
 covariance between the sampled parameters when the model is of the
-form in Equation \eqref{model:joint-distribution} (cite BitSeqVB
-paper). However, replacing the variational inference algorithm in the
-mSWEEP model with the Gibbs sampler from the original BitSeq
-\citep{glaus2012identifying} does not seem to produce any significant
-differences between the parameter estimates (Figures
+form in Equation \eqref{model:joint-distribution}
+\citep{hensman2015fast}. However, replacing the variational inference
+algorithm in the mSWEEP model with the Gibbs sampler from the original
+BitSeq \citep{glaus2012identifying} does not seem to produce any
+significant differences between the parameter estimates (Figures
 \ref{fig:vb-estimates} and \ref{fig:gibbs-estimates}).
 
 \begin{figure}[!t]
@@ -1469,9 +1476,7 @@ section is called the mGEMS binning algorithm, which in itself is a
 part of the mGEMS pipeline for binning sequencing reads.
 
 The work in this section is based on the results from Publication
-II. Compared to the previous section presenting the mSWEEP
-probabilistic model, the binning algorithm is somewhat more
-straightforward.
+II.
 
 \subsection{The mGEMS binning algorithm}
 
@@ -1499,14 +1504,15 @@ produced by the variational approximation used in fitting the mSWEEP
 model (Equation \eqref{likelihood:vi-factorization}). To derive the
 assignment rule, some further assumptions regarding the reads and the
 reference sequences are required. Firstly, the sequencing reads are
-assumed to contain only one member of the same lineage \textemdash{ }
-similarly to the typical metagenomic binners assuming only variation
-at the level they operate on. Secondly, should the true reference
-sequence that generated the reads be missing from the reference, the
-set of reference sequences in the lineage that generated the reads is
-assumed to adequately cover the variation in the missing sequence. The
-second assumption is necessary since reads that do not pseudoalign to
-any reference sequence in the collection are discarded by mSWEEP.
+assumed to be generated from only one strain belonging to the same
+lineage \textemdash{ } similarly to the typical metagenomic binners
+assuming only variation at the level they operate on. Secondly, should
+the true reference sequence that generated the reads be missing from
+the reference, the set of reference sequences in the lineage that
+generated the reads is assumed to adequately cover the variation in
+the missing sequence. The second assumption is necessary since reads
+that do not pseudoalign to any reference sequence in the collection
+are discarded by mSWEEP.
 
 To fulfill our requirement that a read can be assigned to several bins
 at the same time, the bins $G_{k}$ for each cluster $k$ are defined as
@@ -1659,13 +1665,14 @@ provide a better overview of the microbiome in the sample. Although
 isolate data has mostly been used in the past in epidemiological
 studies, some demonstrations of the benefits of applying a
 metagenomics approach have emerged. In particular, a recent study
-utilizing mSWEEP might not allow identifying the presence of
-non-dominant variants of the same species
+utilizing mSWEEP demonstrated that using isolate data alone does not
+allow identifying the presence of non-dominant variants of
+\textit{Streptococcus pneumoniae}
 \citep{tonkin-hill_pneumococcal_2022}. Currently it is a somewhat of
 an open question whether similar naturally occurring variation is
 found ubiquituously across different microbiomes
 
-mSWEEP and mGEMS enable answering thes question regarding lineage-level
+mSWEEP and mGEMS enable answering the question regarding lineage-level
 variation by providing methods that can be targeted to capture the
 variation present in samples containing members of some bacterial
 species. Since many bacteria of clinical importance have been studied
@@ -1741,8 +1748,8 @@ algorithm is PopPUNK \citep{lees2019fast}, which is demonstrated to
 perform well in Publication III. PopPUNK clusters the
 reference sequences based on accessory and core genome distances with
 an option to perform the clustering only based on the core-genome. The
-resulting clustering from PoPPUNK is often similar to a clonal
-complex. Using a computational approach like PopPUNK instead of a curated
+resulting clustering from PoPPUNK often corresponds to clonal
+complexes. Using a computational approach like PopPUNK instead of a curated
 database approach like the sequence types and clonal complexes has the
 advantage of providing means to assign sequences that have not yet
 been included in the curated databases, or work with species for which
@@ -1789,12 +1796,15 @@ Publication II the effect of replacing the isolate-data optimised
 shovill with metagenomic assemblers \citep{peng2012idba,
   li2015megahit, nurk2017metaspades}, which presumably implement
 better handling of variable coverage in the produced genomes. Although
-we observed some differences in the resulting assemblies
-(Figure \ref{fig:mgems-assembler-choice-statistics}), there was no
-statistically significant evidence in favour of using either
-approach. Regardless of the assembler choice, using the assemblies
-from the mGEMS pipeline in downstream analyses performed similarly to
-using those created from corresponding isolate sequencing data.
+we observed some differences in the resulting assemblies (Figure
+\ref{fig:mgems-assembler-choice-statistics}), particularly when mGEMS
+was paired with IDBA-UD which resulted in highly fragmented assemblies
+or metaSPAdes which completely failed to assemble some sequences,
+there was no conclusive evidence in favour of using either of the best
+performing approaches (mGEMS/shovill or mGEMS/MEGAHIT). Regardless of
+the assembler choice, using the assemblies from the mGEMS pipeline in
+downstream analyses performed similarly to using those created from
+corresponding isolate sequencing data.
 \noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-assembler-choice-statistics} and legend source: adapted from Publication II, Figure 3 \citep{maklin_bacterial_2021}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \begin{figure}[!t]
@@ -1847,14 +1857,8 @@ binning (metagenomic binners) \citep{kang2019metabat, wu2016maxbin,
 mGEMS, these methods typically assume that the samples only contain a
 single strain from each species, with the exception of StrainGE, which
 explicitly addresses the presence of several strains, which enables
-them to solve the task when the assumption holds. While it may at
-first seem suspicious that a thorough comparison between these methods
-and mSWEEP/mGEMS has not been included in Publications I-II, the
-assumptions about the strain complexity lie at the heart of the
-questions addressed by mSWEEP and mGEMS. Since the preceding
-metagenomics tools have typically not been developed with the
-strain-complexity in mind in mind, a performance comparison between
-them is not meaningful nor fair.
+them to solve the task when the assumption holds, but does not allow
+for extraction of the reads like mGEMS.
 
 \section{Benchmarking mSWEEP and mGEMS}
 
@@ -1868,15 +1872,19 @@ Publications I-II have been reproduced when necessary and are marked
 appropriately.
 
 \subsection{mSWEEP}
-Publication I presented a comparison of mSWEEP with
-the Bayesian Identification of Bacteria (BIB) \citep{sankar2016bayesian} and the
-pseudoalignment-based metakallisto methods \citep{schaeffer2017pseudoalignment}. The vast
-majority of other metagenomics tools published at the time either did
-not attempt within-species profiling or had been developed for cases
-with only one strain present from each species. Because of these
-limitations, Publication I only makes the comparisons with BIB and
-metakallisto, which have been developed for settings with several
-strains present.
+Publication I presented a comparison of mSWEEP with the Bayesian
+Identification of Bacteria (BIB) \citep{sankar2016bayesian} and the
+pseudoalignment-based metakallisto methods
+\citep{schaeffer2017pseudoalignment}. The vast majority of other
+metagenomics tools published at the time either did not attempt
+within-species profiling or had been developed for cases with only one
+strain present from each species. Because of these limitations,
+Publication I only makes the comparisons with BIB and metakallisto,
+which have been developed for settings with several strains
+present. Additionally, since the preceding metagenomics tools have
+typically not been developed with the strain-complexity in mind, a
+performance comparison between them and mSWEEP (or mGEMS) is not
+meaningful nor fair.
 
 The approach used by BIB is similar to the one in mSWEEP in that the
 reference sequences are grouped together into lineages and estimation
@@ -1889,16 +1897,33 @@ output from metakallisto to include a step where the abundance
 estimates within the same lineage are summed up. Even though this step was
 not included in the original metakallisto publication, its addition helps to
 compare the estimates from mSWEEP, BIB, and metakallisto.
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:msweep-bib-metakallisto} and legend source: adapted from Publication I, Figure 2 and Extended Data figure S1 \citep{maklin_bacterial_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/WOR2021_mSWEEP_Figure_S1.pdf}
+    \caption{Comparison between mSWEEP, BIB, and modified
+      metakallisto. This figure shows the differences in accuracy for
+      the abundance estimates from mSWEEP, BIB, and a modified version
+      of metakallisto. Modified metakallisto sums up the abundances
+      within the lineages rather than simply reporting the abundances
+      for the individual reference sequences. True positives refer to
+      the relative abundance estimates in the true lineage. Highest
+      true negatives refer to the highest estimate in the incorrect
+      lineages. The absolute error is the difference from an abundance
+      of one (True positives) or from zero (Highest true negatives).}
+  \label{fig:msweep-bib-metakallisto}
+\end{figure}
 
 The main result of Publication I is that mSWEEP outperforms both BIB
-and metakallisto, and that incorporating the probabilistic model from
-mSWEEP proves to be a necessary step in obtaining accurate
-information. Although these performance benchmarks were only performed
-on data containing a single strain in each sample, we demonstrate in
-Publication II through stochastic dominance \citep{hadar1969rules,
-  bawa1975optimal} that the methods which do not succeed with
-single-strain estimates are unlikely to provide accurate results from
-multi-strain samples.
+and metakallisto (Figure \ref{fig:msweep-bib-metakallisto}), and that
+incorporating the probabilistic model from mSWEEP proves to be a
+necessary step in obtaining accurate information. Although these
+performance benchmarks were only performed on data containing a single
+strain in each sample, we demonstrate in Publication II through
+stochastic dominance \citep{hadar1969rules, bawa1975optimal} that the
+methods which do not succeed with single-strain estimates are unlikely
+to provide accurate results from multi-strain samples.
 
 Another benchmark presented in Publication I concerns evaluating
 performance in the presence of several strains from the same
@@ -1971,7 +1996,7 @@ assemblies performed for maximum likelihood phylogeny estimation
 compared to using isolate sequencing data in the same pipeline. The
 core genome alignment required by RAxML-NG was estimated using
 snippy$^{3}$ with the same reference genome for both mGEMS-derived
-and isolate data assemblies. The resulting phylogeny shows that mGEMS
+and isolate data assemblies. Calling SNPs from the reuslting assemblies shows that mGEMS
 tends to slightly overestimate the number of SNPs in these assemblies
 (Figure \ref{fig:mgems-ecoli-snps}) but the phylogenetic relationships (Figure \ref{fig:mgems-ecoli-phylogeny}) are recovered well. This benchmark was
 performed at the level of variation within a sequence type
@@ -1988,7 +2013,9 @@ performed at the level of variation within a sequence type
       from 30 E. coli ST131 strains, and the phylogeny in panel
       \textbf{b)} with the mGEMS pipeline from ten synthetic plate
       sweep samples, each mixing three isolate samples from the ST131
-      sublineages (A, B, B0, C1, or C2).}
+      sublineages (A, B, B0, C1, or C2). Boxed numbers below the edges
+      indicate bootstrap support values from RAxML-NG for the next
+      branch towards the leaves of the tree.}
   \label{fig:mgems-ecoli-phylogeny}
 \end{figure}
 
