@@ -46,18 +46,12 @@
 
 \addbibresource{maklin2022.bib}
 
-\title{Probabilistic methods for \\ high-resolution metagenomics}
-\author{Tommi M\"aklin}
-\authorcontact{tommi.maklin@helsinki.fi\par
-  \url{https://maklin.fi/}}
-\pubtime{October}{2022}
-\reportno{12}
-\isbnpaperback{978-951-51-8694-2}
-\isbnpdf{978-951-51-8695-9}
-\issn{1238-8645}
-\issnonline{2814-4031}
-\printhouse{Unigrafia}
-\pubpages{165} % --- remember to update this! 
+\title{Probabilistic Methods for \\ High-Resolution Metagenomics}
+\author{Tommi M\"aklin} \authorcontact{tommi.maklin@helsinki.fi\par
+  \url{https://maklin.fi/}} \pubtime{October}{2022} \reportno{12}
+\isbnpaperback{978-951-51-8694-2} \isbnpdf{978-951-51-8695-9}
+\issn{1238-8645} \issnonline{2814-4031} \printhouse{Unigrafia}
+\pubpages{88+83 pages} % --- remember to update this!
 % For monographs, the number of the last page of the list of references
 % For article-based theses, the number of the last page of the list of
 % references of the preamble part + the total number of the pages of
@@ -149,6 +143,30 @@
 \tableofcontents
 
 \mainmatter
+
+\chapter*{List of original publications\markboth{List of original publications}{}}
+
+\subsection*{Publication I \textemdash{ } High-resolution sweep metagenomics using fast probabilistic inference}
+By \underline{Tommi M\"aklin}, Teemu Kallonen, Sophia David, Christine
+J Boinett, Ben Pascoe, Guillaume M\'eric, David M Aanensen, Edward J
+Feil, Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka
+Corander, and Antti Honkela. Published in \textit{Wellcome Open
+  Research} (2021), 5:14. \\doi:
+\href{https://doi.org/10.12688/wellcomeopenres.15639.2}{10.12688/wellcomeopenres.15639.2}.
+\subsection*{Publication II \textemdash{ } Bacterial genomic epidemiology with mixed samples}
+By \underline{Tommi M\"aklin}, Teemu Kallonen, Jarno Alanko, \O rjan
+Samuelsen, Kristin Hegstad, Veli M\"akinen, Jukka Corander, Eva Heinz,
+and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
+7.11. \\doi:
+\href{https://doi.org/10.1099/mgen.0.000691}{10.1099/mgen.0.000691}.
+
+\subsection*{Publication III \textemdash{ } Strong pathogen competition in neonatal gut colonization}
+By \underline{Tommi M\"aklin}, Harry A Thorpe, Anna K P\"ontinen,
+Rebecca A Gladstone, Yan Shao, Maiju Pesonen, Alan McNally, P\aa l J
+Johnsen, \O rjan Samuelsen, Trevor D Lawley, Antti Honkela, and Jukka
+Corander. Submitted; preprint available from \textit{bioRxiv}
+(2022). \\doi:
+\href{https://doi.org/10.1101/2022.06.19.496579}{10.1101/2022.06.19.496579}.
 
 \chapter{Introduction}
 \sloppy
@@ -2139,16 +2157,16 @@ sublineages are likely not relevant in applications of the method.
   \centering
   \includegraphics[height=0.70\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_2_rev.pdf}
   \caption{Evaluating mGEMS and mSWEEP on the in vitro benchmark
-    data. Panels (a) E. coli and (b) E. faecalis compare the results
+    data. Panels \textbf{a)} E. coli and \textbf{b)} E. faecalis compare the results
     of SNP calling from the isolate sequencing data (horizontal axis)
     against the results of SNP calling from the mixed samples with the
-    mGEMS pipeline (vertical axis). The subplot in panel (b) contains
-    a zoomed-in view of the points around the origin. Panels (c) and
-    (d) compare the abundance estimates from mSWEEP to the ground
-    truth relative abundances. Panel (c) shows the absolute difference
+    mGEMS pipeline (vertical axis). The subplot in panel \textbf{b)} contains
+    a zoomed-in view of the points around the origin. Panels \textbf{c)} and
+    \textbf{d)} compare the abundance estimates from mSWEEP to the ground
+    truth relative abundances. Panel \textbf{c)} shows the absolute difference
     between the estimates from mSWEEP and the true abundance. The
     values shown are split into E. coli and E. faecalis lineages truly
-    present in the samples, and lineages truly absent. Panel (d) shows
+    present in the samples, and lineages truly absent. Panel \textbf{d)} shows
     the relative error in the truly present lineages.}
     \label{fig:mgems-in-vitro-benchmark}
 \end{figure}
@@ -2732,32 +2750,12 @@ high-resolution metagenomics.
 
 \printbibliography[heading=bibintoc,title=References]
 
-\chapter*{Included publications\markboth{Included publications}{}}
-\addcontentsline{toc}{chapter}{Included publications}
-
-\subsection*{Publication I \textemdash{ } High-resolution sweep metagenomics using fast probabilistic inference}
-By \underline{Tommi M\"aklin}, Teemu Kallonen, Sophia David, Christine
-J Boinett, Ben Pascoe, Guillaume M\'eric, David M Aanensen, Edward J
-Feil, Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka
-Corander, and Antti Honkela. Published in \textit{Wellcome Open
-  Research} (2021), 5:14. \\doi:
-\href{https://doi.org/10.12688/wellcomeopenres.15639.2}{10.12688/wellcomeopenres.15639.2}.
-\subsection*{Publication II \textemdash{ } Bacterial genomic epidemiology with mixed samples}
-By \underline{Tommi M\"aklin}, Teemu Kallonen, Jarno Alanko, \O rjan
-Samuelsen, Kristin Hegstad, Veli M\"akinen, Jukka Corander, Eva Heinz,
-and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
-7.11. \\doi:
-\href{https://doi.org/10.1099/mgen.0.000691}{10.1099/mgen.0.000691}.
-
-\subsection*{Publication III \textemdash{ } Strong pathogen competition in neonatal gut colonization}
-By \underline{Tommi M\"aklin}, Harry A Thorpe, Anna K P\"ontinen,
-Rebecca A Gladstone, Yan Shao, Maiju Pesonen, Alan McNally, P\aa l J
-Johnsen, \O rjan Samuelsen, Trevor D Lawley, Antti Honkela, and Jukka
-Corander. Submitted; preprint available from \textit{bioRxiv}
-(2022). \\doi:
-\href{https://doi.org/10.1101/2022.06.19.496579}{10.1101/2022.06.19.496579}.
-
 \include{papers/maklin2022_thesis-papers}
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
 
 \includepdf[pages=1-2]{template/asarja.pdf}
 
