@@ -50,10 +50,10 @@
 \author{Tommi M\"aklin}
 \authorcontact{tommi.maklin@helsinki.fi\par
   \url{https://maklin.fi/}}
-\pubtime{June}{2022}
-\reportno{0}
-\isbnpaperback{000-00-0000-0}
-\isbnpdf{000-00-0000-0}
+\pubtime{October}{2022}
+\reportno{12}
+\isbnpaperback{978-951-51-8694-2}
+\isbnpdf{978-951-51-8695-9}
 \issn{1238-8645}
 \issnonline{2814-4031}
 \printhouse{Unigrafia}
@@ -65,8 +65,8 @@
 \supervisorlist{Antti Honkela, University of Helsinki, Finland \\ \hspace{8pt} Jukka Corander, University of Helsinki, Finland}
 \preexaminera{Ashlee Earl, Broad Institute of MIT and Harvard, USA}
 \preexaminerb{Tommi Vatanen, University of Helsinki, Finland}
-\opponent{To be appointed}
-\custos{To be appointed}
+\opponent{Leo Lahti, University of Turku, Finland}
+\custos{Antti Honkela, University of Helsinki, Finland}
 \generalterms{Algorithms, Experimentation}
 \additionalkeywords{genomic epidemiology, plate sweeps, probabilistic modeling, pathogen surveillance, taxonomic profiling, taxonomic binning, metagenomics}
 % Computing Reviews 1998 style
@@ -84,7 +84,7 @@
 \permissionnotice{
   Doctoral dissertation, to be presented for public examination with 
   the permission of the Faculty of Science of the University of
-  Helsinki in \ldots{} on \ldots{} at XX o'clock. Fill in the examination
+  Helsinki in \ldots{} on 28 October 2022 at XX o'clock. Fill in the examination
   venue, date and time into the previous sentence.
 }
 
@@ -352,7 +352,7 @@ key contributions of this thesis.
 In the third approach, whole-genome sequencing of isolates (Figure
 \ref{fig:microbiome-sampling-methods}c), visible colonies from the
 initial culture are picked and transferred to new plates. After
-letting the transferred colonies inoculate, the resulting culture will
+letting the transferred colonies grow, the resulting culture will
 consist only of the descendants of the original colony, allowing for
 massive numbers of sequencing reads to be generated from the isolated
 organisms. Since visible colonies on the initial culture are typically
@@ -823,15 +823,15 @@ individual reference sequences with lineages within a bacterial
 species as the unit for relative abundance estimation
 \citep{sankar2016bayesian}. When estimation is performed for suitably
 clustered sequences, the problem becomes significantly easier since
-the short-term genetic variation, at least presumably, more contained
-within the lineages, provided that they are biologically
+the short-term genetic variation, at least presumably, is more
+contained within the lineages, provided that they are biologically
 sensible. Since mSWEEP allows representing the lineages through
 several reference sequences, they become easier to distinguish since
 the differences between lineages are often larger than the differences
 between strains. However, selecting the clustering algorithm for
 identifying the lineages needs to be performed carefully, since the
-estimation will be reliant on the signals that are contained
-within the lineages.
+estimation will be reliant on the signals that are contained within
+the lineages.
 
 \section{Significance of reference databases}
 
@@ -884,7 +884,7 @@ taxonomic units that have observable differences in phenotypes such as
 antimicrobial resistance \citep{kallonen2017systematic,
   shaik2017comparative}. This has subsequently led to widespread
 adoption of the method among microbiologists. The
-downside of MLST is that it is only offers a limited resolution by
+downside of MLST is that it only offers a limited resolution by
 considering a small fraction of the variation present in a genome.
 
 The PopPUNK method \citep{lees2019fast} provides an alternative to
@@ -1452,7 +1452,7 @@ reference lineages $k$, also known as binning. Binning differs from
 relative abundance estimation in that the goal is to produce some
 assignment of the reads to reference units. Typically the reference
 units and the created bins correspond to some species or even
-genuses. In this thesis, the bins will be created on the level of the
+genera. In this thesis, the bins will be created on the level of the
 reference lineages/clusters that mSWEEP reports the relative
 abundances for. Compared to estimating only the abundances, the
 addition of binning provides much extra detail about the contents of a
@@ -1690,7 +1690,23 @@ Combining the results from Sections \ref{section:model} and
 \ref{section:binning} produces the complete mSWEEP/mGEMS workflow for
 analysing sequencing data from mixed sources. This workflow is
 originally presented in Publication II, where it is referred to as the
-mGEMS pipeline.
+mGEMS pipeline. Figure \ref{fig:mgems-pipeline} provides an overarching
+diagram representing the steps described in this section.
+
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-pipeline} and legend source: adapted from Publication II, Figure 1 \citep{maklin_bacterial_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!hb]
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_1.pdf}
+    \caption{Flowchart describing a genomic epidemiology workflow with
+      the mGEMS pipeline. The figure shows the various steps of the
+      pipeline. Steps with programme names in brackets constitute the
+      parts of the mGEMS pipeline. Presented values from mSWEEP and
+      mGEMS binner are the actual results of running the pipeline with
+      the described input. The steps that are perfomed by the methods
+      described in this thesis are bolded (mSWEEP and mGEMS).}
+    \label{fig:mgems-pipeline}
+\end{figure}
 
 \subsubsection{Constructing the reference database}
 
@@ -1996,7 +2012,7 @@ phylogeny well and place sequences from the same ST to the same clade
 different from the isolate assembly phylogeny, even in phylogenies
 estimated from isolate sequencing data global differences are often
 explained by uncertainty arising from recombination affecting the
-placement of the STS within the overall phylogeny. This phenomenon is
+placement of the STs within the overall phylogeny. This phenomenon is
 also apparent in the bootstrap support values for both the isolate and
 mGEMS-derived phylogenies, partially explaining the differences
 between the two.
@@ -2049,9 +2065,23 @@ mGEMS data reflect the values from the isolate data quite
 closely. There is some difficulty in separating the ST131-C2
 sublineages 4 and 6 which, however, is likely due to the increasingly
 difficult task of defining sublineages within sublineages using the
-accessory genome. This difficulty is likely not relevant for practical
-analyses, where sequence types, or sometimes their sublineages, are
-the typical taxonomic unit that analyses operate on.
+accessory genome. The primary sublineages (A, B, B0, C1, or C2,
+established in \citep{kallonen2017systematic}) are defined using the
+core genome but the further sublineages within sublineages
+(ST131-C2-2, ST131-C2-6 and so on) incorporate information from the
+accessory genome, which is by definition much more variable than the
+stable core genome. This leads to a situation where incorporating the
+accessory information does further separate the established ST131-C2
+sublineage, but the resulting split is only valid for a certain
+collection of sequences, and does not necessarily extend to other
+sequences collected from a different environment or at a different
+time, which is the case with the data analysed in Publication
+II. However, since the sequence types, or sometimes their
+well-established sublineages such as in the case of \textit{E. coli}
+ST131, are typically the taxonomic unit of interest in practical
+analyses, the observed difficulties in separating between accessory
+genome based highly specific sublineages are likely not relevant in
+applications of the method.
 
 Together, these benchmarks show that the mGEMS method can be reliably
 used to disentangle metagenomic sequencing data and create
@@ -2069,6 +2099,54 @@ available tools have not been able to produce as will be shown in more
 in Chapter \ref{section:metagenomic-epidemiology} that covers the
 experimental results from Publication III.
 
+\subsection{Sequencing depth requirements}
+
+In addition to the presented benchmarks that assessed the performance
+of mSWEEP and mGEMS in presence of complex strain variation,
+Publication I contained an additional study of the performance when
+the sequencing depth (number of base pairs from a lineage in a sample
+divided by the average length of a genome from the same lineage) is
+greatly varied. In this benchmark, reads from 10 \textit{E. coli}
+lineages were mixed synthetically at sequencing depths varying from
+0.10x to 50x, and mSWEEP was applied to retrieve the relative
+abundances.
+
+The results show that mSWEEP recovers the real values with
+admirable accuracy when the lineage in question was sequenced at high
+depths between 50x and 12.50x (Figure
+\ref{fig:msweep-sequencing-depth}). Lineages mixed at intermediate
+depths between 6.25x and 1.56x were also recovered, but reducing the
+depths below 1x to values ranging between 0.78x and 0.10x ultimately
+overcame the detection accuracy of the method with none to very few of
+the lineages mixed at these depths identified at all. This limitation
+is, however, expected since the differences between the lineages are
+not large enough to accurately distinguish between them without
+sequencing reads from across the whole genome. These results imply
+that mSWEEP performs well up to low coverages between 1x and 2x, which
+translates to accurately recovering lineages with a relative abundance
+between 0.01 to 0.02 if the whole sample is sequenced at a depth that
+would correspond to 100x coverage in reads originating from a single
+source.
+
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:msweep-sequencing-depth} and legend source: adapted from Publication I, Figure 5 \citep{maklin_high-resolution_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!t]
+  \centering
+  \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/WOR2021_mSWEEP_Figure_5.pdf}
+  \caption{Relative error in 87 complex synthetic mixtures comprising
+    10 E. coli lineages at varying sequencing depths.  The boxplot
+    displays the relative error in the relative abundance estimates
+    from mSWEEP compared against the true values. Error greater than
+    0\% (horizontal axis) denotes estimates from mSWEEP exceeding the
+    true value, while error less than 0\% denotes estimates lower than
+    the true value. The dashed gray line corresponds to 0\% error. The
+    rows (vertical axis) separate the estimates by their approximate
+    sequencing depth, with each sample contributing one value
+    (estimate for one lineage) to each row.}
+    \label{fig:msweep-sequencing-depth}
+\end{figure}
+
+
 \section{Assessing the detection accuracy}
 
 An important question when applying mSWEEP/mGEMS in practice is when
@@ -2078,13 +2156,28 @@ that is present in the samples, which results in false positive
 estimates. Additionally, since the methods use a Bayesian approach to
 estimating the relative abundances of the reference lineages, none of
 the abundances will ever be exactly zero even though they contributed
-no sequencing reads in reality. This naturally begs the question:
-``When is a lineage truly present in the sample?'' when mSWEEP is
-applied in practice. Furthermore since the abundance estimates are the
-basis for the mGEMS pipeline, it is important to know whether the
-results for some lineage(s) with a high, nonzero relative abundance
-are truly correct or not. Some answers and means to investigate this
-question will be provided in this section.
+no sequencing reads in reality. These false positives (relative
+abundance estimates that differ from zero in some way that is deemed
+significant) may arise when the sequencing data contains DNA from a
+lineage that is not covered by the reference sequences. In this case,
+reads from the missing lineage are assigned to closely related covered
+lineages instead because the close relatives are the best plausible
+explanation for the presence of the reads in the sample. Although
+assignments produced in this scenario may still be useful for further
+analyses, this would require manual inspection of the results in order
+to determine which of the several lineages the reads were split
+between should be merged to obtain a set of reads corresponding to the
+missing lineage. In the scope of this thesis the falsely assigned
+reads are not considered for further analysis but their better
+handling is a potential avenue for future research on this topic.
+
+These considerations naturally beg the question: ``When is a
+lineage truly present in the sample?'' when mSWEEP is applied in
+practice. Furthermore since the abundance estimates are the basis for
+the mGEMS pipeline, it is important to know whether the results for
+some lineage(s) with a high, nonzero relative abundance are truly
+correct or not. not. Some answers and means to investigate these questions
+will be provided in this section.
 
 \subsection{Detection thresholds for lineages}
 Answering the question about the presence/absence of a lineage in a
@@ -2128,7 +2221,7 @@ be bootstrapped. The approach is described in more detail in Publication I.
 Using bootstrapping to estimate the magnitude of the estimates in the
 absent lineages provides theoretically sound means to define the
 thresholds, and the accompanying p-values allow for some calibration
-in how trustworthy the results should be. There approach does, however
+in how trustworthy the results should be. The approach does, however
 have some computational issues, which limit the scaling of the method
 when dealing with large reference collections. Namely, the need to
 remove a single reference sequence at a time implies a need to
@@ -2256,7 +2349,7 @@ data by applying the mGEMS pipeline \textemdash{ } provided that a
 sufficiently accurate reference database exists for the species of
 interest. Using metagenomic sequencing data in place of isolate
 sequencing data comes with the previously covered benefits related to
-cost-efficiency, vast expansion of throughput, and a more thoroguh
+cost-efficiency, vast expansion of throughput, and a more thorough
 coverage of the variation in a sample. Metagenomic epidemiology also
 enables performing various novel analyses by allowing strain-level
 analysis of either the less biased data produced by WGS metagenomics,
@@ -2460,7 +2553,7 @@ time-series data from the first 21 days showed a strong competition in
 the gut, with the first strain to colonize the gut often becoming the
 dominant strain and preventing others from displacing
 it. Additionally, in very few cases the samples contained several
-strains of the same species at the same species, providing more
+strains of the same species at the same time, providing more
 evidence in favour of the previous finding. Based on the results from
 mSWEEP/mGEMS, newborn babies are initially colonized by a single
 strain that typically persists or disappears in the gut for at least
@@ -2479,7 +2572,7 @@ mGEMS. As a final analysis, the mGEMS-derived assemblies for the
 \citep{lam2021genomic} pipeline to perform analyses of the resistance
 and virulence factors in them. Similar analysis was performed for the
 \textit{E. faecalis} lineages using AMRFinderPlus
-\citep{feldgarden2021amrfinderplus}. These analysis and the
+\citep{feldgarden2021amrfinderplus}. These analyses and the
 distribution of the \textit{E. coli} lineages somewhat surprisingly
 show no significant differences between the vaginally delivered and
 caesarean section delivered babies when it comes to the AMR gene
@@ -2495,7 +2588,7 @@ derived from WGS metagenomics data, the study demosntrated the removal
 of a significant barrier in requiring performing plate sweep
 metagenomics, which has prevented more widespread application of
 mSWEEP and mGEMS in the past. These results show that mSWEEP and mGEMS
-can used alongside established tools for metagenome analyses when more
+can be used alongside established tools for metagenome analyses when more
 information is desired about some particular subset of organisms
 within the samples.
 
@@ -2506,7 +2599,7 @@ This thesis summarized the development and introduction of the mSWEEP
 and mGEMS methods for untangling strain-level variation in metagenomic
 sequencing reads. Incorporating metagenomics data in genomic
 epidemiological studies was shown to enable novel insights into
-colonization dynamics and co-carrige of various species of bacteria
+colonization dynamics and co-carriage of various species of bacteria
 that are capable of causing disease under the right conditions. These
 types of results that rely on sampling the full breadth of the
 bacterial species present in a host would not be possible with isolate
@@ -2552,7 +2645,7 @@ pipelines to enrich for species of clinical interest that cannot be
 adequately identified without extremely deep direct sequencing of the
 sample. Since mSWEEP and mGEMS can analyse both types of data, they
 could be used to screen metagenomics datasets for samples that should
-be enrichened for interesting species.
+be enriched for interesting species.
 
 The introduction of mSWEEP and mGEMS facilitates these types of
 analyses and other research directions. Consideration of strain-level
@@ -2592,5 +2685,7 @@ Corander. Submitted; preprint available from \textit{bioRxiv}
 \href{https://doi.org/10.1101/2022.06.19.496579}{10.1101/2022.06.19.496579}.
 
 \include{papers/maklin2022_thesis-papers}
+
+\includepdf[pages=1-2]{template/asarja.pdf}
 
 \end{document}
