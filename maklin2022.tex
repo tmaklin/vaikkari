@@ -119,7 +119,7 @@
   datasets.
 
   Both mSWEEP and mGEMS have been developed for application in either
-  the traditional whole-genome shotgun metagenomics context, where the
+  the traditional whole community metagenomics context, where the
   direct-from-environment samples are analysed, or in the plate sweep
   metagenomics context, where the sample has been plated once on a
   selective medium. While the latter is not metagenomics in the
@@ -171,10 +171,10 @@ of the library preparation and DNA extraction steps, performed once
 per each isolated organism, are approaching the price of sequencing
 itself \citep{rossen2018practical}.
 
-Whole-genome shotgun metagenomics, where DNA is extracted and
+Whole community metagenomics, where DNA is extracted and
 sequenced directly from the original environmental sample, presents a
 potential cost-effective alternative to the isolate sequencing
-approach. Contrary to isolate sequencing, WGS metagenomics requires
+approach. Contrary to isolate sequencing, whole community metagenomics requires
 only a single library preparation and DNA extraction step and no
 cultivation steps since the sample is sequenced directly. However,
 direct sequencing may require significantly higher sequencing depths
@@ -182,7 +182,7 @@ due to presence of host DNA \citep{pereira2019impact,
   mcardle2020sensitivity} and contamination
 \citep{mcardle2020sensitivity, salter2014reagent}. In addition, low
 biomass samples are challenging for metagenomics to use
-reproducibly. Due to these factors, WGS metagenomics can be difficult
+reproducibly. Due to these factors, whole community metagenomics can be difficult
 to apply when only a subset of the diversity is targeted but the
 planned analyses require high sequencing depth data, which is the
 typical setting in genomic epidemiological studies.
@@ -203,7 +203,7 @@ genomes of the bacteria from the sequencing reads which has led to
 dominance of the isolate sequencing approach and a lack of studies
 attempting to solve the epidemiological problems with metagenomics.
 
-When choosing between WGS metagenomics and isolate sequencing, a
+When choosing between whole community metagenomics and isolate sequencing, a
 middle-ground can be found plate sweep metagenomics
 \cite{maklin_high-resolution_2021} \textemdash{ } sometimes also
 called limited-diversity metagenomics \citep{cocker_drivers_2022}. In
@@ -214,12 +214,12 @@ clinically relevant bacteria \citep{lagier2015current}, plate sweep
 metagenomics simultaneously both reduces the number of library
 preparation and DNA extraction steps by using only a single culture,
 and solves the host DNA overabundance and sequencing depth issues in
-WGS metagenomics through selective media enrichment. Incorporating an
+whole community metagenomics through selective media enrichment. Incorporating an
 enrichment step has also been found to increase the sensitivity to
 low-abundance organisms that might be missed in direct sequencing
 \citep{whelan2020culture}.
 
-While both plate sweep metagenomics and WGS metagenomics have
+While both plate sweep metagenomics and whole community metagenomics have
 technically been possible for many years with the latter appearing
 around 2004 \citep{tyson2004community, venter2004environmental}, the
 development of computational methods has largely focused on analysing
@@ -240,11 +240,11 @@ tackle lineage-level variation but do not easily translate to replacing
 assembly-based analyses such as SNP calling or phylogenetic inference.
 
 In this thesis I present two computational methods that enable
-taxonomic profiling and taxonomic binning from either WGS metagenomic
+taxonomic profiling and taxonomic binning from either whole community metagenomic
 or plate sweep metagenomic short-read sequencing data. While the plate
 sweep metagenomics approach was the focus of both methods during their
 initial publication, I also demonstrate that they perform reliably
-when applied to WGS metagenomics data. Using either of the two
+when applied to whole community metagenomics data. Using either of the two
 approaches to reduce the costs associated with data collection, the
 methods presented here enable performing routine genomic
 epidemiological analyses when significant lineage-level variation is
@@ -270,7 +270,7 @@ mixed samples with results often comparable to using isolate data.
 Even though both mSWEEP and mGEMS were originally designed with
 applications in plate sweep metagenomics in mind, Publication III
 \citep{maklin_strong_2022} demonstrates applicability of both methods
-to WGS metagenomics data. In Publication III we have analysed WGS
+to whole community metagenomics data. In Publication III we have analysed whole community
 metagenomics data from samples collected from a cohort of UK neonates
 \citep{shao2019stunted}. Results from this data show strong
 competition between bacterial species and strains during the initial
@@ -297,14 +297,14 @@ multiply \citep{sanders2012aseptic}. After inoculation, visible
 colonies may be isolated and further propagated on their own plates
 \citep{sanders2012aseptic}, or the entire plate may be prepared for DNA
 extraction to produce plate sweep metagenomic data. Alternatively, in
-WGS metagenomics, the whole culture procedure is skipped, and DNA is
+whole community metagenomics, the whole culture procedure is skipped, and DNA is
 extracted directly from the sample with the extract procedure
 depending on the sample type \citep{bachmann2018advances}. When it
 comes to the end-result \textemdash{ } the sequencing reads
 \textemdash{ } all three approaches have their own characteristics
 that affect the available downstream analyses.
 
-WGS metagenomics, where all or most of the DNA in a sample is
+Whole community metagenomics, where all or most of the DNA in a sample is
 extracted (Figure \ref{fig:microbiome-sampling-methods}a), has emerged
 as a tool for analysing the full breadth of variety in various
 microbiomes \citep{shao2019stunted, ghensi2020strong,
@@ -314,12 +314,12 @@ sequencing reads are split across the numerous organisms possibly
 present, resulting in a need to sequence the sample more deeply to
 capture the less abundant organisms \citep{whelan2020culture,
   vollmers2017comparing, quince2017shotgun}. Combined with other
-issues related to host DNA abundance \citep{whelan2020culture, ivy2018direct, gu2019clinical}, the shortcomings of WGS metagenomics have
+issues related to host DNA abundance \citep{whelan2020culture, ivy2018direct, gu2019clinical}, the shortcomings of whole community metagenomics have
 so-far hindered its widespread adoption as a standard tool for
 genomic epidemiology.
 
 Plate sweep metagenomics proposes a middle-ground between the direct
-sequencing of WGS metagenomics and isolate studies by incorporating a
+sequencing of whole community metagenomics and isolate studies by incorporating a
 single culture step \citep{maklin_high-resolution_2021}. In this
 approach, the sample is cultured on an appropriate selective medium
 and the entire complexity of the plate is subjected to DNA extraction
@@ -327,7 +327,7 @@ and sequenced after a suitable inoculation period (Figure
 \ref{fig:microbiome-sampling-methods}b). The inclusion of a culturing
 step allows for generating large numbers of sequencing reads from the
 bacteria that thrive in the chosen medium, circumventing both the
-sequencing depth and host DNA issues in WGS metagenomics while
+sequencing depth and host DNA issues in whole community metagenomics while
 improving the sensitivity to bacteria found in low abundance in the
 original sample \citep{whelan2020culture,
   tonkin-hill_pneumococcal_2022, zhang2022using}. Furthermore, focusing the sequencing
@@ -342,7 +342,7 @@ key contributions of this thesis.
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{img/sampling/microbiome_sampling_methods.pdf}
     \caption{Different approaches to sequencing bacterial DNA. Panel
-      \textbf{a)} depicts the WGS metagenomics approach, where
+      \textbf{a)} depicts the whole community metagenomics approach, where
       sequence data is produced directly from the sample. Panel
       \textbf{b)} depicts the plate sweep metagenomics approach, where
       the sample is plated on a selective medium and DNA extracted and
@@ -372,10 +372,10 @@ always restricted to rapidly growing colony-forming phenotypes.
 In genomic epidemiological analyses, the whole-genome sequencing
 approach has been dominant due to its strengths in producing highly
 accurate data capable of SNP calling and differentiating between
-organisms \citep{efsa2019whole}. Producing the same results using WGS
-(or plate sweep) metagenomics has some obvious benefits in both
-increasing the number of samples that can be processed as well as in
-capturing more of the diversity in the samples, but the existing
+organisms \citep{efsa2019whole}. Producing the same results using
+whole community or plate sweep metagenomics has some obvious benefits
+in both increasing the number of samples that can be processed as well
+as in capturing more of the diversity in the samples, but the existing
 metagenome-analysis tools have not been able to reach the required
 level of resolution \citep{sczyrba2017critical,
   mcintyre2017comprehensive, maklin_bacterial_2021}. In this thesis I
@@ -399,7 +399,7 @@ single strain from each species is present in the same sample
 some of the previous approaches and describe how mSWEEP and mGEMS fit
 into the metagenomics toolkit.
 
-One of the more commonly used tools for analysing WGS metagenomics
+One of the more commonly used tools for analysing whole community metagenomics
 data are metagenome assemblers. Similarly to genome assemblers,
 metagenome assemblers aim to produce a set of contigs (sets of
 overlapping sequencing reads) that correspond overlapping sequencing
@@ -507,7 +507,7 @@ data. Since naturally occurring variation is common in many species of
 clinical interest \citep{paterson2015capturing, zlitni2020strain,
   dixit2018within, mosavie2019sampling, tonkin-hill_pneumococcal_2022}
 similar findings in other fields are likely with more widespread use
-of WGS and plate sweep metagenomics data.
+of whole community and plate sweep metagenomics data.
 
 Another related aspect in favour of using more metagenomics-oriented
 approaches arises from simple practicality: sequencing several
@@ -596,7 +596,7 @@ Corander. Submitted; preprint available from \textit{bioRxiv} (2022),
 doi: \href{https://doi.org/10.1101/2022.06.19.496579}{10.1101/2022.06.19.496579}.
 
 Publication III \citep{maklin_strong_2022} provides an example of
-applying mSWEEP and mGEMS to whole-genome shotgun metagenomics
+applying mSWEEP and mGEMS to whole community metagenomics
 sequencing data and explores the dynamics of pathogen competition and
 colonization in the gut microbiome of babies in their first three
 weeks of life. My contributions to Publication III include running the
@@ -831,9 +831,10 @@ clustered sequences, the problem becomes significantly easier since
 the short-term genetic variation, at least presumably, is more
 contained within the lineages, provided that they are biologically
 sensible. Since mSWEEP allows representing the lineages through
-several reference sequences, they become easier to distinguish since
-the differences between lineages are often larger than the differences
-between strains. However, selecting the clustering algorithm for
+several reference sequences, they become easier to distinguish because
+the differences between lineages are larger than the differences
+between strains within the same lineage which could potentially
+coexist in a sample. However, selecting the clustering algorithm for
 identifying the lineages needs to be performed carefully, since the
 estimation will be reliant on the signals that are contained within
 the lineages.
@@ -1632,14 +1633,14 @@ model formulation presented in Chapter 2 will also be covered. These
 mostly cover questions about reliability of the results when applied
 to realistic use-cases.
 
-\section{Plate sweep and WGS metagenomics}
+\section{Plate sweep and whole community metagenomics}
 
 The primary methods for obtaining metagenomics sequencing data
-considered are plate sweep metagenomics and whole-genome shotgun (WGS)
+considered are plate sweep metagenomics and whole community
 metagenomics (see Section \ref{three-approaches-to-metagenomics} for
 more details). Of these two, plate sweep metagenomics has the
 advantage of being able to focus sequencing efforts to species that
-are known to grow on specific culture media, while WGS metagenomics
+are known to grow on specific culture media, while whole community metagenomics
 provides data of \textit{all} organisms on some sample (including for
 example host DNA, fungi, commensal species, and so on). When the goal
 is to investigate lineage-level variation, both approaches have their
@@ -1647,7 +1648,7 @@ uses in either producing more data from the species of interest or
 providing a less biased view of the sample contents at the expense of
 sequencing depth. Publications I-II were written with only plate sweep
 metagenomics in mind but Publication III demonstrated that mSWEEP and
-mGEMS are applicable in the WGS metagenomics context. Thus, this
+mGEMS are applicable in the whole community metagenomics context. Thus, this
 chapter will not discriminate between the two.
 
 \subsection{Benefits of metagenomics over culturing}
@@ -2099,7 +2100,7 @@ sequences from isolate sequencing remains a critical part of the
 pipeline \textemdash{ } the method shows promise in reducing the
 number of isolate cultures that need to be created when the isolates
 circulating in the samples are known. Additionally, applying mGEMS to
-pure metagenomics sequencing data can yield results that previously
+whole community metagenomics sequencing data can yield results that previously
 available tools have not been able to produce as will be shown in more
 in Chapter \ref{section:metagenomic-epidemiology} that covers the
 experimental results from Publication III.
@@ -2330,7 +2331,7 @@ is to produce reads with sufficiently deep sequencing depth for SNP
 calling, assembly, and other genomic analyses. Conversely in the
 spirit of genomic epidemiology, metagenomic epidemiology refers to
 performing the genomic epidemiology tasks but forgoing the culture
-step and using metagenomics data (WGS metagenomics or other
+step and using metagenomics data (whole community, plate sweep or other metagenomics
 approaches) to identify and analyse the pathogens with similar methods
 with particular attention paid to interactions within the microbiome
 \citep{francis2015metagenomic, baquero2012metagenomic}. In the
@@ -2357,7 +2358,7 @@ sequencing data comes with the previously covered benefits related to
 cost-efficiency, vast expansion of throughput, and a more thorough
 coverage of the variation in a sample. Metagenomic epidemiology also
 enables performing various novel analyses by allowing lineage-level
-analysis of either the less biased data produced by WGS metagenomics,
+analysis of either the less biased data produced by whole community metagenomics,
 or detailed exploration of the diversity within some restricted set of
 taxons that can be enriched via the plate sweep metagenomics approach.
 
@@ -2367,7 +2368,7 @@ disadvantages of incorporating metagenomic sequencing data into the
 analyses. Out of the three included, Publication I presented an
 experiment with real-world plate sweep metagenomics data, and
 Publication III provides an example of applying the mGEMS pipeline to
-WGS metagenomics data. While Publication II did not include a
+whole community metagenomics data. While Publication II did not include a
 real-world application, the \textit{in vitro} mixture samples analysed
 in Publication II do highlight some challenges for the methods that are
 relevant to this chapter. The chapter concludes with some speculation
@@ -2419,7 +2420,7 @@ cause problems in terms of identifying the presence of the species in
 the first place, as the number of reads that are \textit{unique} to
 the species is even lower. Many of the other sequencing reads will be
 generated from commensal or even contaminant species which usually
-have no use in the downstream analyses. Additionally, WGS metagenomics
+have no use in the downstream analyses. Additionally, whole community metagenomics
 sometimes results in an overabundance of host DNA in the sample
 \citep{pereira2019impact, mcardle2020sensitivity}, which then
 dominates the contents of the reads from a sequencing run if host DNA
@@ -2455,7 +2456,7 @@ daunting, difficult, and especially time-consuming task.
 
 \subsection{Advantages}
 
-Although using WGS or plate sweep metagenomics in practice has its
+Although using whole community or plate sweep metagenomics in practice has its
 disadvantages, some major advantages in favour of the approaches do
 exist. The foremost of these is the ability to analyse the complete
 diversity with a single sequencing run. When performing metagenomic
@@ -2470,7 +2471,7 @@ Another advantage of metagenomics-based analyses is their capability
 to increase the number of samples that can be processed since the
 plating steps may be entirely skipped. If we are not interested in
 obtaining high sequencing depths, then the samples may simply be
-processed through the WGS metagenomics pipeline and disentangled
+processed through the whole community metagenomics pipeline and disentangled
 computationally. For a higher depth, the plate sweep approach may be
 used to generate more reads from some interesting species. Regardless,
 both approaches significantly reduce the amount of laboratory work
@@ -2482,11 +2483,11 @@ resourced facilities.
 While the previous section covered the factors related to using
 metagenomics-derived results in practice in a more theoretical
 context, this section will focus on briefly summarizing the practical
-application of mSWEEP and mGEMS to both plate sweep and WGS
+application of mSWEEP and mGEMS to both plate sweep and whole community
 metagenomics data in Publications I-III. The first subsection will
 cover results from the plate sweep approach that was initially
 employed, and required, by both mSWEEP and mGEMS. The second
-subsection shows results from applying the two methods to WGS
+subsection shows results from applying the two methods to whole community
 metagenomics data, showing that the methods are not restricted to the
 plate sweep approach. The results are presented in more detail in
 their respective publications but a summary is provided here to elaborate on
@@ -2513,7 +2514,7 @@ ST131 \citep{maklin_strong_2022} had taken over and became the
 dominant lineages. No significant difference was detected in the
 composition of the samples (magnitudes of the relative abundance
 estimates), meaning that there was no significant difference in the
-number of samples that contained co-existing lineages pre- or
+number of samples that contained coexisting lineages pre- or
 post-treatment.
 
 This analysis demonstrates simple means to analyse the
@@ -2531,7 +2532,7 @@ composition in the pre-treatment cohort.
 Focusing the analysis on the \textit{E. coli} diversity only using the
 plate sweep approach provided high enough detail in the sequencing
 reads that within-lineage exploration could be performed. Contrary to
-performing WGS metagenomics on the same samples, the plate sweeps
+performing whole community metagenomics on the same samples, the plate sweeps
 added to the sequencing depth in the reads and allowed for accurate
 identification of the lineages. With the development of mGEMS, the
 analysis would become even more powerful with the possibility to
@@ -2539,12 +2540,12 @@ separate the different strains (in cases that exhibited coexistence)
 and allow subsequent use of the strain-specific bins in downstream
 antibiotic resistance gene finders or phylogenetic analyses.
 
-\subsection{WGS metagenomics}
+\subsection{Whole community metagenomics}
 
 Publication III shows a set of results from applying mSWEEP and mGEMS
-to WGS metagenomics sequencing data. This data was obtained from
+to whole community metagenomics sequencing data. This data was obtained from
 another study \citep{shao2019stunted} that investigated the differences in
-colonization of the newborn human gut using WGS metagenomic data from
+colonization of the newborn human gut using whole community metagenomics data from
 the first 21 days of life. In the original study, the analyses were
 performed only on the species-level. We used the same dataset to
 demonstrate that mSWEEP and mGEMS can be used to provide additional
@@ -2589,7 +2590,7 @@ strain content exist. The results together with the plate sweep
 results demonstrate the usefulness of having a method capable of
 targeted, high-resolution analysis of some parts of the
 microbiome. Additionally, since the results from the third study were
-derived from WGS metagenomics data, the study demosntrated the removal
+derived from whole community metagenomics data, the study demosntrated the removal
 of a significant barrier in requiring performing plate sweep
 metagenomics, which has prevented more widespread application of
 mSWEEP and mGEMS in the past. These results show that mSWEEP and mGEMS
@@ -2639,13 +2640,13 @@ plasmid-derived reads from a set of reads by treating it as a
 metagenomic sample composed of the chromosomal and plasmid-derived
 parts.
 
-The third point relates to combining plate sweeps and WGS
-metagenomics. Using WGS metagenomics alone has some issues in
+The third point relates to combining plate sweeps and whole community
+metagenomics. Using whole community metagenomics alone has some issues in
 detecting low abundance organisms of clinical importance, such as
 \textit{K. pneumoniae} \citep{gorrie2017gastrointestinal,
   martin2016molecular}, but its inclusion can provide useful
 information about other species present in the samples. When analysing
-WGS metagenomics data, plate sweeps could be incorporated into the
+whole community metagenomics data, plate sweeps could be incorporated into the
 pipelines to enrich for species of clinical interest that cannot be
 adequately identified without extremely deep direct sequencing of the
 sample. Since mSWEEP and mGEMS can analyse both types of data, they
