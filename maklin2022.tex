@@ -224,14 +224,19 @@ technically been possible for many years with the latter appearing
 around 2004 \citep{tyson2004community, venter2004environmental}, the
 development of computational methods has largely focused on analysing
 sequencing reads from a single organism at a time. Although many
-methods for analysis of metagenomic data at the species-level have
-been developed \citep{breitwieser2019review}, these do not typically
-perform well when applied to data containing strain-level variation
-\citep{sczyrba2017critical}. Methods diverging from the traditional
-relative abundance estimation (taxonomic profiling)
+methods for analysis of metagenomic data at the level of identifying
+strains (in this thesis a strain is the biological organism
+corresponding to a single cell colony) or lineages (a collection of
+strains that descend from the same strain and have maintained similar
+genetic sequences) have been developed \citep{breitwieser2019review},
+these do not typically perform well when applied to data containing
+multiple lineages of the same species at once
+\citep{sczyrba2017critical}, which will be referred to as
+lineage-level variation further in the thesis. Methods diverging from
+the traditional relative abundance estimation (taxonomic profiling)
 \citep{truong2017microbial} or metagenomic sequence read demixing
 (taxonomic binning) \citep{van2022strainge} context do successfully
-tackle strain-level variation but do not easily translate to replacing
+tackle lineage-level variation but do not easily translate to replacing
 assembly-based analyses such as SNP calling or phylogenetic inference.
 
 In this thesis I present two computational methods that enable
@@ -242,7 +247,7 @@ initial publication, I also demonstrate that they perform reliably
 when applied to WGS metagenomics data. Using either of the two
 approaches to reduce the costs associated with data collection, the
 methods presented here enable performing routine genomic
-epidemiological analyses when significant strain-level variation is
+epidemiological analyses when significant lineage-level variation is
 present in the collected sequencing data.
 
 The first of the two methods, called mSWEEP, consists of a
@@ -384,7 +389,7 @@ Metagenomic sequencing data analysis presents several challenges to
 bioinformaticians). Firstly, the increased diversity of species
 requires much larger computational resources to analyse
 \citep{yang2021review}. Secondly, the possible presence of
-strain-level variation complicates analyses that attempt to separate
+lineage-level variation complicates analyses that attempt to separate
 the reads to distinct taxonomic units because the differences between
 strains within a species can be minimal
 \citep{meyer2022critical}. Subsequently, the bulk of method
@@ -446,7 +451,7 @@ quantification is only required for some subset of organisms in the
 sample, reference-based methods frequently also provide means to
 filter out the reads belonging to the uninteresting organisms.
 
-The strain-level methods from this thesis take the reference-based
+The lineage-level methods from this thesis take the reference-based
 approach and specifically leverage bespoke reference
 collections. Tailoring the reference genome assemblies to fit the
 presumed contents of the samples allows both mSWEEP and mGEMS to
@@ -1478,7 +1483,7 @@ several of them. This differs from most work on binning, where the
 reads are typically only allowed an assignment in a single bin at a
 time because the variation between the organisms belonging to
 different bins is assumed large enough that multi-bin assignment may
-not be necessary. For within-species-level binning, this
+not be necessary. For lineage-level binning, this
 assumption obviously does not hold because of the shared genomic
 contents when the species are defined in a manner that reflects their
 phylogenetic characteristics. This means that the mGEMS binning
@@ -1486,9 +1491,9 @@ algorithm must be explicitly defined in a way that allows for
 assignment to multiple bins.
 
 The mGEMS binning algorithm consists of a rule for assigning the reads
-to the bins. This rule is derived by leveraging the read-level
-assignment probabilities $\gamma_{n, k} \in \left(0, 1\right)$, $n =
-1, \dots, N$, $k = 1, \dots, K$, $\sum_{k = 1}^{K}\gamma_{n, k} = 1$
+to the bins. This rule is derived by leveraging the assignment
+probabilities for each read $\gamma_{n, k} \in \left(0, 1\right)$, $n
+= 1, \dots, N$, $k = 1, \dots, K$, $\sum_{k = 1}^{K}\gamma_{n, k} = 1$
 produced by the variational approximation used in fitting the mSWEEP
 model (Equation \eqref{likelihood:vi-factorization}). To derive the
 assignment rule, some further assumptions regarding the reads and the
@@ -1617,7 +1622,7 @@ Publication I and Publication II.
 
 High-resolution metagenomics (in the context of this thesis) refers to
 applying some method capable of recovering variation at the
-within-species level to some kind of metagenomics data as defined in
+lineage-level to some kind of metagenomics data as defined in
 Section \ref{three-approaches-to-metagenomics}. In this chapter, the
 methods of interest are mSWEEP and mGEMS. The chapter will deal with
 the benchmarking and experimental results from Publication I and
@@ -1637,7 +1642,7 @@ advantage of being able to focus sequencing efforts to species that
 are known to grow on specific culture media, while WGS metagenomics
 provides data of \textit{all} organisms on some sample (including for
 example host DNA, fungi, commensal species, and so on). When the goal
-is to investigate strain-level variation, both approaches have their
+is to investigate lineage-level variation, both approaches have their
 uses in either producing more data from the species of interest or
 providing a less biased view of the sample contents at the expense of
 sequencing depth. Publications I-II were written with only plate sweep
@@ -1659,7 +1664,7 @@ non-dominant variants of the same species
 an open question whether similar naturally occurring variation is
 found ubiquituously across different microbiomes
 
-mSWEEP and mGEMS enable answering thes question regarding strain-level
+mSWEEP and mGEMS enable answering thes question regarding lineage-level
 variation by providing methods that can be targeted to capture the
 variation present in samples containing members of some bacterial
 species. Since many bacteria of clinical importance have been studied
@@ -2333,7 +2338,7 @@ previous literature that could be called metagenomic epidemiology has
 typically been performed using genus- or species-level resolution
 tools like 16S rRNA sequencing. In this chapter, the term also
 encompasses the use of mSWEEP/mGEMS to perform the analyses at the
-within-species level.
+lineage-level.
 
 \section{From genomic to metagenomic epidemiology}
 
@@ -2351,7 +2356,7 @@ interest. Using metagenomic sequencing data in place of isolate
 sequencing data comes with the previously covered benefits related to
 cost-efficiency, vast expansion of throughput, and a more thorough
 coverage of the variation in a sample. Metagenomic epidemiology also
-enables performing various novel analyses by allowing strain-level
+enables performing various novel analyses by allowing lineage-level
 analysis of either the less biased data produced by WGS metagenomics,
 or detailed exploration of the diversity within some restricted set of
 taxons that can be enriched via the plate sweep metagenomics approach.
@@ -2434,12 +2439,12 @@ estimate, the discovery of completely new species
 challenges for reference-based methods if the goal is to analyse the
 full diversity of the sample. Focusing on the more well-known bacteria
 does help in resolving the issue but when going further down to the
-within-species level, it is almost a certainty to find new lineages of
+lineage-level, it is almost a certainty to find new lineages of
 the species when the sequencing effort is sufficiently large simply
 due to the short timescale that bacterial evolution happens on.
 
 The third issue is related to the lack of maturity in methods for
-analysing metagenomic data at the strain-level, perhaps connected to
+analysing metagenomic data at the lineage-level, perhaps connected to
 the difficulties in solving the previous issues. Although mSWEEP and
 mGEMS provide tools for solving the problem, they are by no means
 alone capable of performing all analyses that might be of interest. In
@@ -2543,12 +2548,12 @@ colonization of the newborn human gut using WGS metagenomic data from
 the first 21 days of life. In the original study, the analyses were
 performed only on the species-level. We used the same dataset to
 demonstrate that mSWEEP and mGEMS can be used to provide additional
-insights into the strain-level dynamics present in the samples by
+insights into the lineage-level dynamics present in the samples by
 focusing on the species that are known to be pathogenic and have
 extensive available reference collections.
 
 The results from Publication III demonstrate one of the first insights into
-colonisation dynamics at the strain-level in a virgin microbiome. The
+colonisation dynamics at the lineage-level in a virgin microbiome. The
 time-series data from the first 21 days showed a strong competition in
 the gut, with the first strain to colonize the gut often becoming the
 dominant strain and preventing others from displacing
@@ -2561,7 +2566,7 @@ the first 21 days. Switches to another strain occurred very rarely
 within this time period but were more commonly observed in a single
 follow-up sampling somewhere between 4-12 months of age.
 
-Coexistence at the within species level was rarely observed across all
+Coexistence at the lineage-level was rarely observed across all
 species analysed in the study (\textit{Klebsiella} genus,
 \textit{E. coli}, \textit{E. faecalis}). Within the
 \textit{Klebsiella} genus, which is composed of several related
@@ -2596,7 +2601,7 @@ within the samples.
 \label{conclusions-and-future-directions}
 
 This thesis summarized the development and introduction of the mSWEEP
-and mGEMS methods for untangling strain-level variation in metagenomic
+and mGEMS methods for untangling lineage-level variation in metagenomic
 sequencing reads. Incorporating metagenomics data in genomic
 epidemiological studies was shown to enable novel insights into
 colonization dynamics and co-carriage of various species of bacteria
@@ -2648,7 +2653,7 @@ could be used to screen metagenomics datasets for samples that should
 be enriched for interesting species.
 
 The introduction of mSWEEP and mGEMS facilitates these types of
-analyses and other research directions. Consideration of strain-level
+analyses and other research directions. Consideration of lineage-level
 variation in epidemiological studies is likely to advance the field of
 genomic epidemiology beyond the isolate era. With the rapid production
 of high quality reference genomes from long-read sequencing studies,
