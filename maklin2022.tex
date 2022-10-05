@@ -155,7 +155,7 @@
 
 Public health research focusing on bacterial pathogens has been
 transformed by analysis of the contents of bacterial genomes obtained
-by whole-genome sequencing (WGS) since 2010.
+by whole-genome sequencing (WGS) since 2010
 \citep{armstrong2019pathogen}. In this time frame, the price of
 sequencing has decreased tremendously \citep{dnaseqcost,
   goodwin2016coming}, enabling adoption of sequencing as a standard
@@ -315,8 +315,7 @@ present, resulting in a need to sequence the sample more deeply to
 capture the less abundant organisms \citep{whelan2020culture,
   vollmers2017comparing, quince2017shotgun}. Combined with other
 issues related to host DNA abundance \citep{whelan2020culture, ivy2018direct, gu2019clinical}, the shortcomings of whole community metagenomics have
-so-far hindered its widespread adoption as a standard tool for
-genomic epidemiology.
+so-far hindered its adoption in genomic epidemiology.
 
 Plate sweep metagenomics proposes a middle-ground between the direct
 sequencing of whole community metagenomics and isolate studies by incorporating a
@@ -336,7 +335,6 @@ tools that require a high sequencing depth provided that the reads
 from different organisms can be computationally separated. Developing
 a tool to solve the aforementioned deconvolution problem is one of the
 key contributions of this thesis.
-\noindent\let\thefootnote\relax\footnote{Figure source: Adapted from \cite{miansari_fenugreek-sprouts} and \cite{niaid_escherichia-coli}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \begin{figure}[!t]
     \centering
@@ -369,6 +367,12 @@ single bacterial strain, in practice the number of colonies that can
 be isolated is often constrained by laboratory resources and nearly
 always restricted to rapidly growing colony-forming phenotypes.
 
+\vfill
+\pagebreak
+
+\noindent\let\thefootnote\relax\footnote{Figure \ref
+{fig:microbiome-sampling-methods} source: Adapted from
+\cite{miansari_fenugreek-sprouts} and \cite{niaid_escherichia-coli}.}
 In genomic epidemiological analyses, the whole-genome sequencing
 approach has been dominant due to its strengths in producing highly
 accurate data capable of SNP calling and differentiating between
@@ -379,10 +383,10 @@ as in capturing more of the diversity in the samples, but the existing
 metagenome-analysis tools have not been able to reach the required
 level of resolution \citep{sczyrba2017critical,
   mcintyre2017comprehensive, maklin_bacterial_2021}. In this thesis I
-tackle the issue and present methodological advances that may finally
-open up more widespread use of metagenomic sequencing data in genomic
-epidemiology.
+tackle the issue and present methodological advances that open up more
+widespread use of metagenomic sequencing data in genomic epidemiology.
 
+\pagebreak
 \section{Analysing metagenomic sequence data}
 
 Metagenomic sequencing data analysis presents several challenges to
@@ -427,18 +431,19 @@ dedicated taxonomic profilers that do not attempt to bin the contigs
 or the sequencing reads \citep{beghini2021integrating,
   truong2017microbial, maklin_high-resolution_2021, van2022strainge}.
 
-Recently, a third category of methods attempting to track the
-presence/absence of a specific strain of bacteria across several
-samples has emerged \citep{van2022strainge, truong2017microbial,
-  nayfach2016integrated}. Methods in this category aim to infer
-similarity and shared strains and provide an attractive tool for
-transmission analysis when the genome assemblies of the individual
-strains are not required or cannot be assembled due to the sequencing
-depth. Ideally, the tools for tracking strains would be combined with
-those for extracting the contig or read bins, together enabling both a
-wide analysis covering all samples and strains and a focused analysis
-of the strains that are found in high enough abundance to assemble
-their genomes.
+\vfill
+\pagebreak
+Recently, a third category of methods for tracking the
+presence/absence of a specific strain across several samples has
+emerged \citep{van2022strainge, truong2017microbial,
+  nayfach2016integrated}. These methods aim to infer similarity and
+shared strains and provide an attractive tool for transmission
+analysis when the genomes of the individual strains are not
+required or cannot be assembled due to low sequencing depth. Ideally,
+the tools for tracking strains would be combined with those for
+extracting the contig or read bins, together enabling both a wide
+analysis covering all samples and strains and a focused analysis of
+the strains that are abundant enough to assemble their genomes.
 
 All of the above can be further divided into reference-based methods
 that leverage reference data in their analysis, and reference-free
@@ -454,25 +459,24 @@ filter out the reads belonging to the uninteresting organisms.
 
 The lineage-level methods from this thesis take the reference-based
 approach and specifically leverage bespoke reference
-collections. Tailoring the reference genome assemblies to fit the
-presumed contents of the samples allows both mSWEEP and mGEMS to
-perform at a resolution that is mainly limited by the quality and
-variety of the available assemblies. Contrary to many existing
-reference-based methods, mSWEEP and mGEMS do not attempt
-identification of the individual reference sequences, but rather
-incorporate a clustering of the reference assemblies within a species
-to biologically interpretable and phylogenetically reflected
-lineages. Since inter-lineage differences are generally more
-pronounced, the identification task at this level becomes
-significantly easier \citep{sankar2016bayesian} and additionally
-allows for handling cases where the sequencing reads originate from a
-previously unseen isolate which nevertheless belongs to a known
-reference lineage. Trading the ability to imprecisely identify the
-exact sequence to precisely identifying the lineage it belongs to is
-especially useful in clinical settings, where the diversity of
-potential pathogenic bacteria has been thoroughly studied using
-whole-genome sequencing and the clinically relevant
-lineages are often well-known.
+collections. Tailoring the collections to fit the presumed contents of
+the samples allows both mSWEEP and mGEMS to perform at a resolution
+that is mainly limited by the quality and variety of the available
+assemblies. Contrary to many existing reference-based methods, mSWEEP
+and mGEMS do not attempt identification of the individual reference
+sequences, but rather incorporate a clustering of the reference
+assemblies to biologically interpretable and phylogenetically
+reflected lineages. Since differences between lineages are generally
+more pronounced, the identification task becomes significantly easier
+\citep{sankar2016bayesian} and extends to handling cases where the
+sequencing reads originate from a previously unknown sequence which
+nevertheless belongs to a known reference lineage. Trading the ability
+to imprecisely identify the exact sequence to precisely identifying
+the lineage is especially useful in clinical settings, where the
+diversity of potential pathogenic bacteria has been thoroughly studied
+using whole-genome sequencing and the clinically relevant lineages are
+often well-known.
+\vfill
 
 \section{Metagenomics data in genomic epidemiology}
 
@@ -589,6 +593,9 @@ available from GitHub at
 The latest version at the time of writing is archived and available in
 Zenodo \citep{maklin_mGEMS}.
 
+\vfill
+\pagebreak
+
 \subsection*{Publication III \textemdash{ } Strong pathogen competition in neonatal gut colonization}
 By \underline{Tommi M\"aklin}, Harry A Thorpe, Anna K P\"ontinen, Rebecca
 A Gladstone, Yan Shao, Maiju Pesonen, Alan McNally, P\aa l J Johnsen,
@@ -613,19 +620,20 @@ interpreting the results, and naturally to writing the publication.
 The rest of the thesis is structured into three chapters that describe
 the contents of Publications I-III and how they contribute to the
 topics presented in the introduction chapter. The first of the three
-chapters (Chapter \ref{mixture-modelling-of-sequence-data}) describes the
-basic ideas behind the mSWEEP and mGEMS methods and provides
+chapters (Chapter \ref{mixture-modelling-of-sequence-data}) describes
+the basic ideas behind the mSWEEP and mGEMS methods and provides
 historical context for the parts of the methods that have their
 origins within analysis of RNA sequencing data. The second chapter
-(Chapter \ref{high-resolution-metagenomics}) describes the experimental
-results from Publications I-III in more detail, focusing more on the
-applied part rather than the theoretical foundations. The third
-chapter (Chapter \ref{section:metagenomic-epidemiology}) is more speculative in
-nature, covering both the demonstrated applications from Publications
-I-III as well as exploring potential future avenues for use of the
-developed methods. The three chapters are followed by a concluding
-chapter (Chapter \ref{conclusions-and-future-directions}) followed by reprints
-of the three included original publications.
+(Chapter \ref{high-resolution-metagenomics}) describes the
+experimental results from Publications I-III in more detail, focusing
+more on the applied part rather than the theoretical foundations. The
+third chapter (Chapter \ref{section:metagenomic-epidemiology}) is more
+speculative in nature, covering both the demonstrated applications
+from Publications I-III as well as exploring potential future avenues
+for use of the developed methods. The three chapters are followed by a
+concluding chapter (Chapter \ref{conclusions-and-future-directions})
+which in the physical copy of the thesis is further followed by
+reprints of the three included original publications.
 
 \chapter{Mixture modeling of sequence data}
 \label{mixture-modelling-of-sequence-data}
@@ -690,13 +698,13 @@ lineages defined in the reference collection and a probability matrix
 describing the fit of each sequencing read to each reference lineage.
 
 Accompanying mSWEEP is the mGEMS pipeline, which is a method for
-assigning each read in the sample to some (or none if the read does
-not pseudoalign against any reference sequences) of the lineages in
-the reference collection. mGEMS utilizes the relative abundance
-estimates and the probability matrix from mSWEEP to assign the lineage
-membership of each read. Importantly, mGEMS allows for multi-lineage
-membership, since many reads can plausibly originate from several
-strains within the same species.
+assigning each read in a sample to some (or none if the read does not
+pseudoalign against any reference sequences) of the reference
+lineages. mGEMS utilizes the relative abundance estimates and the
+probability matrix from mSWEEP to assign the lineage membership of
+each read. Importantly, mGEMS allows for multi-lineage membership,
+since many reads can plausibly originate from several strains within
+the same species.
 
 Although both mSWEEP and mGEMS are novel methods that have been
 published in Publications I-II, the roots of mSWEEP
@@ -999,11 +1007,11 @@ into
   p\left(R, I, \boldsymbol\theta\right) = p\left(\boldsymbol\theta\right)\prod_{n = 1}^{N} \prod_{s = 1}^{S} p\left(r_{n, s} \middle| I_{n} = s\right) p\left(I_{n} = s \middle| \boldsymbol\theta\right).
 \end{equation}
 
-The model in Equation \eqref{model:joint-distribution-factorized}
+The model in Equation \ref{model:joint-distribution-factorized}
 corresponds to the mixture model that has been historically used in
 the RNA-Seq context and the predecessor of mSWEEP. The difference
 between the various methods utilizing the model of Equation
-\eqref{model:joint-distribution-factorized} is in the formulation of the
+\ref{model:joint-distribution-factorized} is in the formulation of the
 likelihood term $p\left(r_{n, s} \middle| I_{n} = s\right)$ and
 consideration of either reference sequences or reference lineages as
 the target of the latent indicator variables. Note that indexing with
@@ -1014,7 +1022,7 @@ proportions of these reference sequences in the full set of reads $R$.
 
 \subsection{Incorporating grouped reference sequences}
 
-The model in Equation \eqref{model:joint-distribution-factorized}
+The model in Equation \ref{model:joint-distribution-factorized}
 performs admirably when the reference sequences $s$ are sufficiently
 different from each other such as in the RNA-Seq context, however
 attempts to estimate the relative abundances of individual reference
@@ -1038,7 +1046,7 @@ as well as improving the scalability of the inference part by reducing
 the number of reference units.
 
 In terms of the model, the clustering is included in Equation
-\eqref{model:joint-distribution-factorized} by replacing alignments
+\ref{model:joint-distribution-factorized} by replacing alignments
 against the reference sequences $r_{n, s}$ with alignments against the
 clusters $r_{n, k}, k = 1, \dots, K$. With this replacement, the
 changes to the model are minimal: the $s$:s are simply replaced by
@@ -1055,7 +1063,7 @@ solves the inference problem for several species of bacteria with
 well-defined clusterings within the species
 \citep{sankar2016bayesian}.
 
-The model of Equation \eqref{model:grouped-joint-distribution} has,
+The model of Equation \ref{model:grouped-joint-distribution} has,
 however, several issues that render it difficult to apply in some
 scenarios. First, the model requires selecting a representative
 sequence for each cluster $k$. This selection is by no means an easy
@@ -1089,7 +1097,7 @@ become the numbers of observed pseudoalignments $r_{n, k}, 0 \leq
 r_{n, k} \leq M_{k}$ against the $M_{k}$ sequences belonging to a
 cluster $k$. If assumptions about conditional independence between the clusters
 are kept, the formulation for the model remains the same as the one
-presented in Equation \eqref{model:grouped-joint-distribution} with the
+presented in Equation \ref{model:grouped-joint-distribution} with the
 only changes being to the likelihood term $p\left(r_{n, k} \middle|
 I_{n} = k\right)$.
 
@@ -1098,7 +1106,7 @@ I_{n} = k\right)$.
 
 When dealing with pseudoalignments against clustered reference
 sequences, the likelihood term $p\left(r_{n, k} \middle| I_{n} =
-k\right)$ in Equation \eqref{model:grouped-joint-distribution} needs to
+k\right)$ in Equation \ref{model:grouped-joint-distribution} needs to
 be carefully defined to account for several factors arising from the
 biology affecting the reference sequences. One, the clusters may vary
 greatly in size, with some of them having just one reference sequence
@@ -1135,7 +1143,7 @@ where $f\left(r_{n, k}, M_{k}\right)$ is the main term defining the
 likelihood for clusters with more than one sequence, and is the term
 that should fulfill the requirements for the likelihood function.
 
-In Equation \eqref{likelihood:without-normalization}, the first part
+In Equation \ref{likelihood:without-normalization}, the first part
 provides a slight zero-inflation for the model, corresponding
 (roughly) to the error rate in Illumina sequencing data with a Phred
 quality score of Q20 \citep{ewing1998baseone, ewing1998basetwo}. The
@@ -1160,7 +1168,7 @@ on the support $k \in \left\{0, \dots, n\right\}$
   \label{likelihood:beta-binomial-pmf}
   p\left(k \middle| n, \alpha, \beta\right) = \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(\alpha, \beta\right)}.
 \end{equation}
-In Equation \eqref{likelihood:beta-binomial-pmf}, $B\left(\alpha, \beta\right)$ is the beta function
+In Equation \ref{likelihood:beta-binomial-pmf}, $B\left(\alpha, \beta\right)$ is the beta function
 \begin{equation}
   \label{likelihood:beta-function}
   B\left(\alpha, \beta\right) = \int_{0}^{1}t^{\alpha - 1}\left(1 - t\right)^{\beta - 1}dt,
@@ -1171,7 +1179,7 @@ However, since the assumptions made for the likelihood function
 require that a cluster with 100\% of sequences compatible with the
 read is a better fit than another with only 99\% regardless of their
 sizes $M_{k}$, the beta-binomial distribution of Equation
-\eqref{likelihood:beta-binomial-pmf} cannot be directly
+\ref{likelihood:beta-binomial-pmf} cannot be directly
 used. Nevertheless, a version of the likelihood function that is
 inspired by the beta-binomial distribution but fulfills the
 assumptions can be found. Namely, the function $p\left(k \middle| n,
@@ -1185,7 +1193,7 @@ beta-binomial distribution so that its probability mass function is
 increasing. This assumption is fulfilled when $\alpha\left(\alpha +
 \beta\right)^{-1} \in \left(0.5, 1\right)$ \citep{berg1993condorcet}.
 
-Performing the scaling of Equation \eqref{likelihood:beta-binomial-pmf}
+Performing the scaling of Equation \ref{likelihood:beta-binomial-pmf}
 by the maximum value $p\left(n \middle| n, \alpha, \beta\right)$
 results in the following scaled likelihood function $p^{\star}\left(k
 \middle| n, \alpha, \beta\right)$
@@ -1197,7 +1205,7 @@ results in the following scaled likelihood function $p^{\star}\left(k
     &= \binom{n}{k}\frac{B\left(k + \alpha, n - k + \beta\right)}{B\left(n + \alpha, \beta\right)}.
   \end{aligned}
 \end{equation}
-Since the scaling in Equation \eqref{likelihood:beta-binomial-scaled} is
+Since the scaling in Equation \ref{likelihood:beta-binomial-scaled} is
 by a constant, $p\left(n \middle| n, \alpha, \beta\right)$, the
 resulting function $p^{\star}\left(k \middle| n, \alpha, \beta\right)$
 remains an increasing function of $k$ when the original function
@@ -1211,8 +1219,8 @@ $p\left(k \middle| n, \alpha, \beta\right)$ is increasing.
 %% \end{figure}
 %%
 %% A comparison of the likelihood presented in Equation
-%% \eqref{likelihood:beta-binomial-scaled} with the plain beta-binomial
-%% likelihood in Equation \eqref{likelihood:beta-binomial-pmf} is presented
+%% \ref{likelihood:beta-binomial-scaled} with the plain beta-binomial
+%% likelihood in Equation \ref{likelihood:beta-binomial-pmf} is presented
 %% in Figure \ref{fig:msweep-vs-beta-binomial}. Figure
 %% \ref{fig:msweep-vs-beta-binomial} shows that the mSWEEP format gives
 %% more weight to values of $k$ that are close to $n$ while making the
@@ -1224,13 +1232,13 @@ $p\left(k \middle| n, \alpha, \beta\right)$ is increasing.
 
 With the probability mass function of the distribution
 $p^{\star}\left(k \middle| n, \alpha, \beta\right)$, the full
-definition for the third part of the likelihood in Equation \eqref{likelihood:without-normalization} is
+definition for the third part of the likelihood in Equation \ref{likelihood:without-normalization} is
 \begin{equation}
   \label{likelihood:normalized}
   p\left(r_{n, k} \middle| I_{n} = k\right) = 0.99\frac{p^{\star}\left(r_{n, k} \middle| M_{k}, \alpha, \beta\right)}{Z\left(r_{n, k}\right)}\text{ if } r_{n, k} \geq 1\text{ and } M_{k} > 1,
 \end{equation}
 where $Z\left(r_{n, k}\right)$ is a normalizing constant. The scaling
-in Equation \eqref{likelihood:beta-binomial-scaled} fulfills the
+in Equation \ref{likelihood:beta-binomial-scaled} fulfills the
 requirement that the likelihood of each cluster must be on the same
 scale despite different size. The next section will derive a closed
 form for the normalizing constant $Z\left(r_{n, k}\right)$.
@@ -1238,9 +1246,9 @@ form for the normalizing constant $Z\left(r_{n, k}\right)$.
 \subsection{Normalizing the likelihood}
 
 While the function $p^{\star}\left(k \middle| n, \alpha, \beta\right)$
-in Equation \eqref{likelihood:beta-binomial-scaled} closely resembles
+in Equation \ref{likelihood:beta-binomial-scaled} closely resembles
 the probability mass function of a beta-binomial distribution
-(Equation \eqref{likelihood:beta-binomial-pmf}), the function
+(Equation \ref{likelihood:beta-binomial-pmf}), the function
 $p^{\star}\left(k \middle| n, \alpha, \beta\right)$ by itself does not
 sum to $1$ over its support $k \in \left\{ 1, \dots, K \right\}$,
 which means that the function is not a proper probability mass
@@ -1251,9 +1259,10 @@ In principle any distribution on a finite support can be normalized
 but in many cases the normalizing constant does not have a closed
 form. Fortunately, it turns out that \textemdash{ } thanks to the
 properties of the beta function (see Equation
-\eqref{likelihood:beta-function} for the definition) \textemdash{ }
+\ref{likelihood:beta-function} for the definition) \textemdash{ }
 $Z\left(r_{n, k}\right)$ does have a closed form. Deriving this closed
-form requires using the following identity for the beta function
+form requires using the following identity for the beta function which
+is derived in Theorem \ref{lemma:beta-function-identity}.
 \begin{theorem}
   \label{lemma:beta-function-identity}
   \[
@@ -1270,7 +1279,7 @@ form requires using the following identity for the beta function
   \end{align*}
 \end{proof}
 
-Applying Theorem \eqref{lemma:beta-function-identity} leads to the closed form of the normalizing constant $Z\left(r_{n, k}\right)$.
+Applying Theorem \ref{lemma:beta-function-identity} leads to the closed form of the normalizing constant $Z\left(r_{n, k}\right)$.
 \begin{theorem}
   \label{theorem:likelihood-can-be-normalized}
   Let
@@ -1292,14 +1301,15 @@ Applying Theorem \eqref{lemma:beta-function-identity} leads to the closed form o
   \[
   g\left(k \: \middle| \: n, \alpha + n, \beta\right) = \binom{n}{k} \frac{B\left(\alpha + n + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)},\: 0 \leq k \leq n.
   \]
-  Using the identity $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ (Theorem \eqref{lemma:beta-function-identity}) results in an alternative form for $g$
+  Using the identity $B\left(a + 1, b\right) = B\left(a, b\right)\frac{a}{a + b}, a > 0, b > 0$ (Theorem \ref{lemma:beta-function-identity}) results in an alternative form for $g$:
+  
 \begin{align*}
   g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + n + k - 1 + n - k + \beta} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \frac{\alpha + n + k - 2}{\alpha + \beta + 2n - 2} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{2} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
-\intertext{Above, Theorem \eqref{lemma:beta-function-identity} was applied twice. Repeadetly applying Theorem \eqref{lemma:beta-function-identity} $n$ times yields the alternative form}
+\intertext{Above, Theorem \ref{lemma:beta-function-identity} was applied twice. Repeadetly applying Theorem \ref{lemma:beta-function-identity} $n$ times yields the alternative form}
   g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k - n , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
   &= \binom{n}{k} \frac{B\left(\alpha + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
   &= f\left(k, n\right) \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
@@ -1312,13 +1322,13 @@ is also a probability mass function. Thus, setting
 \[
 Z\left(n\right) = \prod_{j = 1}^{n}\frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}
 \]
-is sufficient to normalize $f\left(k, n\right)$ and prove Theorem \eqref{theorem:likelihood-can-be-normalized}.
+is sufficient to normalize $f\left(k, n\right)$ and prove Theorem \ref{theorem:likelihood-can-be-normalized}.
 \end{proof}
 
 \subsection{Likelihood hyperparameters}
 
 Instead of the traditional parametrization for the beta binomial
-distribution through $\alpha >0, \beta > 0$, in the Publication I the
+distribution through $\alpha >0, \beta > 0$, in Publication I the
 distribution is reparametrized to slightly change the interpretation
 of the parameters. The reparametrised forms for $\alpha$ and $\beta$ are
 \begin{equation}
@@ -1331,12 +1341,12 @@ represents the mean success rate in repeated draws from the beta
 binomial distribution. The second parameter $\phi > 0$ measures
 the variation in the success rate for each draw
 \citep{griffiths1973maximum}. In the formulation for the likelihood in
-Equation \eqref{likelihood:normalized}, each cluster $k$ has its own
+Equation \ref{likelihood:normalized}, each cluster $k$ has its own
 parameters $\pi_{k}, \phi_{k}$.
 
 Although methods such as Bayesian optimization \citep{movckus1975bayesian} could
 be employed to find optimal values for the parameters $\pi_{k},
-\phi_{k}$ in Equation \eqref{likelihood:reparametrization}, we set
+\phi_{k}$ in Equation \ref{likelihood:reparametrization}, we set
 their values based on a reasonable compromise that performed well in
 Publication I. The values of $\pi_{k}, \phi_{k}$ are set to
 \begin{equation}
@@ -1349,15 +1359,15 @@ Publication I. The values of $\pi_{k}, \phi_{k}$ are set to
 \subsection{Fitting the model using variational inference}
 
 With the likelihood defined in Equations
-\eqref{likelihood:without-normalization} and
-\eqref{likelihood:normalized}, the remaining task is to come up with a
+\ref{likelihood:without-normalization} and
+\ref{likelihood:normalized}, the remaining task is to come up with a
 suitable method to infer the relative abundances
 $\boldsymbol\theta$. Since the model is principally the same as the
-one used in BIB (Equation \eqref{model:grouped-joint-distribution}),
+one used in BIB (Equation \ref{model:grouped-joint-distribution}),
 just with a different formula for the likelihood term $p\left(r_{n, k}
 = k \middle| I_{n} = k\right)$, the variational inference algorithm
 from BIB can be adjusted by simply changing the likelihood term to
-that of Equation \eqref{likelihood:without-normalization} and the rest of
+that of Equation \ref{likelihood:without-normalization} and the rest of
 the algorithm remains the same.
 
 Variational inference by itself is an extremely broad topic that lies
@@ -1390,7 +1400,7 @@ mixing proportions, $I_{n} \indept I_{m}, n \neq m |
 
 In practice, the best approximation $q\left(\boldsymbol\theta,
 I\right)$ is found when optimal values for the parameters $\gamma_{n,
-  k}$ in Equation \eqref{likelihood:vi-factorization} are found
+  k}$ in Equation \ref{likelihood:vi-factorization} are found
 \citep{hensman2015fast}. The Riemannian conjugate gradient
 method and variational Bayesian expectation maximization steps are
 used to find the optimal values for $\gamma_{n, k}$
@@ -1423,7 +1433,7 @@ Compared to variational inference, MCMC does have the advantage that,
 provided sufficient runtime, the samples will be from the true
 posterior. In practice, this leads to better estimates of the
 covariance between the sampled parameters when the model is of the
-form in Equation \eqref{model:joint-distribution}
+form in Equation \ref{model:joint-distribution}
 \citep{hensman2015fast}. However, replacing the variational inference
 algorithm in the mSWEEP model with the Gibbs sampler from the original
 BitSeq \citep{glaus2012identifying} does not seem to produce any
@@ -1459,7 +1469,7 @@ significant differences between the parameter estimates (Figures
 \section{From profiling to binning}
 \label{section:binning}
 
-This sections covers using the model from mSWEEP to derive an
+This section covers using the model from mSWEEP to derive an
 algorithm for assigning the sequencing reads $r_{n, k}$ to the
 reference lineages $k$, also known as binning. Binning differs from
 relative abundance estimation in that the goal is to produce some
@@ -1501,7 +1511,7 @@ to the bins. This rule is derived by leveraging the assignment
 probabilities for each read $\gamma_{n, k} \in \left(0, 1\right)$, $n
 = 1, \dots, N$, $k = 1, \dots, K$, $\sum_{k = 1}^{K}\gamma_{n, k} = 1$
 produced by the variational approximation used in fitting the mSWEEP
-model (Equation \eqref{likelihood:vi-factorization}). To derive the
+model (Equation \ref{likelihood:vi-factorization}). To derive the
 assignment rule, some further assumptions regarding the reads and the
 reference sequences are required. Firstly, the sequencing reads are
 assumed to be generated from only one strain belonging to the same
@@ -1524,7 +1534,7 @@ a subset of sequencing reads $r_{n}$ such that
 holds for some threshold $q_{k} \in \left[0, 1\right]$. Note that the
 threshold may be different for each cluster $k$. Because of the way
 the bins $G_{k}$ are defined in Equation
-\eqref{binning:bins-definition}, this definition obviously allows for
+\ref{binning:bins-definition}, this definition obviously allows for
 a read to belong to several bins (for a trivial example, consider
 the case where $q_{k} = 0$ for all $k$).
 
@@ -1555,20 +1565,20 @@ $P\left[A_{n, k} = 1\right] \geq \theta_{k}$ means that there is a
 high chance that $B_{n, k} \rightarrow 1$ when the former
 holds. Because of this relationship, an assignment rule can be derived
 by using the estimates $\gamma_{n, k}$ (Equation
-\eqref{likelihood:vi-factorization}) for the probability $P\left[A_{n,
+\ref{likelihood:vi-factorization}) for the probability $P\left[A_{n,
     k} = 1\right]$
 \begin{equation}
   \label{binning:theoretical-assignment-rule}
   \text{if } \gamma_{n, k} \geq \theta_{k}, \text{ assign the read } r_{n} \text{ to } G_{k}.
 \end{equation}
-Equation \eqref{binning:theoretical-assignment-rule} provides an
+Equation \ref{binning:theoretical-assignment-rule} provides an
 inequality whose validity can be checked to assess the probability of
 the event $B_{n, k} = 1$ which could not be estimated directly.
 
 \subsection{Practical considerations}
 
 While the assignment rule in Equation
-\eqref{binning:theoretical-assignment-rule} provides a theoretically
+\ref{binning:theoretical-assignment-rule} provides a theoretically
 sound tool to assign reads $r_{n}$ to the bins $G_{k}$, applying it in
 practice requires a slight adjustment due to computational
 accuracy. Namely, when estimating the relative abundances $\theta_{k}$
@@ -1587,14 +1597,14 @@ is (in the worst-case scenario) at most
 \end{equation}
 
 The noise-level in the worst-case scenario of Equation
-\eqref{binning:assignment-rule-noise} means that when evaluating the
+\ref{binning:assignment-rule-noise} means that when evaluating the
 validity of the inequality in Equation
-\eqref{binning:theoretical-assignment-rule}, the thresholds $\theta_k$
+\ref{binning:theoretical-assignment-rule}, the thresholds $\theta_k$
 should be adjusted with $1 - d$. This adjustment in turn means that
 (in the worst-case scenario) only the fraction of relative abundance
 that is assigned to nonzero estimates is considered. Adjusting
-Equation \eqref{binning:theoretical-assignment-rule} with $d$ produces
-the final assignment rule that is used in mGEMS
+Equation \ref{binning:theoretical-assignment-rule} with $d$ produces
+the final assignment rule that is used in mGEMS:
 \begin{equation}
   \label{binning:assignment-rule}
   \text{if } \gamma_{n, k} \geq (1 - d)\theta_{k}, \text{ assign the read } r_{n} \text{ to } G_{k}.
@@ -1602,14 +1612,14 @@ the final assignment rule that is used in mGEMS
 Because the variational approximation used to fit the mSWEEP model
 already provides both the estimates $\gamma_{n, k}$ and the relative
 abundances $\theta_{k}$, the assignment rule in Equation
-\eqref{binning:assignment-rule} is in practice inexpensive to
+\ref{binning:assignment-rule} is in practice inexpensive to
 evaluate after the model has been fitted.
 
 \subsection{General applicability of the assignment rule}
 
 Since the relative abundances $\theta_k$ are derived from the values
 $\gamma_{n, k}$ by averaging over $n = 1, \dots, N$, the assignment
-rule in Equation \eqref{binning:assignment-rule} can be seen as a way to
+rule in Equation \ref{binning:assignment-rule} can be seen as a way to
 cluster the rows (or columns) of a generic probability matrix, whose
 rows (or columns) sum up to $1$. This rule in particular allows
 assigning each row (or column) to several clusters at the same
@@ -1688,14 +1698,13 @@ level of detail in future epidemiological analyses and routine
 surveillance.
 
 While the previous chapter covered the theoretical foundations of
-mSWEEP and mGEMS, the remainder of this chapter will focus on the
-practical considerations regarding these two methods. Namely, we
-briefly overview the performance of the methods in various settings,
-and cover some questions related to the reliability of the approach as
-well as the sensitivity to the reference sequence collection. The last
-part of the chapter will provide some extra coverage of the results
-from Publications I-III, with the aim of xploring what kind of
-information metagenomics-derived results provide.
+mSWEEP and mGEMS, this chapter will focus on practical considerations
+regarding the two methods. Namely, we briefly overview their
+performance in various settings, and cover questions related to
+reliability of the approaches and sensitivity to the reference
+sequence collection. The last part of the chapter covers additional
+results from Publications I-III, exploring what kind of information
+metagenomics-derived results provide.
 
 \subsection{The mSWEEP/mGEMS pipeline}
 
@@ -1788,15 +1797,15 @@ a post-processing step that aids in filtering out reads that may
 mistakenly have been assigned to the wrong bin.
 
 Since mGEMS allows for assigning a sequencing read to several
-bins/lineages at once, the produced bins sometimes have very high
-coverages for the the genomes that the organisms corresponding to the
-bins share. This is especially true when the sample truly contains
-several closely related organisms. Consequently, we investigated in
-Publication II the effect of replacing the isolate-data optimised
-shovill with metagenomic assemblers \citep{peng2012idba,
-  li2015megahit, nurk2017metaspades}, which presumably implement
-better handling of variable coverage in the produced genomes. Although
-we observed some differences in the resulting assemblies (Figure
+bins/lineages at once, the produced bins may result in very high
+coverages for genomic sequences that are shared by multiple organisms
+belonging to different bins. Consequently, we
+investigated in Publication II the effect of replacing the
+isolate-data optimised shovill with metagenomic assemblers
+\citep{peng2012idba, li2015megahit, nurk2017metaspades}, which
+presumably implement better handling of variable coverage in the
+produced genomes. Although we observed some differences in the
+resulting assemblies (Figure
 \ref{fig:mgems-assembler-choice-statistics}), particularly when mGEMS
 was paired with IDBA-UD which resulted in highly fragmented assemblies
 or metaSPAdes which completely failed to assemble some sequences,
@@ -1805,6 +1814,7 @@ performing approaches (mGEMS/shovill or mGEMS/MEGAHIT). Regardless of
 the assembler choice, using the assemblies from the mGEMS pipeline in
 downstream analyses performed similarly to using those created from
 corresponding isolate sequencing data.
+
 \noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-assembler-choice-statistics} and legend source: adapted from Publication II, Figure 3 \citep{maklin_bacterial_2021}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \begin{figure}[!t]
@@ -1885,21 +1895,9 @@ present. Additionally, since the preceding metagenomics tools have
 typically not been developed with the strain-complexity in mind, a
 performance comparison between them and mSWEEP (or mGEMS) is not
 meaningful nor fair.
-
-The approach used by BIB is similar to the one in mSWEEP in that the
-reference sequences are grouped together into lineages and estimation
-is performed on the level of these lineages. Metakallisto attempts the
-much more ambitious task of estimating the relative abundances for the
-individual sequences. Hence, a direct comparison between the three is
-not possible because metakallisto reports the abundance estimates for
-the sequences. This was addressed in Publication I by modifying the
-output from metakallisto to include a step where the abundance
-estimates within the same lineage are summed up. Even though this step was
-not included in the original metakallisto publication, its addition helps to
-compare the estimates from mSWEEP, BIB, and metakallisto.
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:msweep-bib-metakallisto} and legend source: adapted from Publication I, Figure 2 and Extended Data figure S1 \citep{maklin_bacterial_2021}.}
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:msweep-bib-metakallisto} and legend source: adapted from Publication I, Figure 2 and Extended Data figure S1 \citep{maklin_high-resolution_2021}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
-\begin{figure}[!ht]
+\begin{figure}[!hb]
     \centering
     \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/WOR2021_mSWEEP_Figure_S1.pdf}
     \caption{Comparison between mSWEEP, BIB, and modified
@@ -1915,80 +1913,78 @@ compare the estimates from mSWEEP, BIB, and metakallisto.
   \label{fig:msweep-bib-metakallisto}
 \end{figure}
 
-The main result of Publication I is that mSWEEP outperforms both BIB
-and metakallisto (Figure \ref{fig:msweep-bib-metakallisto}), and that
-incorporating the probabilistic model from mSWEEP proves to be a
-necessary step in obtaining accurate information. Although these
+The approach used by BIB is similar to the one in mSWEEP in that the
+reference sequences are grouped together into lineages and estimation
+is performed on the level of these lineages. Metakallisto attempts the
+much more ambitious task of estimating the relative abundances for the
+individual sequences. Hence, a direct comparison between the three is
+not possible because metakallisto reports the abundance estimates for
+the sequences. This was addressed in Publication I by modifying the
+output from metakallisto to include a step where the abundance
+estimates within the same lineage are summed up. Even though this step was
+not included in the original metakallisto publication, its addition helps to
+compare the estimates from mSWEEP, BIB, and metakallisto.
+
+One of the main results of Publication I is that mSWEEP outperforms
+both BIB and metakallisto (Figure \ref{fig:msweep-bib-metakallisto}),
+and that incorporating the probabilistic model from mSWEEP proves to
+be a necessary step in obtaining accurate information. Although these
 performance benchmarks were only performed on data containing a single
 strain in each sample, we demonstrate in Publication II through
 stochastic dominance \citep{hadar1969rules, bawa1975optimal} that the
 methods which do not succeed with single-strain estimates are unlikely
 to provide accurate results from multi-strain samples.
 
-Another benchmark presented in Publication I concerns evaluating
-performance in the presence of several strains from the same
-species. In this benchmark, sequence data from three strains, obtained
-via isolate sequencing, were mixed together in single sample at known
+Another result from Publication I concerns benchamrking the
+performance in presence of several strains from the same species. In
+this benchmark, sequence data from three strains, obtained via isolate
+sequencing, were mixed together in single sample at known
 proportions. Then, mSWEEP was applied to estimate the proportions when
 the real reference sequences were removed from the reference
 collection but at least one close representative from the same lineage
 was still available. In this setting, mSWEEP demonstrated very
 accurate performance when measured on both true positive and true
-negative estimates. The \textit{K. pneumoniae} benchmark proved
+negative estimates (Figure \ref{fig:msweep-synthetic-mixtures}). The \textit{K. pneumoniae} benchmark proved
 somewhat more challenging than the others, possibly due to the
 excessive genomic variation present in the species
 \citep{wyres2016klebsiella}, but the errors in the results were
 nevertheless within acceptable limits when measured by the relative
 abundances for the correct lineage and the incorrect lineages.
-
-The \textit{E. coli} benchmark in comparison was more challenging in
-its setup: all three strains that were used originated from ST131 and,
-to make things more interesting, two of the strains originated from
-the same subclade, called ST131-C2
-\citep{kallonen2017systematic}. This renders the identification task
-substantially more difficult, since the split of ST131-C2 was based on
-incorporating information from the accessory genome of ST131 using
-PopPUNK \citep{lees2019fast}. The accessory genome of \textit{E. coli}
-is not as stable as the core genome, on which the
-ST131 and the ST131 A-C designations are based \citep{kallonen2017systematic},
-resulting in some difficulties for mSWEEP in separating the C2-4 and
-C2-6 sublineages. Nevertheless, mSWEEP manages to identify the
-presence of both clades quite well, and the downstream analysis using
-mGEMS covered in the next remains accurate in terms of its results.
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:msweep-synthetic-mixtures} and legend source: adapted from Publication I, Figure 4 \citep{maklin_high-resolution_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[height=0.33\textheight,width=\textwidth,keepaspectratio]{img/reproduced/WOR2021_mSWEEP_Figure_4.pdf}
+    \caption{Abundance estimates from synthetic mixtures of three
+      lineages do not result in higher number of false positive
+      estimates when compared to estimates from the single-colony
+      samples, as measured by the largest estimate for a lineage that
+      does not contribute any sequencing reads. The only exception is
+      the S. epidermidis 11-cluster case which is not accurately
+      identified in neither the synthetic mixtures nor the
+      single-colony samples.}
+  \label{fig:msweep-synthetic-mixtures}
+\end{figure}
 
 \subsection{mGEMS}
 \label{mgems-performance-benchmark}
 
 The taxonomic binner mGEMS was, in turn, benchmarked in Publication II
 using again both synthetic mixtures of reads from isolate sequencing,
-and the same \textit{in vitro} benchmark that was used with
-mSWEEP. For mGEMS, the chief measures of accuracy used were related to
-those that are the main objects of interest in genomic epidemiological
-analyses: SNPs and phylogenies estimated from the SNP data. In the
-synthetic mixtures, the performance of mGEMS was evaluated at the
-level of within-ST variation using data from \textit{E. coli}
-\citep{brodrick2017longitudinal}, at the between-ST and within-species
-level using \textit{E. faecalis} \citep{raven2016genome}, and at an
-extreme level with only dozens of SNPs separating the different
-reference lineages using data from \textit{S. aureus}
-\citep{paterson2015capturing}.
+and on an \textit{in vitro} that contained measured amounts of DNA
+from known sources. For mGEMS, the chief measures of accuracy used
+were related to those that are the main objects of interest in genomic
+epidemiological analyses: SNPs and phylogenies estimated from the SNP
+data. In the synthetic mixtures, the performance of mGEMS was
+evaluated at the level of within-ST variation using data from
+\textit{E. coli} \citep{brodrick2017longitudinal}, at the between-ST
+and within-species level using \textit{E. faecalis}
+\citep{raven2016genome}, and at an extreme level with only dozens of
+SNPs separating the different reference lineages using data from
+\textit{S. aureus} \citep{paterson2015capturing}.
 
 \subsubsection{Synthetic mixture benchmarks}
 
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-snps} and legend source: adapted from Publication II, Figure 3 \citep{maklin_bacterial_2021}.}
-\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
-\begin{figure}[!b]
-    \centering
-    \includegraphics[height=0.33\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_3a.pdf}
-    \caption{SNP calling from mGEMS-derived assemblies versus isolate
-      assemblies for \textit{E. coli} ST131. SNPs were called from
-      contigs after assembling the reads. Points are colored according
-      to ST131 sublineages. The dashed gray line represents a perfect
-      match. The blue line is the posterior mean and the shaded area
-      the 95\% posterior credible region calculated from 10000
-      posterior samples using a Bayesian linear regression model.}
-  \label{fig:mgems-ecoli-snps}
-\end{figure}
 \noindent\let\thefootnote\relax\footnote{$^{3}$ \url{https://github.com/tseemann/snippy}}
 The \textit{E. coli} benchmark investigated how mGEMS-derived
 assemblies performed for maximum likelihood phylogeny estimation
@@ -2002,11 +1998,26 @@ tends to slightly overestimate the number of SNPs in these assemblies
 performed at the level of variation within a sequence type
 (\textit{E. coli} ST131) using sublineages defined in a previous study
 \citep{kallonen2017systematic}.
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-phylogeny} and legend source: adapted from Publication II, Figure 4 \citep{maklin_bacterial_2021}.}
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-snps} and legend source: adapted from Publication II, Figure 3 \citep{maklin_bacterial_2021}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \begin{figure}[!t]
     \centering
-    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_4.pdf}
+    \includegraphics[height=0.33\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_3a.pdf}
+    \caption{SNP calling from mGEMS-derived assemblies versus isolate
+      assemblies for \textit{E. coli} ST131. SNPs were called from
+      contigs after assembling the reads. Points are colored according
+      to ST131 sublineages. The dashed gray line represents a perfect
+      match. The blue line is the posterior mean and the shaded area
+      the 95\% posterior credible region calculated from 10000
+      posterior samples using a Bayesian linear regression model.}
+  \label{fig:mgems-ecoli-snps}
+\end{figure}
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-ecoli-phylogeny} and legend source: adapted from Publication II, Figure 4 \citep{maklin_bacterial_2021}.}
+
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[height=0.70\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_4.pdf}
     \caption{Midpoint-rooted maximum likelihood trees from core SNP
       alignment of \textit{E. coli} ST131 strains. The phylogeny in
       panel \textbf{a)} was constructed from isolate sequencing data
@@ -2017,20 +2028,6 @@ performed at the level of variation within a sequence type
       indicate bootstrap support values from RAxML-NG for the next
       branch towards the leaves of the tree.}
   \label{fig:mgems-ecoli-phylogeny}
-\end{figure}
-
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-efaecalis-phylogeny} and legend source: adapted from Publication II, Figure 5 \citep{maklin_bacterial_2021}.}
-\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
-\begin{figure}[!h]
-    \centering
-    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_5.pdf}
-    \caption{Tanglegram of two midpoint-rooted maximum likelihood
-      trees from core SNP alignment of \textit{E. faecalis}
-      strains. The phylogenies were inferred with RAxML-NG. Numbers
-      below the edges indicate bootstrap support values from RAxML-NG
-      for the next branch towards the leaves of the tree. Only values under 90 are shown. Branches are
-      coloured according to the \textit{E. faecalis} STs.}
-    \label{fig:mgems-efaecalis-phylogeny}
 \end{figure}
 In the \textit{E. faecalis} benchmark, the assessment was performed
 similarly to \textit{E. coli} but with the change to investigating
@@ -2049,7 +2046,21 @@ placement of the STs within the overall phylogeny. This phenomenon is
 also apparent in the bootstrap support values for both the isolate and
 mGEMS-derived phylogenies, partially explaining the differences
 between the two.
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-efaecalis-phylogeny} and legend source: adapted from Publication II, Figure 5 \citep{maklin_bacterial_2021}.}
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_5.pdf}
+    \caption{Tanglegram of two midpoint-rooted maximum likelihood
+      trees from core SNP alignment of \textit{E. faecalis}
+      strains. The phylogenies were inferred with RAxML-NG. Numbers
+      below the edges indicate bootstrap support values from RAxML-NG
+      for the next branch towards the leaves of the tree. Only values under 90 are shown. Branches are
+      coloured according to the \textit{E. faecalis} STs.}
+    \label{fig:mgems-efaecalis-phylogeny}
+\end{figure}
 
+\pagebreak
 The final synthetic benchmark in Publication II investigated
 phylogeny recovery within \textit{S. aureus} ST22 with sublineages
 that are separated by a few dozen of SNPs \citep{paterson2015capturing}, source
@@ -2081,6 +2092,7 @@ assemblies.
     \label{fig:mgems-saureus-phylogeny}
 \end{figure}
 
+\pagebreak
 
 \subsubsection{\textit{In vitro} benchmark}
 
@@ -2089,35 +2101,62 @@ already mentioned earlier, where known amounts of DNA from three
 different strains were mixed together using Qbit
 \citep{maklin_bacterial_2021}, and both the mixed sample and the
 corresponding isolate cultures were sequenced. This data was used to
-re-test the performance of both mSWEEP (covered in the previous
-subsection) and mGEMS. The mGEMS part of the test examined the
-recovery of SNPs from either the isolate sequencing data or the
-Qbit-mixed sequencing data. In both the \textit{E. coli} and
-\textit{E. faecalis} benchmark samples the SNPs recovered from the
-mGEMS data reflect the values from the isolate data quite
-closely. There is some difficulty in separating the ST131-C2
-sublineages 4 and 6 which, however, is likely due to the increasingly
-difficult task of defining sublineages within sublineages using the
-accessory genome. The primary sublineages (A, B, B0, C1, or C2,
-established in \citep{kallonen2017systematic}) are defined using the
-core genome but the further sublineages within sublineages
-(ST131-C2-2, ST131-C2-6 and so on) incorporate information from the
-accessory genome, which is by definition much more variable than the
-stable core genome. This leads to a situation where incorporating the
-accessory information does further separate the established ST131-C2
-sublineage, but the resulting split is only valid for a certain
-collection of sequences, and does not necessarily extend to other
-sequences collected from a different environment or at a different
-time, which is the case with the data analysed in Publication
-II. However, since the sequence types, or sometimes their
-well-established sublineages such as in the case of \textit{E. coli}
-ST131, are typically the taxonomic unit of interest in practical
-analyses, the observed difficulties in separating between accessory
-genome based highly specific sublineages are likely not relevant in
-applications of the method.
+re-test the performance of both mSWEEP and mGEMS.
 
-Together, these benchmarks show that the mGEMS method can be reliably
-used to disentangle metagenomic sequencing data and create
+The mGEMS part of the test examined the recovery of SNPs from either
+the isolate sequencing data or the Qbit-mixed sequencing data. In both
+the \textit{E. coli} and \textit{E. faecalis} benchmark samples the
+SNPs recovered from the mGEMS data reflect the values from the isolate
+data quite closely (Figure \ref{fig:mgems-in-vitro-benchmark}). There
+is some difficulty in separating the ST131-C2 sublineages 4 and 6,
+however. Similar results are obtained when mSWEEP is applied, with the
+\textit{E. coli} benchmark being more challenging than the
+\textit{E. faecalis} benchmark and the main difficulty being in
+distinguishing between the \textit{E. coli} ST131-C2-4 and ST131-C2-6
+sublineages. Nevertheless, mSWEEP manages to identify the presence of
+both clades quite well.
+
+The accuracy hit in separating the ST131 sublineages is likely
+explained by their construction. While the primary sublineages (A, B,
+B0, C1, or C2, established in \citep{kallonen2017systematic}) are
+defined using the core genome, the further sublineages within
+sublineages (ST131-C2-2, ST131-C2-6 and so on) incorporate information
+from the accessory genome, which is by definition much more variable
+than the stable core genome. This leads to a situation where, while
+incorporating the accessory information does further separate the
+established ST131-C2 sublineage, the resulting split is possibly only
+valid for a certain collection of sequences with the same accessory
+contents, and does not necessarily extend to other sequences collected
+from a different environment or at a different time. However, since
+the sequence types, or sometimes their well-established sublineages
+such as in the case of \textit{E. coli} ST131, are typically the
+taxonomic unit of interest in practical analyses, the observed
+difficulties in separating between the accessory genome based specific
+sublineages are likely not relevant in applications of the method.
+\vfill
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[height=0.70\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_2_rev.pdf}
+  \caption{Evaluating mGEMS and mSWEEP on the in vitro benchmark
+    data. Panels (a) E. coli and (b) E. faecalis compare the results
+    of SNP calling from the isolate sequencing data (horizontal axis)
+    against the results of SNP calling from the mixed samples with the
+    mGEMS pipeline (vertical axis). The subplot in panel (b) contains
+    a zoomed-in view of the points around the origin. Panels (c) and
+    (d) compare the abundance estimates from mSWEEP to the ground
+    truth relative abundances. Panel (c) shows the absolute difference
+    between the estimates from mSWEEP and the true abundance. The
+    values shown are split into E. coli and E. faecalis lineages truly
+    present in the samples, and lineages truly absent. Panel (d) shows
+    the relative error in the truly present lineages.}
+    \label{fig:mgems-in-vitro-benchmark}
+\end{figure}
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-in-vitro-benchmark} and legend source: adapted from Publication II, Figure 2 \citep{maklin_bacterial_2021}.}
+
+\pagebreak
+Together, these benchmarks show that mSWEEP and mGEMS method can be
+reliably used to disentangle metagenomic sequencing data and create
 lineage-specific read bins. These bins can in turn be directly used in
 standard epidemiological analyses in place of isolate sequencing data
 and produce similar results. While mGEMS does not completely replace
@@ -2127,10 +2166,9 @@ sequences from isolate sequencing remains a critical part of the
 pipeline \textemdash{ } the method shows promise in reducing the
 number of isolate cultures that need to be created when the isolates
 circulating in the samples are known. Additionally, applying mGEMS to
-whole community metagenomics sequencing data can yield results that previously
-available tools have not been able to produce as will be shown in more
-in Chapter \ref{section:metagenomic-epidemiology} that covers the
-experimental results from Publication III.
+whole community metagenomics sequencing data can yield results that
+previously available tools have not been able to produce as will be
+shown in more detail in Chapter \ref{section:metagenomic-epidemiology}.
 
 \subsection{Sequencing depth requirements}
 
@@ -2160,12 +2198,11 @@ translates to accurately recovering lineages with a relative abundance
 between 0.01 to 0.02 if the whole sample is sequenced at a depth that
 would correspond to 100x coverage in reads originating from a single
 source.
-
 \noindent\let\thefootnote\relax\footnote{Figure \ref{fig:msweep-sequencing-depth} and legend source: adapted from Publication I, Figure 5 \citep{maklin_high-resolution_2021}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
-\begin{figure}[!t]
+\begin{figure}[!ht]
   \centering
-  \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/WOR2021_mSWEEP_Figure_5.pdf}
+  \includegraphics[height=0.50\textheight,width=\textwidth,keepaspectratio]{img/reproduced/WOR2021_mSWEEP_Figure_5.pdf}
   \caption{Relative error in 87 complex synthetic mixtures comprising
     10 E. coli lineages at varying sequencing depths.  The boxplot
     displays the relative error in the relative abundance estimates
@@ -2226,6 +2263,7 @@ means for more theoretically sound consideration of the relative
 abundance results than using simple heuristics such as filtering by a
 minimum abundance.
 
+\pagebreak
 The detection thresholds are created by taking a collection of
 reference sequences with corresponding short-read sequencing data
 available, and using a bootstrapping approach to determine the
@@ -2266,6 +2304,8 @@ the computational demands can be somewhat alleviated by employing a
 block-design based strategy to remove several sequences at
 the same time, which would lead to roughly similar results.
 
+\vfill
+\pagebreak
 Unfortunately, the detection threshold approach has not found much use
 in the so-far published studies that use mSWEEP. The issue of defining
 trustworthy estimates has mostly been tackled by utilizing minimum
@@ -2437,21 +2477,21 @@ might only focus on species that have already been studied using
 isolate sequencing.
 
 \subsection{Challenges}
-% WIP continue from here
+
 The major challenges in using metagenomic sequencing data again relate
-to the diversity found in the samples. It is not atypical to encounter
-the (pathogenically) interesting species at very low abundances,
-resulting in a need to sequence the sample at much higher depth than
-what would be enough in an isolate study. This low abundance can also
-cause problems in terms of identifying the presence of the species in
-the first place, as the number of reads that are \textit{unique} to
-the species is even lower. Many of the other sequencing reads will be
+to the diversity found in the samples. Sometimes the (pathogenically)
+interesting species is encountered at very low abundances, resulting
+in a need to sequence the sample at much higher depth than what would
+be enough in an isolate study. This low abundance can also cause
+problems in identifying the presence of the species in the
+first place, as the number of reads that are \textit{unique} to the
+species is even lower. Many of the other sequencing reads will be
 generated from commensal or even contaminant species which usually
-have no use in the downstream analyses. Additionally, whole community metagenomics
-sometimes results in an overabundance of host DNA in the sample
-\citep{pereira2019impact, mcardle2020sensitivity}, which then
-dominates the contents of the reads from a sequencing run if host DNA
-depletion methods are not used.
+have no use in the downstream analyses. Additionally, whole community
+metagenomics sometimes results in an overabundance of host DNA in the
+sample \citep{pereira2019impact, mcardle2020sensitivity}, which then
+dominates the contents of the reads from a sequencing run without host
+DNA depletion methods.
 
 A second problem with metagenomics analyses relates to the lack of
 reference data from many domains of life that might be found in direct
@@ -2657,7 +2697,7 @@ short or long-read sequencing data in combination with mSWEEP/mGEMS to
 investigate plasmids. Plasmids are mobile genetic elements carried by
 bacteria, and they sometimes carry virulence factors or resistance
 genes \citep{wyres2016klebsiella, denamur2021population,
-  palmer2010horizontal} , or otherwise help opportunistic pathogen
+  palmer2010horizontal}, or otherwise help opportunistic pathogen
 species adapt to hospital environments
 \citep{arredondo2020plasmids}. Especially in short-read sequencing,
 current methods are often not able to differentiate between plasmid
@@ -2690,7 +2730,7 @@ species that were analysed in this thesis, and insights into the
 already possible species expanded through the inclusion of
 high-resolution metagenomics.
 
-\printbibliography[heading=bibintoc]
+\printbibliography[heading=bibintoc,title=References]
 
 \chapter*{Included publications\markboth{Included publications}{}}
 \addcontentsline{toc}{chapter}{Included publications}
