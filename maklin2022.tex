@@ -277,7 +277,7 @@ the lineage-level abundances. The second method, mGEMS, processes the
 output from mSWEEP to construct an assignment rule for assigning each
 read to one or more bins corresponding to a reference lineage
 \citep{maklin_bacterial_2021}. Both methods explicitly account for the
-fundamental characteristic of within-species sequencing data where
+fundamental characteristic of sequencing data containing multiple lineages of the same species where
 each read can, and often does belong to several lineages of the same
 species at the same time. The combination of mSWEEP and mGEMS enables
 effective computational quantification of metagenomic data at a high
@@ -902,8 +902,7 @@ Another significant step in building the reference collection is
 deciding on the desired level of detail in the lineage
 definitions. While the fit of the reference sequences to the
 sequencing reads ultimately determines the relative abundance
-estimates, tweaking the depth of the within-species clustering into
-lineages can enable identification in cases where the reference
+estimates, tweaking the depth of the lineage definitions can enable identification in cases where the reference
 sequences are not exactly from a comparable source to the sample
 reads. Publications I-III employ several different approaches to the
 lineage definitions, making use of multilocus sequence typing (MLST)
@@ -1903,7 +1902,7 @@ Identification of Bacteria (BIB) \citep{sankar2016bayesian} and the
 pseudoalignment-based metakallisto methods
 \citep{schaeffer2017pseudoalignment}. The vast majority of other
 metagenomics tools published at the time either did not attempt
-within-species profiling or had been developed for cases with only one
+lineage-level profiling or had been developed for cases with only one
 strain present from each species. Because of these limitations,
 Publication I only makes the comparisons with BIB and metakallisto,
 which have been developed for settings with several strains
@@ -1992,11 +1991,10 @@ from known sources. For mGEMS, the chief measures of accuracy used
 were related to those that are the main objects of interest in genomic
 epidemiological analyses: SNPs and phylogenies estimated from the SNP
 data. In the synthetic mixtures, the performance of mGEMS was
-evaluated at the level of within-ST variation using data from
-\textit{E. coli} \citep{brodrick2017longitudinal}, at the between-ST
-and within-species level using \textit{E. faecalis}
+evaluated at the level of distinguishing between different clades within a specific sequence type using data from
+\textit{E. coli} \citep{brodrick2017longitudinal}, at the level of distinguishing between different sequence types using data from \textit{E. faecalis}
 \citep{raven2016genome}, and at an extreme level with only dozens of
-SNPs separating the different reference lineages using data from
+SNPs separating the different reference clusters using data from
 \textit{S. aureus} \citep{paterson2015capturing}.
 
 \subsubsection{Synthetic mixture benchmarks}
@@ -2613,10 +2611,10 @@ composition in the pre-treatment cohort.
 
 Focusing the analysis on the \textit{E. coli} diversity only using the
 plate sweep approach provided high enough detail in the sequencing
-reads that within-lineage exploration could be performed. Contrary to
+reads that exploration could even be performed at the level of identifying lineages within a sequence type. Contrary to
 performing whole community metagenomics on the same samples, the plate sweeps
 added to the sequencing depth in the reads and allowed for accurate
-identification of the lineages. With the development of mGEMS, the
+identification. With the development of mGEMS, the
 analysis would become even more powerful with the possibility to
 separate the different strains (in cases that exhibited coexistence)
 and allow subsequent use of the strain-specific bins in downstream
