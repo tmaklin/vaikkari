@@ -99,18 +99,17 @@
   present in the sample and assign relative abundances to them, and
   taxonomic binning, where the sequencing data from the sample is
   divided into bins that correspond to some sensible taxonomic
-  units. In this thesis I introduce methods for performing these two
-  tasks at a high-resolution capable of distinguishing between
-  lineages of bacterial species. The first of these methods is mSWEEP,
-  which solves the profiling task by utilizing a collection of grouped
+  units. This thesis introduces methods for performing these two tasks
+  at a high-resolution capable of distinguishing between lineages of
+  bacterial species. The first of these methods is mSWEEP, which
+  solves the profiling task by utilizing a collection of grouped
   bacterial reference sequences, pseudoalignment, and a probabilistic
   model. The second method, mGEMS, builds upon mSWEEP to solve the
   binning task using an assignment rule derived from the fundamentals
   of the probabilistic model used by mSWEEP. Both methods are
   accompanied by efficient implementations that utilize fast
   variational inference and pseudoalignment to fit the model in a
-  reasonable time, rendering them applicable to large-scale
-  datasets.
+  reasonable time, rendering them applicable to large-scale datasets.
 
   Both mSWEEP and mGEMS have been developed for application in either
   the traditional whole community metagenomics context, where the
@@ -257,11 +256,11 @@ the traditional relative abundance estimation (taxonomic profiling)
 tackle lineage-level variation but do not easily translate to replacing
 assembly-based analyses such as SNP calling or phylogenetic inference.
 
-In this thesis I present two computational methods that enable
+This thesis presents two computational methods that enable
 taxonomic profiling and taxonomic binning from either whole community metagenomic
 or plate sweep metagenomic short-read sequencing data. While the plate
 sweep metagenomics approach was the focus of both methods during their
-initial publication, I also demonstrate that they perform reliably
+initial publication, further research has shown that they also perform reliably
 when applied to whole community metagenomics data. Using either of the two
 approaches to reduce the costs associated with data collection, the
 methods presented here enable performing routine genomic
@@ -288,9 +287,9 @@ mixed samples with results often comparable to using isolate data.
 Even though both mSWEEP and mGEMS were originally designed with
 applications in plate sweep metagenomics in mind, Publication III
 \citep{maklin_strong_2022} demonstrates applicability of both methods
-to whole community metagenomics data. In Publication III we have analysed whole community
-metagenomics data from samples collected from a cohort of UK neonates
-\citep{shao2019stunted}. Results from this data show strong
+to whole community metagenomics data. The data analysed in Publication
+III was collected from a cohort of UK neonates
+\citep{shao2019stunted} and the samples were submitted for whole community metagenomics sequencing. Results from this data show strong
 competition between bacterial species and strains during the initial
 colonization of the newborn gut microbiome. More importantly from a
 methods perspective, this analysis shows that mSWEEP and mGEMS provide
@@ -400,8 +399,8 @@ in both increasing the number of samples that can be processed as well
 as in capturing more of the diversity in the samples, but the existing
 metagenome-analysis tools have not been able to reach the required
 level of resolution \citep{sczyrba2017critical,
-  mcintyre2017comprehensive, maklin_bacterial_2021}. In this thesis I
-tackle the issue and present methodological advances that open up more
+  mcintyre2017comprehensive, maklin_bacterial_2021}. Here, the issue is
+tackled and the thesis presents methodological advances that open up more
 widespread use of metagenomic sequencing data in genomic epidemiology.
 
 \pagebreak
@@ -417,7 +416,7 @@ strains within a species can be minimal
 \citep{meyer2022critical}. Subsequently, the bulk of method
 development has focused on operating with the assumption that only a
 single strain from each species is present in the same sample
-\citep{breitwieser2019review}. In this section I will briefly cover
+\citep{breitwieser2019review}. This section will briefly cover
 some of the previous approaches and describe how mSWEEP and mGEMS fit
 into the metagenomics toolkit.
 
@@ -574,10 +573,10 @@ Stephen Baker, Julian Parkhill, Samuel K Sheppard, Jukka Corander, and
 Antti Honkela. Published in \textit{Wellcome Open Research} (2021),
 5:14, doi: \href{https://doi.org/10.12688/wellcomeopenres.15639.2}{10.12688/wellcomeopenres.15639.2}.
 
-In Publication I \citep{maklin_high-resolution_2021}, we presented and
+Publication I \citep{maklin_high-resolution_2021}, presented and
 benchmarked the mSWEEP method for taxonomic profiling of sequencing
-data containing multiple strains from the same bacterial species. My
-contributions included conceptualization of the study, formal analysis
+data containing multiple strains from the same bacterial species. The author
+contributed to conceptualization of the study, formal analysis
 and investigation of the data, developing the methodology and software
 implementations, validation and visualization of the results, and
 writing and editing both the original draft and the revised
@@ -596,9 +595,9 @@ and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
 7.11, doi: \href{https://doi.org/10.1099/mgen.0.000691}{10.1099/mgen.0.000691}.
 
 Publication II \citep{maklin_bacterial_2021} continued to build upon
-mSWEEP by developing an algorithm for binning sequencing reads at
-lineage-level of mSWEEP. This approach and the accompanying software
-implementation are both mGEMS. I contributed to Publication II by
+mSWEEP by developing an algorithm for binning sequencing reads at the
+lineage-level of mSWEEP analyses. This approach, and the accompanying software
+implementation, are both called mGEMS. The author contributed to Publication II by
 taking part in conceiving the study, developing the mGEMS pipeline, in
 designing both the synthetic and the \textit{in vitro} experiments,
 developing the mGEMS assignment algorithm, running the experiments,
@@ -625,13 +624,13 @@ Publication III \citep{maklin_strong_2022} provides an example of
 applying mSWEEP and mGEMS to whole community metagenomics
 sequencing data and explores the dynamics of pathogen competition and
 colonization in the gut microbiome of babies in their first three
-weeks of life. My contributions to Publication III include running the
+weeks of life. The author contributed to Publication III in running the
 mSWEEP/mGEMS pipeline on all data used in Publication III, updating the
 reference databases for the investigated species, performing the
 analysis of the mSWEEP/mGEMS results for the samples containing
 \textit{E. coli}, and aiding the co-authors in analysing the other
-species. I additionally contributed to creating the visualisations,
-interpreting the results, and naturally to writing the publication.
+species. Additional contributions included creating the visualisations,
+interpreting the results, and naturally writing the publication.
 
 \section{Structure}
 
@@ -1011,15 +1010,15 @@ model is
   p\left(R, I, \boldsymbol\theta\right) = \prod_{n = 1}^{N}p\left(r_{n} \middle| I_{n}\right) p\left(I_{n} \middle| \boldsymbol\theta\right)p\left(\boldsymbol\theta\right).
 \end{equation}
 
-Now, assume that for each read $r_{n}, 1 \leq n \leq N$, we observe
-alignments $r_{n, s}$ against the reference sequences $s = 1, \dots,
-S$. The information contained in $r_{n, s}$ may be anything about the
-alignment such as its length, quality, or location. Furthermore,
-assume conditional independence between the alignments against different reference
-sequences $r_{n, i} \indept r_{n, j} | \mathbf{\theta}$ for all $i
-\neq j, 1 \leq i \leq S, 1 \leq j \leq S$. This leads to the joint
-distribution from Equation \ref{model:joint-distribution} factorizing
-into
+Now, assume that for each read $r_{n}, 1 \leq n \leq N$, only alignments
+$r_{n, s}$ against the reference sequences $s = 1, \dots, S$ are
+observed. The information contained in $r_{n, s}$ may be anything
+about the alignment such as its length, quality, or
+location. Furthermore, assume conditional independence between the
+alignments against different reference sequences $r_{n, i} \indept
+r_{n, j} | \mathbf{\theta}$ for all $i \neq j, 1 \leq i \leq S, 1 \leq
+j \leq S$. This leads to the joint distribution from Equation
+\ref{model:joint-distribution} factorizing into
 \begin{equation}
   \label{model:joint-distribution-factorized}
   p\left(R, I, \boldsymbol\theta\right) = p\left(\boldsymbol\theta\right)\prod_{n = 1}^{N} \prod_{s = 1}^{S} p\left(r_{n, s} \middle| I_{n} = s\right) p\left(I_{n} = s \middle| \boldsymbol\theta\right).
@@ -1364,8 +1363,8 @@ parameters $\pi_{k}, \phi_{k}$.
 
 Although methods such as Bayesian optimization \citep{movckus1975bayesian} could
 be employed to find optimal values for the parameters $\pi_{k},
-\phi_{k}$ in Equation \ref{likelihood:reparametrization}, we set
-their values based on a reasonable compromise that performed well in
+\phi_{k}$ in Equation \ref{likelihood:reparametrization},
+their values are set based on a reasonable compromise that performed well in
 Publication I. The values of $\pi_{k}, \phi_{k}$ are set to
 \begin{equation}
   \begin{aligned}
@@ -1389,9 +1388,9 @@ that of Equation \ref{likelihood:without-normalization} and the rest of
 the algorithm remains the same.
 
 Variational inference by itself is an extremely broad topic that lies
-somewhat outside the scope of this dissertation. Thus, I will only
-cover the parts that are directly relevant to the contributions from
-the thesis \textemdash{ } namely, how the probability matrix that mSWEEP
+somewhat outside the scope of this dissertation. Thus, this section only
+covers the parts that are directly relevant to the contributions from
+this thesis \textemdash{ } namely, how the probability matrix that mSWEEP
 generates and mGEMS leverages is obtained. For a more thorough
 coverage of variational inference in this context, the BitSeqVB publication
 \citep{hensman2015fast} provides an explanation for the case where the
@@ -1717,8 +1716,8 @@ surveillance.
 
 While the previous chapter covered the theoretical foundations of
 mSWEEP and mGEMS, this chapter will focus on practical considerations
-regarding the two methods. Namely, we briefly overview their
-performance in various settings, and cover questions related to
+regarding the two methods. Namely, the chapter briefly overviews their
+performance in various settings, and covers questions related to
 reliability of the approaches and sensitivity to the reference
 sequence collection. The last part of the chapter covers additional
 results from Publications I-III, exploring what kind of information
@@ -1784,7 +1783,7 @@ such databases do not exist.
 
 After clustering the reference sequences, the next step is to build an
 index for pseudoalignment, and pseudoalign the reads from the samples
-against the index. In the mGEMS pipeline, we use Themisto
+against the index. In the mGEMS pipeline, the Themisto method is used
 \citep{maklin_bacterial_2021} to perform both the index construction
 and the pseudoalignment. The pseudoalignment step produces binary
 pseudoalignment vectors for each read against every reference
@@ -1817,12 +1816,11 @@ mistakenly have been assigned to the wrong bin.
 Since mGEMS allows for assigning a sequencing read to several
 bins/lineages at once, the produced bins may result in very high
 coverages for genomic sequences that are shared by multiple organisms
-belonging to different bins. Consequently, we
-investigated in Publication II the effect of replacing the
+belonging to different bins. Consequently, Publication II investigated the effect of replacing the
 isolate-data optimised shovill with metagenomic assemblers
 \citep{peng2012idba, li2015megahit, nurk2017metaspades}, which
 presumably implement better handling of variable coverage in the
-produced genomes. Although we observed some differences in the
+produced genomes. Although this resulted in some differences in the
 resulting assemblies (Figure
 \ref{fig:mgems-assembler-choice-statistics}), particularly when mGEMS
 was paired with IDBA-UD which resulted in highly fragmented assemblies
@@ -1948,7 +1946,7 @@ both BIB and metakallisto (Figure \ref{fig:msweep-bib-metakallisto}),
 and that incorporating the probabilistic model from mSWEEP proves to
 be a necessary step in obtaining accurate information. Although these
 performance benchmarks were only performed on data containing a single
-strain in each sample, we demonstrate in Publication II through
+strain in each sample, Publication I demonstrated through
 stochastic dominance \citep{hadar1969rules, bawa1975optimal} that the
 methods which do not succeed with single-strain estimates are unlikely
 to provide accurate results from multi-strain samples.
@@ -2358,14 +2356,14 @@ by considering a set of sequencing reads originating from two
 bacterial strains, both with $100$ base pair long genomes. Now, assume
 that these strains differ by a single base pair and are present in
 equal proportions in the sample providing the sequencing
-reads. Assuming that we have 100 one base pair long reads from each
-position in both genomes, the average coverage of both strains would
+reads. Assuming 100 one base pair long reads from each
+position in both genomes are available, the average coverage of both strains would
 be $199$ since $9900\cdot2$ reads will align to both genomes and only
 $100\cdot2$ reads will align to just one. However, when considering
 the relative abundance estimates for these two strains, their true
 values are $0.50$ and $0.50$ \textemdash{ } contrary to the fractions
 of reads that fit with each strain, $0.99$ and $0.99$ \textemdash{ }
-since we know that both strains are present in equal proportions. In
+since both strains were assumed present in equal proportions. In
 this setup, both strains would have a pseudocoverage of $99.5$ which
 is a conservative value compared to the traditional definition of
 coverage.
@@ -2544,8 +2542,8 @@ daunting, difficult, and especially time-consuming task.
 Although using whole community or plate sweep metagenomics in practice has its
 disadvantages, some major advantages in favour of the approaches do
 exist. The foremost of these is the ability to analyse the complete
-diversity with a single sequencing run. When performing metagenomic
-sequencing, we get vastly more data about the contents and composition
+diversity with a single sequencing run since metagenomic
+sequencing produces vastly more data about the contents and composition
 of the sample than what would be obtained even with several different
 culture media and subsequent isolate sequencing runs. This information
 in turn enables making inferences about the coexistence and
@@ -2554,9 +2552,8 @@ even co-transmission when considering epidemiological applications.
 
 Another advantage of metagenomics-based analyses is their capability
 to increase the number of samples that can be processed since the
-plating steps may be entirely skipped. If we are not interested in
-obtaining high sequencing depths, then the samples may simply be
-processed through the whole community metagenomics pipeline and disentangled
+plating steps may be entirely skipped. If obtaining high sequencing depths is not a priority, then the samples may simply be
+processed through the standard whole community metagenomics pipeline and disentangled
 computationally. For a higher depth, the plate sweep approach may be
 used to generate more reads from some interesting species. Regardless,
 both approaches significantly reduce the amount of laboratory work
@@ -2632,8 +2629,7 @@ to whole community metagenomics sequencing data. This data was obtained from
 another study \citep{shao2019stunted} that investigated the differences in
 colonization of the newborn human gut using whole community metagenomics data from
 the first 21 days of life. In the original study, the analyses were
-performed only on the species-level. We used the same dataset to
-demonstrate that mSWEEP and mGEMS can be used to provide additional
+performed only on the species-level. Using the same dataset demonstrated that mSWEEP and mGEMS can be used to provide additional
 insights into the lineage-level dynamics present in the samples by
 focusing on the species that are known to be pathogenic and have
 extensive available reference collections.
