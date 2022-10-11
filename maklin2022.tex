@@ -169,8 +169,6 @@
 
 \tableofcontents
 
-\mainmatter
-
 \chapter*{List of original publications\markboth{List of original publications}{}}
 
 \subsection*{Publication I \textemdash{ } High-resolution sweep metagenomics using fast probabilistic inference}
@@ -184,7 +182,7 @@ Corander, and Antti Honkela. Published in \textit{Wellcome Open
 By \underline{Tommi M\"aklin}, Teemu Kallonen, Jarno Alanko, \O rjan
 Samuelsen, Kristin Hegstad, Veli M\"akinen, Jukka Corander, Eva Heinz,
 and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
-7.11. \\doi:
+7:11. \\doi:
 \href{https://doi.org/10.1099/mgen.0.000691}{10.1099/mgen.0.000691}.
 
 \subsection*{Publication III \textemdash{ } Strong pathogen competition in neonatal gut colonization}
@@ -194,6 +192,8 @@ Johnsen, \O rjan Samuelsen, Trevor D Lawley, Antti Honkela, and Jukka
 Corander. Submitted; preprint available from \textit{bioRxiv}
 (2022). \\doi:
 \href{https://doi.org/10.1101/2022.06.19.496579}{10.1101/2022.06.19.496579}.
+
+\mainmatter
 
 \chapter{Introduction}
 \sloppy
@@ -620,7 +620,7 @@ archived and available in Zenodo \citep{maklin_mSWEEP}.
 By \underline{Tommi M\"aklin}, Teemu Kallonen, Jarno Alanko, \O rjan
 Samuelsen, Kristin Hegstad, Veli M\"akinen, Jukka Corander, Eva Heinz,
 and Antti Honkela. Published in \textit{Microbial Genomics} (2021)
-7.11, doi: \href{https://doi.org/10.1099/mgen.0.000691}{10.1099/mgen.0.000691}.
+7:11, doi: \href{https://doi.org/10.1099/mgen.0.000691}{10.1099/mgen.0.000691}.
 
 Publication II \citep{maklin_bacterial_2021} continued to build upon
 mSWEEP by developing an algorithm for binning sequencing reads at the
@@ -1353,7 +1353,7 @@ Applying Theorem \ref{lemma:beta-function-identity} leads to the closed form of 
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 1 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \frac{\alpha + n + k - 1}{\alpha + \beta + 2n - 1} \frac{\alpha + n + k - 2}{\alpha + \beta + 2n - 2} \\
   &= \binom{n}{k} \frac{B\left(\alpha + n + k - 2 , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{2} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
-\intertext{Above, Theorem \ref{lemma:beta-function-identity} was applied twice. Repeadetly applying Theorem \ref{lemma:beta-function-identity} $n$ times yields the alternative form}
+\intertext{Above, Theorem \ref{lemma:beta-function-identity} was applied twice. Repeatedly applying Theorem \ref{lemma:beta-function-identity} $n$ times yields the alternative form}
   g\left(k\right) &= \binom{n}{k} \frac{B\left(\alpha + n + k - n , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
   &= \binom{n}{k} \frac{B\left(\alpha + k , n - k + \beta\right)}{B\left(\alpha + n, \beta\right)} \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j} \\
   &= f\left(k, n\right) \prod_{j = 1}^{n} \frac{\alpha + n + k - j}{\alpha + \beta + 2n - j}.
@@ -1513,24 +1513,22 @@ significant differences between the parameter estimates (Figures
 \section{From profiling to binning}
 \label{section:binning}
 
-This section covers using the model from mSWEEP to derive an
-algorithm for assigning the sequencing reads $r_{n, k}$ to the
-reference lineages $k$, also known as binning. Binning differs from
-relative abundance estimation in that the goal is to produce some
-assignment of the reads to reference units. Typically the reference
-units and the created bins correspond to some species or even
-genera. In this thesis, the bins will be created on the level of the
-reference lineages/clusters that mSWEEP reports the relative
-abundances for. Compared to estimating only the abundances, the
-addition of binning provides much extra detail about the contents of a
-sample, since the creation of lineage-level sequencing read bins
-allows performing many downstream analyses that require sequencing
-reads or even assemblies. The binning algorithm presented in this
-section is called the mGEMS binning algorithm, which in itself is a
-part of the mGEMS pipeline for binning sequencing reads.
-
-The work in this section is based on the results from Publication
-II.
+This section covers using the model from mSWEEP to derive an algorithm
+for assigning the sequencing reads $r_{n, k}$ to the reference
+lineages $k$, also known as binning. Binning differs from relative
+abundance estimation in that the goal is to produce some assignment of
+the reads to reference units. Typically the reference units and the
+created bins correspond to some species or even genera. In this
+thesis, the bins will be created on the level of the reference
+lineages/clusters that mSWEEP reports the relative abundances
+for. Compared to estimating only the abundances, the addition of
+binning provides much extra detail about the contents of a sample,
+since the creation of lineage-level sequencing read bins allows
+performing many downstream analyses that require sequencing reads or
+even assemblies. The binning algorithm presented in this section is
+called the mGEMS binning algorithm, which in itself is a part of the
+mGEMS pipeline for binning sequencing reads. The work in this section
+is based on the results from Publication II.
 
 \subsection{The mGEMS binning algorithm}
 
@@ -2088,21 +2086,7 @@ placement of the STs within the overall phylogeny. This phenomenon is
 also apparent in the bootstrap support values for both the isolate and
 mGEMS-derived phylogenies, partially explaining the differences
 between the two.
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-efaecalis-phylogeny} and legend source: adapted from Publication II, Figure 5 \citep{maklin_bacterial_2021}.}
-\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_5.pdf}
-    \caption{Tanglegram of two midpoint-rooted maximum likelihood
-      trees from core SNP alignment of \textit{E. faecalis}
-      strains. The phylogenies were inferred with RAxML-NG. Numbers
-      below the edges indicate bootstrap support values from RAxML-NG
-      for the next branch towards the leaves of the tree. Only values under 90 are shown. Branches are
-      coloured according to the \textit{E. faecalis} STs.}
-    \label{fig:mgems-efaecalis-phylogeny}
-\end{figure}
 
-\pagebreak
 The final synthetic benchmark in Publication II investigated
 phylogeny recovery within \textit{S. aureus} ST22 with sublineages
 that are separated by a few dozen of SNPs \citep{paterson2015capturing}, source
@@ -2118,11 +2102,29 @@ likely a result of the small degree of separation between the
 sublineages, or possibly of the filtering of the assemblies performed
 in the original study that was not replicated for the mGEMS-derived
 assemblies.
+
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-efaecalis-phylogeny} and legend source: adapted from Publication II, Figure 5 \citep{maklin_bacterial_2021}.}
+\vfill
+\pagebreak
+
+\addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_5.pdf}
+    \caption{Tanglegram of two midpoint-rooted maximum likelihood
+      trees from core SNP alignment of \textit{E. faecalis}
+      strains. The phylogenies were inferred with RAxML-NG. Numbers
+      below the edges indicate bootstrap support values from RAxML-NG
+      for the next branch towards the leaves of the tree. Only values under 90 are shown. Branches are
+      coloured according to the \textit{E. faecalis} STs.}
+    \label{fig:mgems-efaecalis-phylogeny}
+\end{figure}
+
 \noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-saureus-phylogeny} and legend source: adapted from Publication II, Figure 6 \citep{maklin_bacterial_2021}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
 \begin{figure}[!t]
   \centering
-  \includegraphics[height=0.75\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_6.pdf}
+  \includegraphics[height=0.675\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_6.pdf}
   \caption{Midpoint-rooted maximum likelihood tree from core SNP
     alignment of \textit{S. aureus} ST22 sublineage (clade 1). The
     phylogeny was inferred from a combined set of assemblies from 60
@@ -2176,10 +2178,13 @@ taxonomic unit of interest in practical analyses, the observed
 difficulties in separating between the accessory genome based specific
 sublineages are likely not relevant in applications of the method.
 \vfill
+\pagebreak
+
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
+\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-in-vitro-benchmark} and legend source: adapted from Publication II, Figure 2 \citep{maklin_bacterial_2021}.}
 \begin{figure}[!ht]
   \centering
-  \includegraphics[height=0.70\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_2_rev.pdf}
+  \includegraphics[height=0.675\textheight,width=\textwidth,keepaspectratio]{img/reproduced/MGen2021_mGEMS_Figure_2_rev.pdf}
   \caption{Evaluating mGEMS and mSWEEP on the in vitro benchmark
     data. Panels \textbf{a)} E. coli and \textbf{b)} E. faecalis compare the results
     of SNP calling from the isolate sequencing data (horizontal axis)
@@ -2194,8 +2199,8 @@ sublineages are likely not relevant in applications of the method.
     the relative error in the truly present lineages.}
     \label{fig:mgems-in-vitro-benchmark}
 \end{figure}
-\noindent\let\thefootnote\relax\footnote{Figure \ref{fig:mgems-in-vitro-benchmark} and legend source: adapted from Publication II, Figure 2 \citep{maklin_bacterial_2021}.}
 
+\vfill
 \pagebreak
 Together, these benchmarks show that mSWEEP and mGEMS method can be
 reliably used to disentangle metagenomic sequencing data and create
@@ -2214,15 +2219,14 @@ shown in more detail in Chapter \ref{section:metagenomic-epidemiology}.
 
 \subsection{Sequencing depth requirements}
 
-In addition to the presented benchmarks that assessed the performance
-of mSWEEP and mGEMS in presence of complex strain variation,
-Publication I contained an additional study of the performance when
-the sequencing depth (number of base pairs from a lineage in a sample
-divided by the average length of a genome from the same lineage) is
-greatly varied. In this benchmark, reads from 10 \textit{E. coli}
-lineages were mixed synthetically at sequencing depths varying from
-0.10x to 50x, and mSWEEP was applied to retrieve the relative
-abundances.
+In addition to the benchmarks that assessed performance of mSWEEP
+and mGEMS in presence of complex strain variation, Publication I also
+investigated the impact of varying the sequencing depth (number of base
+pairs from a lineage in a sample divided by the average length of a
+genome from the same lineage) in the reads. In this benchmark,
+reads from 10 \textit{E. coli} lineages were mixed synthetically at
+depths varying from 0.10x to 50x, and mSWEEP was applied to
+retrieve the relative abundances.
 
 The results show that mSWEEP recovers the real values with
 admirable accuracy when the lineage in question was sequenced at high
@@ -2240,9 +2244,13 @@ translates to accurately recovering lineages with a relative abundance
 between 0.01 to 0.02 if the whole sample is sequenced at a depth that
 would correspond to 100x coverage in reads originating from a single
 source.
+
+\vfill
+\pagebreak
+
 \noindent\let\thefootnote\relax\footnote{Figure \ref{fig:msweep-sequencing-depth} and legend source: adapted from Publication I, Figure 5 \citep{maklin_high-resolution_2021}.}
 \addtocounter{footnote}{-1}\let\thefootnote\svthefootnote
-\begin{figure}[!ht]
+\begin{figure}[!th]
   \centering
   \includegraphics[height=0.50\textheight,width=\textwidth,keepaspectratio]{img/reproduced/WOR2021_mSWEEP_Figure_5.pdf}
   \caption{Relative error in 87 complex synthetic mixtures comprising
@@ -2305,7 +2313,6 @@ means for more theoretically sound consideration of the relative
 abundance results than using simple heuristics such as filtering by a
 minimum abundance.
 
-\pagebreak
 The detection thresholds are created by taking a collection of
 reference sequences with corresponding short-read sequencing data
 available, and using a bootstrapping approach to determine the
@@ -2346,8 +2353,6 @@ the computational demands can be somewhat alleviated by employing a
 block-design based strategy to remove several sequences at
 the same time, which would lead to roughly similar results.
 
-\vfill
-\pagebreak
 Unfortunately, the detection threshold approach has not found much use
 in the so-far published studies that use mSWEEP. The issue of defining
 trustworthy estimates has mostly been tackled by utilizing minimum
